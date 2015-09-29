@@ -1,0 +1,222 @@
+/* Button Icon Srtyles */
+.tree {
+	background-image: url('../_image/tree.png') !important;
+}
+
+.list {
+	background-image: url('../_image/list.png') !important;
+}
+
+.new {
+	background-image: url('../_image/add.png') !important;
+}
+
+.addSubRecord {
+	background-image: url('../_image/addSubRecord.png') !important;
+}
+
+.edit {
+	background-image: url('../_image/edit.png') !important;
+}
+
+.delete {
+	background-image: url('../_image/delete.png') !important;
+}
+
+.search {
+	background-image: url('../_image/search.png') !important;
+}
+
+.cancel {
+	background-image: url('../_image/cancel.png') !important;
+}
+
+.save {
+	background-image: url('../_image/save.png') !important;
+}
+
+.child {
+	background-image: url('../_image/child.png') !important;
+}
+
+.approve {
+	background-image: url('../_image/approve.png') !important;
+}
+
+.attachment {
+	background-image: url('../_image/attachment.png') !important;
+}
+
+.webService {
+	background-image: url('../_image/webService.png') !important;
+}
+
+.application {
+	background-image: url('../_image/application.png') !important;
+}
+
+.denyApplication {
+	background-image: url('../_image/denyApplication.png') !important;
+}
+
+.recycle {
+	background-image: url('../_image/recycle.png') !important;
+}
+
+.task {
+	background-image: url('../_image/task.png') !important;
+}
+
+.birimHesap{
+	background-image: url('../_image/birimHesap.png') !important;
+}
+
+.adres {
+	background-image: url('../_image/adres.png') !important;
+}
+
+.internet {
+	background-image: url('../_image/internet.png') !important;
+}
+
+.telefon {
+	background-image: url('../_image/telefon.png') !important;
+}
+
+.holiday {
+	background-image: url('../_image/holiday.png') !important;
+}
+
+.kisi {
+	background-image: url('../_image/kisi.png') !important;
+}
+
+.personel {
+	background-image: url('../_image/personel.png') !important;
+}
+
+.uye {
+	background-image: url('../_image/uye.png') !important;
+}
+
+.kimlik {
+	background-image: url('../_image/kimlik.png') !important;
+}
+
+.uyruk {
+	background-image: url('../_image/uyruk.png') !important;
+}
+
+.fotograf {
+	background-image: url('../_image/fotograf.png') !important;
+}
+
+.wizard {
+	background-image: url('../_image/wizard.png') !important;
+}
+
+.backward {
+	background-image: url('../_image/backward.png') !important;
+}
+
+.forward {
+	background-image: url('../_image/forward.png') !important;
+}
+
+.uyeAidat {
+	background-image: url('../_image/menuIcon_UyeAidat.png') !important;
+}
+
+.uyeMuafiyet {
+	background-image: url('../_image/menuIcons/menuIcon_Uyemuafiyet.png')
+		!important;
+}
+
+.uyeBelge {
+	background-image: url('../_image/menuIcon_UyeBelge.png') !important;
+}
+
+.uyeUzmanlik {
+	background-image: url('../_image/menuIcon_UyeUzmanlik.png') !important;
+}
+
+.uyeBilirkisi {
+	background-image: url('../_image/menuIcon_UyeBilirkisilik.png')
+		!important;
+}
+
+.uyeOgrenim {
+	background-image: url('../_image/menuIcon_UyeOgrenim.png') !important;
+}
+
+.uyeCeza {
+	background-image: url('../image/menuIcon_UyeCezalar.png') !important;
+}
+
+.uyeOdul {
+	background-image: url('../_image/menuIcon_UyeOdul.png') !important;
+}
+
+.uyeAbone {
+	background-image: url('../_image/menuIcon_UyeAbonelik.png') !important;
+}
+
+.uyeSigorta {
+	background-image: url('../_image/menuIcon_UyeSigorta.png') !important;
+}
+
+.uyeBorc {
+	background-image: url('../_image/menuIcon_UyeBorc.png') !important;
+}
+
+.uyekurum {
+	background-image: url('../_image/menuIcon_UyeKurum.png') !important;
+}
+
+.history {
+	background-image: url('../_image/history.png') !important;
+}
+
+.download {
+	background-image: url('../_image/menuIcons/menuIcon_Download.png') !important;
+}
+
+.csv {
+	background-image: url('../_image/csv.png') !important;
+}
+
+.kullaniciIcon {
+	background-image: url('../_image/menuIcon_Kullanici.png') !important;
+}
+
+.uyariIcon {
+	background-image: url('../_image/uyari.png') !important;
+}
+
+.evrakListesineDon{
+	background-image: url('../_image/evrakListesineDon.png') !important; 	
+}
+
+.evrak{
+	background-image: url('../_image/evrak.png') !important; 	
+}
+
+.evrakek{
+	background-image: url('../_image/attachment.png') !important; 	
+}
+
+.uyeDurumDegistir{
+	background-image: url('../_image/uyeDurumDegistir.png') !important; 	
+}
+
+.donem {
+	background-image: url('../_image/donem.png') !important;
+}
+
+.toplanti {
+	background-image: url('../_image/toplanti.png') !important;
+}
+
+.tutanak {
+	background-image: url('../_image/tutanak.png') !important;
+}

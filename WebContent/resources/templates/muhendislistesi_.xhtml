@@ -1,0 +1,212 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+		<h:head>
+
+	<title>#{label.muhendisListesi}</title>
+	
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+	<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/style.css" rel="stylesheet" type="text/css"/>
+	<style type="text/css">
+	.ui-dialog .ui-dialog-titlebar-close {
+	right: -16px !important;
+	top: -16px !important;
+	margin: 0;
+	width: 30px;
+	height: 30px;
+	background: url("#{resource['primefaces-delta:images/modalClose.png']}")
+		0 0 no-repeat;
+	border: 0 !important;
+	z-index: 10000;
+	padding: 0px !important;
+}
+	</style>
+	</h:head>
+<h:form>
+<p:growl id="growl" autoUpdate="true"/>
+<p:fieldset legend="#{label.muhendisListesi}" id="fset" style="width:96%" toggleable="true">
+<p:dataTable widgetVar="muhendislist" id="muhendislist" var="muhendisler" value="#{muhendisListeBean.muhendisListModel}" style="width:100%;font-size:10px;" 
+ filteredValue="#{muhendisListeBean.filteredList}" paginator="true" 
+ selectionMode="single" selection="#{muhendisListeBean.slctMuhendis}"
+ paginatorAlwaysVisible="true" emptyMessage="#{label.emptyList}" paginatorPosition="bottom" rows="5" rowIndexVar="rowkey"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+        rowsPerPageTemplate="5,10,15,20,25" >
+<p:ajax event="rowSelect" update="@form(pnl01)" oncomplete="PF('muhendisupdate').show()" onstart="PF('muhendisupdate').content.empty()"/>
+      
+<p:column headerText="#{label.sicilNo}"  sortBy="sicilNo" filterBy="sicilNo" width="3%">
+#{muhendisler.sicilNo}
+</p:column>
+<p:column headerText="#{label.adi} #{label.soyadi}" filterBy="adi" sortBy="adi">
+#{muhendisler.adi} #{muhendisler.soyadi}
+</p:column>
+
+<p:column headerText="#{label.telno}">
+#{muhendisler.telefonNo}
+<br/>
+#{muhendisler.gsmTelefonNo}
+</p:column>
+
+
+
+<p:column headerText="#{label.eposta}">
+#{muhendisler.ePosta}
+</p:column>
+<p:column headerText="#{label.il}"  sortBy="ilAdi" filterBy="ilAdi">
+#{muhendisler.ilAdi}
+</p:column>
+<p:column headerText="#{label.onayYetkisi}"  sortBy="onayYetkisi" filterBy="onayYetkisi">
+#{muhendisler.onayYetkisi eq 'E'?'Evet':'Hayır'}
+</p:column>
+<p:column headerText="#{label.aktif}" filterBy="durum" sortBy="durum">
+#{muhendisler.durum eq 'A'?'Aktif':'Pasif'}
+</p:column>
+</p:dataTable>
+</p:fieldset>
+<p:dialog visible="false" widgetVar="muhendisupdate" id="muhendisupdate" width="auto" height="auto" closable="true" modal="true">
+<p:ajax event="close" update="@form" listener="#{muhendisListeBean.handleClose}"
+   onsuccess="PF('muhendisupdate').content.empty()" />
+      <p:panel id="muhendispanel" header="#{label.muhendiskayit}">
+      <p:messages id="mgrowl" showDetail="false" autoUpdate="true"/>
+  <h:panelGrid  id="pnl01" rowClasses="rowClass1,rowClass2" columns="4" cellpadding="2" cellspacing="2" style="width:100%">
+  					
+  					 
+		 <p:outputLabel value="#{label.sicilNo}" styleClass="label" for="txtSicilNo" style="text-align:right"/>
+					
+					<p:inputText  id="txtSicilNo"  value="#{muhendisListeBean.slctMuhendis.sicilNo}"  
+					readonly="true" disabled="false" onkeydown="alert('Sicil numarasında değişiklik yapılmaz !')"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.sicilNo}">
+					<p:ajax process="@this" update="@this"/>
+					</p:inputText>
+					<h:outputText/>
+				 	<h:outputText/>
+					<p:outputLabel value="#{label.adi}" styleClass="label" for="txtAdi"/>
+					<p:inputText id="txtAdi"  value="#{muhendisListeBean.slctMuhendis.adi}"
+					required="true" requiredMessage="#{label.adi} #{label.giriniz}"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.adi}">
+					<p:ajax process="@this" update="@this"/>
+					</p:inputText>
+					
+					<p:outputLabel value="#{label.soyadi}" styleClass="label" for="txtSoyadi"/>
+					<p:inputText id="txtSoyadi" value="#{muhendisListeBean.slctMuhendis.soyadi}"
+					requiredMessage="#{label.soyadi} #{label.giriniz}" required="true"  
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.soyadi}">
+					<p:ajax process="@this" update="@this"/>
+					</p:inputText>
+					
+					
+					
+					
+					
+					<p:outputLabel value="#{label.eposta}" styleClass="label" for="txteposta" />
+							<p:inputText id="txteposta" value="#{muhendisListeBean.slctMuhendis.ePosta}"
+							
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.eposta}">
+							<f:validator validatorId="validators.EMailValidator" />
+							<f:ajax render="mgrowl" event="blur"/>
+							</p:inputText>
+							<p:outputLabel for="durum" value="#{label.durum}" styleClass="label"/>
+					<p:selectOneMenu id="durum" required="true" requiredMessage="#{label.durum} #{label.seciniz}" 
+					value="#{muhendisListeBean.slctMuhendis.durum}"
+					style="color: #6986c9;	width: 100px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+					<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+					<f:selectItem itemLabel="AKTİF" itemValue="A"/>
+					<f:selectItem itemLabel="PASİF" itemValue="P"/>
+					<p:ajax process="@this" update="@this"/>
+					</p:selectOneMenu>
+					<p:outputLabel for="onayyetkisi" value="#{label.onayYetkisi}" styleClass="label"/>
+					<p:selectOneMenu id="onayyetkisi" required="true" requiredMessage="#{label.onayYetkisi} #{label.seciniz}" 
+					value="#{muhendisListeBean.slctMuhendis.onayYetkisi}"
+					style="color: #6986c9;	width: 100px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+					<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+					<f:selectItem itemLabel="VAR" itemValue="E"/>
+					<f:selectItem itemLabel="YOK" itemValue="H"/>
+					<p:ajax listener="#{kullaniciBean.onayAkreditasyonListener}" process="@this" update="pnl01"></p:ajax>
+					</p:selectOneMenu>			
+					<p:outputLabel for="akreditasyon" value="#{label.akreditasyon}" styleClass="label"/>
+					<p:selectOneMenu id="akreditasyon" required="true" requiredMessage="#{label.akreditasyon} #{label.seciniz}" 
+					value="#{muhendisListeBean.slctMuhendis.akreditasyonDeger}"
+					style="color: #6986c9;	width: 100px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+					<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+					<f:selectItem itemLabel="VAR" itemValue="E"/>
+					<f:selectItem itemLabel="YOK" itemValue="H"/>
+					<p:ajax listener="#{kullaniciBean.onayAkreditasyonListener}" process="@this" update="pnl01"></p:ajax>
+					</p:selectOneMenu>		
+					
+						
+					
+					<p:outputLabel value="#{label.telno}" styleClass="label" for="iletisimtel"/>
+					<p:inputMask mask="(999)9999999"  id="iletisimtel" 
+							 value="#{muhendisListeBean.slctMuhendis.telefonNoStr}"
+							 style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							 <f:validator validatorId="validators.TelefonValidator"/>
+							 <f:ajax event="blur"/>
+							</p:inputMask>
+				
+					<p:outputLabel value="#{label.telefonNoGSM}" styleClass="label" for="iletisimtelgsm"/>
+					<p:inputMask mask="(999)9999999"  id="iletisimtelgsm" 
+					
+							 value="#{muhendisListeBean.slctMuhendis.gsmTelefonNoStr}"
+							 style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							 <f:validator validatorId="validators.TelefonValidator"/>
+							 <f:ajax event="blur"/>
+							</p:inputMask>
+				<p:outputLabel value="#{label.il}" styleClass="label" for="il"/>
+						
+						<p:selectOneMenu id="il"    height="100"  value="#{muhendisListeBean.slctMuhendis.il}"
+						 filter="true" filterMatchMode="startsWith"
+						style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+						<f:validator validatorId="validators.mustGreatThanZero"></f:validator>
+						<f:selectItem itemLabel="İl Seçiniz" itemValue=""></f:selectItem>
+						<f:selectItems value="#{applicationBean.iller}"/>
+						<p:ajax process="@this" update="@this"/>
+						</p:selectOneMenu>
+				<p:outputLabel value="#{label.gunlukKontrolAdet}" styleClass="label" for="kontrolAdet"/>
+			<p:spinner id="kontrolAdet" 
+						 value="#{muhendisListeBean.slctMuhendis.muhendisGunlukKontrolAdet}">
+						<p:ajax process="@this" update="@this"/>
+						</p:spinner>
+								
+								
+			<p:outputLabel value="#{label.muhendisCihazYetki}" styleClass="label" for="cihazTuru" style="width:80px"/>	
+					<p:selectManyCheckbox id="cihazTuru" layout="grid" columns="1" 
+						value="#{muhendisListeBean.slctMuhendis.muhendisCihazYetki}" required="true" requiredMessage="#{label.muhendisCihazYetki} #{label.seciniz}">
+						<f:selectItem itemLabel="Elektrikli Asansör" itemValue="66"/>
+						<f:selectItem itemLabel="Hidrolik Asansör" itemValue="68"/>
+					</p:selectManyCheckbox>	
+								
+					</h:panelGrid>
+		<f:facet name="footer">
+			<p:commandButton value="#{label.kaydet}" actionListener="#{muhendisListeBean.muhendisKaydet}"  icon="ui-icon-disk"
+					update="@form" id="btnKaydet" oncomplete="PF('muhendisupdate').show()"
+					style="color: #6986c9;		height: 35px;	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;float:right"/>
+				
+		</f:facet>
+		
+					
+
+</p:panel>
+
+
+      
+      
+      
+    
+            	   <p:blockUI trigger="btnKaydet" block="muhendispanel" id="bui">
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+            </p:blockUI>
+</p:dialog>
+</h:form>
+</ui:composition>

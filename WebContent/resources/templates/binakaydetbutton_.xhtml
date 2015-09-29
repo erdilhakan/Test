@@ -1,0 +1,10 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<p:commandButton id="btnbinakaydet" value="#{label.kaydet}" icon="ui-icon-disk" update=":form1:pnlBina" process=":form1:pnlBina :form1:growl" action="#{binaBean.binaKaydet}" oncomplete="$('html, body').animate({ scrollTop: 20 }, 'slow')"/>
+<p:blockUI block="@all" trigger="btnbinakaydet">
+ <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+</p:blockUI>
+</ui:composition>

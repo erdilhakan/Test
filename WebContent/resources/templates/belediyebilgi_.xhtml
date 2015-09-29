@@ -1,0 +1,357 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+
+	<title></title>
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+
+.ui-datatable table td{
+color:#4C538D;
+border-color: #4C538D;
+}
+.ui-datatable table{
+color:#4C538D;
+border-color: #4C538D;
+}
+#rowClass1{
+background-color: currentcolor;
+}
+#rowClass2{
+background-color: #fff;
+}
+</style>
+
+</h:head>
+<h:form id="formraporara">
+<h:body>
+<p:growl id="growl"  showDetail="false" autoUpdate="true"/>
+<ui:include src="/resources/templates/raporlararamawithbelediyekod_.xhtml"/>
+<p:panel id="panelbutton">
+<p:commandButton id="btngetir" value="#{label.getir}" icon="ui-icon-search" process="@this :formraporara:apanel" 
+actionListener="#{information.belediyeBilgi}" 
+update="@form" style="float:right" rendered="#{!empty information.selectedBelediye}"></p:commandButton>
+<p:blockUI trigger="btngetir" block="btngetir">
+      <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+     </p:blockUI> 
+</p:panel>
+     
+
+<br/>
+<br/>
+<p:panel  toggleable="true" visible="#{!empty information.binaKontrolVeOdemeList}" id="panelistatistik" style="width:100%" header="" >
+<p:commandButton icon="ui-icon-refresh" id="table1Btn" style="float:right" process="@form" title="Görünüm Değiştir" 
+update=":formraporara:panelistatistik" actionListener="#{information.changeTableViewListener}"></p:commandButton>
+<p:dataTable id="etiketyapitipkontroltable" widgetVar="etiketyapitipkontroltable"  emptyMessage="#{label.emptyList}" paginator="true" paginatorPosition="bottom" rows="40"
+value="#{information.etiketYapiTipKontrolData}" var="list" filteredValue="#{information.filteredEtiketYapiTipKontrol}" selection="single" sortBy="#{list.belediyeKod}"
+style="font-size:0.8em;overflow-y:scroll" liveResize="true" liveScroll="true" resizableColumns="true">
+ <p:columnGroup type="header">
+            <p:row>
+                <p:column  headerText="" />
+                <p:column colspan="2" headerText="ASANSÖR TİPLERİ(ADET)" sortBy="#{list.belediyeAdi}" />
+                <p:column colspan="5" headerText="YAPI SINIFINA GÖRE ASANSÖR SAYISI (ADET)" />
+                <p:column colspan="5" headerText="YILLIK KONTROL SONUÇLARINA GÖRE ASANSÖR SAYISI"></p:column>
+            </p:row>
+            <p:row>
+                <p:column headerText="#{label.belediye} #{label.adi}" sortBy="#{list.belediyeAdi}" filterBy="#{list.belediyeAdi}"/>
+                <p:column headerText="#{label.elektrikliKontrolAdet}" />
+                <p:column headerText="#{label.hidrolikKontrolAdet}" />
+                <p:column headerText="#{label.binaadet}" />
+                <p:column headerText="#{label.kamuadet}" />
+                 <p:column headerText="#{label.konutadet}" />
+                 <p:column headerText="#{label.isyeriadet}" />
+                 <p:column headerText="#{label.digerbinaadet}" />
+                 <p:column headerText="#{label.kirmizietiketadet}" />
+                 <p:column headerText="#{label.sarietiketadet}" />
+                 <p:column headerText="#{label.mavietiketadet}" />
+                 <p:column headerText="#{label.yesiletiketadet}" />
+                 <p:column headerText="#{label.toplamkontroledilenasansorsayisi}"/>
+            </p:row>
+          
+        </p:columnGroup>
+
+   <p:subTable var="list" value="#{list}"> 
+           
+            <p:column sortBy="#{list.belediyeAdi}">
+                <h:outputText value="#{list.belediyeAdi}" />
+            </p:column>
+           <p:column style="text-align:right">
+			<h:outputText value="#{list.elektrikliKontrolAdet}" style="text-align:right">
+		<f:convertNumber pattern="###,###,###"/>
+			</h:outputText>
+
+		</p:column>
+		<p:column style="text-align:right">
+		<h:outputText value="#{list.hidrolikKontrolAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+           <p:column style="text-align:right">
+		<h:outputText value="#{list.binaAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		<h:outputText value="#{list.kamuBinasiAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		<h:outputText value="#{list.konutAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		<h:outputText value="#{list.isyeriAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		<h:outputText value="#{list.digerBinaTipiAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		
+		<p:column style="text-align:right">
+		<h:outputText value="#{list.kirmiziEtiketAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		<h:outputText value="#{list.sariEtiketAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		<h:outputText value="#{list.maviEtiketAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		<h:outputText value="#{list.yesilEtiketAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+			<p:column style="text-align:right">
+		<h:outputText value="#{list.etiketToplamAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+        </p:subTable>
+         
+
+</p:dataTable>
+<p:dataTable id="tableetiketyapitipkontrol" widgetVar="tableetiketyapitipkontrol"  emptyMessage="#{label.emptyList}" 
+value="#{information.etiketYapiTipKontrolList}" var="list" rendered="false"
+style="font-size:0.8em">
+ 
+      <f:facet name="header"></f:facet>
+
+            <p:column>
+            <f:facet name="header"><h:outputText value="#{label.belediye} #{label.adi}"/> </f:facet>
+                <h:outputText value="#{list.belediyeAdi}" />
+            </p:column>
+           <p:column style="text-align:right">
+           <f:facet name="header"><h:outputText value="#{label.elektrikliKontrolAdet}"/> </f:facet>
+			<h:outputText value="#{list.elektrikliKontrolAdet}" style="text-align:right">
+		<f:convertNumber pattern="###,###,###"/>
+			</h:outputText>
+
+		</p:column>
+		<p:column style="text-align:right">
+		<f:facet name="header"><h:outputText value="#{label.hidrolikKontrolAdet}"/> </f:facet>
+		<h:outputText value="#{list.hidrolikKontrolAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+           <p:column style="text-align:right">
+            <f:facet name="header"><h:outputText value="#{label.binaadet}"/> </f:facet>
+		<h:outputText value="#{list.binaAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		 <f:facet name="header"><h:outputText value="#{label.kamuadet}"/> </f:facet>
+		<h:outputText value="#{list.kamuBinasiAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		 <f:facet name="header"><h:outputText value="#{label.konutadet}"/> </f:facet>
+		<h:outputText value="#{list.konutAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		 <f:facet name="header"><h:outputText value="#{label.isyeriadet}"/> </f:facet>
+		<h:outputText value="#{list.isyeriAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		 <f:facet name="header"><h:outputText value="#{label.digerbinaadet}"/> </f:facet>
+		<h:outputText value="#{list.digerBinaTipiAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		
+		<p:column style="text-align:right">
+		 <f:facet name="header"><h:outputText value="#{label.kirmizietiketadet}"/> </f:facet>
+		<h:outputText value="#{list.kirmiziEtiketAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		 <f:facet name="header"><h:outputText value="#{label.sarietiketadet}"/> </f:facet>
+		<h:outputText value="#{list.sariEtiketAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		 <f:facet name="header"><h:outputText value="#{label.mavietiketadet}"/> </f:facet>
+		<h:outputText value="#{list.maviEtiketAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+		<p:column style="text-align:right">
+		 <f:facet name="header"><h:outputText value="#{label.yesiletiketadet}"/> </f:facet>
+		<h:outputText value="#{list.yesilEtiketAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+			<p:column style="text-align:right">
+			 <f:facet name="header"><h:outputText value="#{label.toplamkontroledilenasansorsayisi}"/> </f:facet>
+		<h:outputText value="#{list.etiketToplamAdet}">
+		<f:convertNumber pattern="###,###,###"/>
+		</h:outputText>
+		</p:column>
+     
+         
+
+</p:dataTable>
+<h:panelGrid columns="2">
+<h:commandLink>
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/xls.jpg" width="25" height="25"/>  
+          
+
+        <p:dataExporter type="xls" target="tableetiketyapitipkontrol" fileName="yekun" pageOnly="false" encoding="ISO-8859-9" />
+    </h:commandLink>
+    <h:commandLink>
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/pdf.png" width="25" height="25"/>  
+          
+
+        <p:dataExporter type="pdf" target="tableetiketyapitipkontrol" fileName="yekun" pageOnly="false" encoding="ISO-8859-9" />
+    </h:commandLink>
+    </h:panelGrid> 
+<br/>
+<p:commandButton icon="ui-icon-refresh" style="float:right" process="@form" title="Görünüm Değiştir" id="table2Btn"
+update=":formraporara:panelistatistik" actionListener="#{information.changeTableViewListener}"></p:commandButton>
+<p:panel>
+<f:facet name="header">YAPILAN KONTROLLER</f:facet>
+</p:panel>
+
+<p:dataTable id="belediyebilgi" widgetVar="belediyebilgi"  emptyMessage="#{label.emptyList}" paginator="true" paginatorPosition="bottom" rows="40"
+rowStyleClass="rowClass1;rowClass2" 
+value="#{information.binaKontrolVeOdemeData}" var="list" filteredValue="#{information.filteredBinaKontrolVeOdeme}" selection="single" sortBy="#{list.randevuId}"
+style="overflow:scroll;font-size:0.8em;width:100%" rowIndexVar="rowindex" resizableColumns="true" liveResize="true" liveScroll="true">
+
+
+<p:column filterBy="#{list.binaKodu}" sortBy="#{list.binaKodu}" width="5%">
+<f:facet name="header"><h:outputText value="#{label.binaId}"/></f:facet>
+<h:outputText value="#{list.binaKodu}"/>
+</p:column>
+<p:column filterBy="#{list.binaAdi}" sortBy="#{list.binaAdi}" width="15%">
+<f:facet name="header"><h:outputText value="#{label.binaAdi}"/></f:facet>
+<h:outputText value="#{list.binaAdi}"/>
+</p:column>
+<p:column filterBy="#{list.belediyeAdi}" sortBy="#{list.belediyeAdi}" width="15%">
+<f:facet name="header"><h:outputText value="#{label.belediye} #{label.adi}"/></f:facet>
+<h:outputText value="#{list.belediyeAdi}"/>
+</p:column>
+<p:column filterBy="#{list.acikAdres}" sortBy="#{list.acikAdres}" width="20%">
+<f:facet name="header"><h:outputText value="#{label.bina} #{label.adres}"/></f:facet>
+<h:outputText value="#{list.acikAdres}"/>
+</p:column>         
+<p:column sortBy="#{list.kontrolTarihi}" width="7%">
+<f:facet name="header"><h:outputText value="#{label.kontroltarihi}"/></f:facet>
+<h:outputText value="#{list.kontrolTarihi}">
+<f:convertDateTime pattern="dd.MM.yyyy"/>
+</h:outputText>
+</p:column>     
+<p:column sortBy="#{list.yapiTipiAdi}" filterBy="#{list.yapiTipiAdi}" width="10%">
+<f:facet name="header"><h:outputText value="#{label.yapikonusu}"/></f:facet>
+<h:outputText value="#{list.yapiTipiAdi}"/>
+</p:column>  
+<p:column sortBy="#{list.yoneticiAdiSoyadi}" filterBy="#{list.yoneticiAdiSoyadi}" width="15%">
+<f:facet name="header"><h:outputText value="#{label.yoneticiAdiSoyadi}"/></f:facet>
+<h:outputText value="#{list.yoneticiAdiSoyadi}"/>
+</p:column> 
+
+<p:column sortBy="#{list.yoneticiTelefon}" filterBy="#{list.yoneticiTelefon}" width="15%">
+<f:facet name="header"><h:outputText value="#{label.yoneticiTelefon}"/></f:facet>
+<h:outputText value="#{list.yoneticiTelefon}"/>
+</p:column>
+
+<p:column sortBy="#{list.basvuruAsansor.bakimciFirmaAdi}" filterBy="#{list.basvuruAsansor.bakimciFirmaAdi}" width="15%">
+<f:facet name="header" ><h:outputText value="#{label.bakimciFirma}"/></f:facet>
+<h:outputText value="#{list.basvuruAsansor.bakimciFirmaAdi}"/>
+
+</p:column>
+<p:column  width="8%">
+<f:facet name="header" ><h:outputText value="#{label.bakimcifirmahybno}"/></f:facet>
+<h:outputText value="#{list.basvuruAsansor.bakimciFirmaHYBNo}"/>
+
+</p:column>
+<p:column  width="6%" filterBy="#{list.basvuruAsansor.bakimciFirmaHYBGecerlilikTarihi}" sortBy="#{list.basvuruAsansor.bakimciFirmaHYBGecerlilikTarihi}">
+<f:facet name="header" ><h:outputText value="#{label.bakimcifirmahybgecerliliktarihi}"/></f:facet>
+<h:outputText value="#{list.basvuruAsansor.bakimciFirmaHYBGecerlilikTarihi}">
+<f:convertDateTime pattern="dd.MM.yyyy" locale="tr"></f:convertDateTime>
+</h:outputText>
+
+</p:column>
+<p:column filterBy="#{list.etiket}" sortBy="#{list.etiket}" width="5%">
+<f:facet name="header"><h:outputText value="#{label.etiket eq 'K'?'Kırmızı':(label.etiket eq 'S'?'Sarı':(label.etiket eq 'M'?'Mavi':(label.etiket eq 'Y'?'Yeşil':'')))}"/></f:facet>
+<h:outputText value="#{list.etiket}"/>
+</p:column>  
+<p:column width="5%">
+<f:facet name="header"><h:outputText value="#{label.kapasite}"/></f:facet>
+<h:outputText value="#{list.basvuruAsansor.agirlikKapasite}"/>
+</p:column>    
+<p:column width="5%">
+<f:facet name="header"><h:outputText value="#{label.duraksayisi}"/></f:facet>
+<h:outputText value="#{list.basvuruAsansor.durakKapasite}"/>
+</p:column> 
+
+<p:column width="5%">
+<f:facet name="header"><h:outputText value="#{label.odemeYapildiMi}"/></f:facet>
+<h:outputText value="#{list.odemeYapildiMi}"/>
+</p:column>
+   
+<p:column sortBy="#{list.randevuId}" filterBy="#{list.randevuId}" width="5%">
+<f:facet name="header"><h:outputText value="#{label.randevuId}"/></f:facet>
+<h:outputText value="#{list.randevuId}"/>
+
+</p:column>     
+</p:dataTable>
+<h:panelGrid columns="2">
+<h:commandLink>
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/xls.jpg" width="25" height="25"/>  
+          
+
+        <p:dataExporter type="xls" target="belediyebilgi" fileName="yapilankontroller" pageOnly="false" encoding="ISO-8859-9" />
+    </h:commandLink>
+    
+    </h:panelGrid>
+</p:panel>
+ </h:body>
+    </h:form>      
+        
+           
+               </ui:composition>

@@ -1,0 +1,251 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+
+	<title></title>
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+</h:head>
+
+<h:form id="formb">  
+  	
+    <p:growl id="growl"  showDetail="false" autoUpdate="true"/>
+      
+                 <p:panel header="#{label.firmakayit}" id="pnlfirma" widgetVar="pnlfirma">  
+      			 <h:panelGrid columns="4" style="width:100%;margin-top:10px" cellpadding="10" cellspacing="10" id="grd">
+              	<p:outputLabel for="firmaKod" value="#{label.kod}"/>
+              	 <p:inputText id="firmaKod"  requiredMessage="#{label.kod}  #{label.giriniz}" style="width:auto"
+              	 readonly="true"  onfocus="alert('Değişiklik yapamazsınız !')" onclick="alert('Değişiklik yapamazsınız !')"
+           		 value="#{firmaBean.firma.kod}" styleClass="uii-inputtext" placeholder="#{label.firma} Kod">
+           		<f:converter converterId="digitsOnly"/>
+           		 </p:inputText>
+              	 <h:outputText></h:outputText>
+              	 <h:outputText></h:outputText>
+           		 <p:outputLabel for="firmaUnvan" value="#{label.unvan}"/>
+           		 
+           		  <p:inputTextarea id="firmaUnvan"  required="true" requiredMessage="#{label.unvan}  #{label.giriniz}" style="width:100%;height:40px;"
+           		 cols="300" rows="3" placeholder="#{label.firma} #{label.unvan}"
+           		 value="#{firmaBean.firma.unvan}" >
+           		 </p:inputTextarea>
+           		  <h:outputText></h:outputText>
+              	 <h:outputText></h:outputText>
+           		
+           		<p:outputLabel for="firmaAdSoyadi" value="#{label.adSoyad}"/>
+           		 <p:inputText id="firmaAdSoyadi"  required="#{firmaBean.firma.durumu eq 'A'}" requiredMessage="#{label.adSoyad}  #{label.giriniz}" style="width:100%"
+           		 value="#{firmaBean.firma.adSoyad}" styleClass="uii-inputtext" placeholder="#{label.firmaYetkilisi}">
+           		 </p:inputText>
+         		 <h:outputText></h:outputText>
+         		<h:outputText></h:outputText>
+              	   		 
+           		 <p:outputLabel for="firmaTel" value="#{label.telno}"/>
+           		   <h:panelGrid columns="3">
+           		 <p:inputMask mask="(999) 999 9999" id="firmaTel1"    style="width:auto"
+           		 required="#{firmaBean.firma.durumu eq 'A'}" requiredMessage="#{label.telno}  #{label.giriniz}" 
+           		 value="#{firmaBean.firma.telefonNoStr}" styleClass="uii-inputtext" placeholder="#{label.telno}" title="İşyeri Telefon No">
+           		 <f:validator validatorId="validators.TelefonValidator"></f:validator>
+							<f:ajax render="growl" event="blur"></f:ajax>
+           		 </p:inputMask>
+           		 <span>/</span>
+           		 <p:inputMask mask="9999" id="firmaTelDahili"  style="width:35px" title="İşyeri Dahili"
+           		 value="#{firmaBean.firma.dahili}" styleClass="uii-inputtext" placeholder="#{label.dahili}">
+           		
+           		 </p:inputMask>
+           		 </h:panelGrid>
+           		 <p:outputLabel for="firmaTel" value="#{label.telefonNoGSM}"/>
+           		   <p:inputMask mask="(999) 999 9999" id="firmaTel"  
+           		 style="width:auto"
+           		 value="#{firmaBean.firma.gsmTelefonStr}" styleClass="uii-inputtext" placeholder="#{label.telefonNoGSM}" title="İşyeri GSM No">
+           		 <f:validator validatorId="validators.TelefonValidator"></f:validator>
+							<f:ajax render="growl" event="blur"></f:ajax>
+           		 </p:inputMask>
+           		 
+              	<p:outputLabel for="firmaFaks" value="#{label.faks}"/>
+           		
+           		  <p:inputMask mask="(999) 999 9999" id="firmaFaks"    style="width:auto"
+           		 value="#{firmaBean.firma.faksStr}" styleClass="uii-inputtext" placeholder="#{label.faks}" title="İşyeri Faks">
+           		 <f:validator validatorId="validators.TelefonValidator"></f:validator>
+							<f:ajax render="growl" event="blur"></f:ajax>
+           		 </p:inputMask>
+           		 
+           		
+           		 <p:outputLabel for="firmaEposta" value="#{label.eposta}"/>
+           		 <p:inputText id="firmaEposta"  style="width:300px"
+           		 value="#{firmaBean.firma.eposta}" styleClass="uii-inputtext" placeholder="#{label.eposta}">
+           		<f:validator validatorId="validators.EMailValidator"/>
+           		<p:ajax event="blur" update="@this growl" process="@this"></p:ajax>
+           		 </p:inputText>
+           		 
+           		 	
+           		 
+          
+           		<p:outputLabel for="il" value="#{label.il}" />
+           		  <p:selectOneMenu required="#{firmaBean.firma.durumu eq 'A'}" id="il" requiredMessage="#{label.il}  #{label.seciniz}"
+           		  filterMatchMode="startsWith" filter="true"
+           		  style="width:150px" value="#{firmaBean.firma.il}">
+           		  <f:validator validatorId="validators.mustGreatThanZero"/>
+           		  <f:selectItem itemLabel="#{label.seciniz}" itemValue="0"/>
+           		  <f:selectItems value="#{applicationBean.iller}"/>
+           		  <p:ajax update="growl txtilce" listener="#{firmaBean.ilChange}" process="@this"/>
+           		  </p:selectOneMenu>
+    			 
+    						<p:outputLabel value="#{label.ilce}" styleClass="label" for="txtilce"/>
+							<p:selectOneMenu id="txtilce"   height="100" 
+						 filter="true" filterMatchMode="startsWith"  value="#{firmaBean.firma.ilce}"
+						style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;
+							-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+						
+						<f:selectItem itemLabel="İlçe Seçiniz" itemValue="0"></f:selectItem>
+						<f:selectItems value="#{firmaBean.ilceler}"/>
+						
+						</p:selectOneMenu>
+    			 
+           		<p:outputLabel for="firmaAdres" value="#{label.adres}"/>
+           		 <p:inputTextarea id="firmaAdres"  required="#{firmaBean.firma.durumu eq 'A'}" requiredMessage="#{label.adres}  #{label.giriniz}" style="width:100%;height:40px;"
+           		 cols="300" rows="3" 
+           		 value="#{firmaBean.firma.adres}" placeholder="#{label.adres}">
+           	
+           		 </p:inputTextarea>
+           		
+           		<p:outputLabel for="firmail" value="#{label.calistigiiller}" />
+           		  <p:selectManyMenu id="firmail"
+           		  filterMatchMode="startsWith" filter="true" showCheckbox="true"
+           		  style="width:250px;height:100px;" value="#{firmaBean.firma.firmaIller}">
+           		  
+           		  <f:selectItems value="#{applicationBean.iller}"/>
+           		  
+           		  </p:selectManyMenu>
+           		<p:outputLabel for="firmaDurum" value="#{label.durum}"/>
+           		<p:selectOneMenu id="firmaDurum"  required="true" requiredMessage="#{label.durum}  #{label.giriniz}" style="width:100px"
+           		 value="#{firmaBean.firma.durumu}">
+           		 <f:selectItem itemLabel="Aktif" itemValue="A"></f:selectItem>
+           		 <f:selectItem itemLabel="Pasif" itemValue="P"></f:selectItem>
+           		 <p:ajax process="@this" update="pnlfirma"></p:ajax>
+           		 </p:selectOneMenu>
+
+           		 
+ 		 
+ 		 		<p:outputLabel for="firmaTescilNo" value="#{label.tescilNo}" id="firmaTescilNoLabel"/>
+           		 <p:inputText id="firmaTescilNo"  required="#{firmaBean.tseBelgesiVar and firmaBean.firma.durumu eq 'A'}" requiredMessage="#{label.tescilNo}  #{label.giriniz}" style="width:auto"
+           		 value="#{firmaBean.firma.tescilNo}" styleClass="uii-inputtext" placeholder="#{label.tescilNo}">
+           		<f:converter converterId="digitsOnly"/>
+           		<p:ajax event="blur" process="@this" update="@this"></p:ajax>
+           		 </p:inputText>
+           		
+           		 
+           		 <p:outputLabel for="firmaUygunlukBelgesi" value="#{label.uygunlukBelgesi}"/>
+           		<p:selectOneMenu id="firmaUygunlukBelgesi"  required="#{firmaBean.firma.durumu eq 'A'}" requiredMessage="#{label.uygunlukBelgesi}  #{label.giriniz}"
+           			value="#{firmaBean.firma.uygunlukBelgesi}">
+           			<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+           			<f:selectItem itemLabel="Var" itemValue="E"/>
+           			<f:selectItem itemLabel="Yok" itemValue="H"/>
+           			<p:ajax event="change" listener="#{firmaBean.changeTarihListener}" process="@this" update="firmaGecerlilikSuresiLabel firmaGecerlilikSuresi"></p:ajax>
+           			</p:selectOneMenu>
+           		  
+ 		 
+ 		 		 <p:outputLabel for="firmaGecerlilikSuresi" value="#{label.gecerlilikSuresi}" id="firmaGecerlilikSuresiLabel"/>
+
+ 		 		  
+ 		 		   <p:calendar value="#{firmaBean.firma.gecerlilikSuresi}" id="firmaGecerlilikSuresi"  
+           		  required="#{firmaBean.tseBelgesiVar and firmaBean.firma.durumu eq 'A' and firmaBean.firma.uygunlukBelgesi eq 'E'}" requiredMessage="#{label.gecerlilikSuresi}  #{label.giriniz}" style="width:100px" pattern="dd-MM-yyyy">
+           		  	<f:convertDateTime pattern="dd-MM-yyyy"/> 
+           		  	<p:ajax event="dateSelect" process="@this" update="@this"></p:ajax> 
+ 		 		  </p:calendar> 
+ 		 		
+ 		 		<p:outputLabel for="firmaServisSozlesme" value="#{label.servisSozlesme}" id="firmaServisSozlesmeLabel"/>
+ 		 		<p:selectOneMenu id="firmaServisSozlesme"  required="#{firmaBean.tseBelgesiVar and firmaBean.firma.durumu eq 'A'}" requiredMessage="#{label.servisSozlesme}  #{label.giriniz}"
+           			value="#{firmaBean.firma.servisSozlesme}">
+           			<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+           			<f:selectItem itemLabel="Var" itemValue="E"/>
+           			<f:selectItem itemLabel="Yok" itemValue="H"/>
+           			<p:ajax event="change" listener="#{firmaBean.changeTarihListener}" process="@this" update="@this firmaSozlesmeTarihiLabel firmaSozlesmeTarihi"></p:ajax>
+           			</p:selectOneMenu>
+           		 
+ 		 
+ 		 
+ 		 		<p:outputLabel for="firmaSozlesmeTarihi" value="#{label.sozlesmeTarihi}" id="firmaSozlesmeTarihiLabel"/>
+
+           		  <p:calendar value="#{firmaBean.firma.sozlesmeTarihi}" id="firmaSozlesmeTarihi" 
+           		  required="#{firmaBean.tseBelgesiVar and firmaBean.firma.durumu eq 'A' and firmaBean.firma.servisSozlesme eq 'E'}" requiredMessage="#{label.sozlesmetarihi}  #{label.giriniz}" style="width:100px" pattern="dd-MM-yyyy">
+           		  	<f:convertDateTime pattern="dd-MM-yyyy"/>  
+           		  	<p:ajax event="dateSelect" process="@this" update="@this"></p:ajax>
+ 		 		  </p:calendar> 
+ 		 		
+ 		 		
+ 		 		
+ 		 		<p:outputLabel for="tseBelgesi" value="#{label.tseBelgesi}"/>
+ 		 		<p:selectOneMenu id="tseBelgesi"  
+           			value="#{firmaBean.firma.tseBelgesi}">
+           			<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+           			<f:selectItem itemLabel="Var" itemValue="E"/>
+           			<f:selectItem itemLabel="Yok" itemValue="H"/>
+           			<p:ajax process="@this" listener="#{firmaBean.tseBelgesiListener}"
+           			update="@this :formb:firmaServisSozlesme :formb:firmaGecerlilikSuresi :formb:firmaSozlesmeTarihi  :formb:firmaTescilNo
+           			:formb:firmaServisSozlesmeLabel :formb:firmaGecerlilikSuresiLabel :formb:firmaTescilNoLabel :formb:firmaSozlesmeTarihiLabel">
+           			 </p:ajax>
+           			</p:selectOneMenu>
+ 		 				 
+ 		 
+ 		 		
+         		<p:outputLabel for="firmaTseBelgeNo" value="#{label.tseBelgeNo}" />
+           		 <p:inputText id="firmaTseBelgeNo"   style="width:200px"
+           		 value="#{firmaBean.firma.tseBelgeNo}" styleClass="uii-inputtext" placeholder="#{label.tseBelgeNo}">
+           	
+           		 </p:inputText>
+           		 
+           		  <p:outputLabel for="monteEden" value="#{label.monteEden}"/>
+           		<p:selectOneMenu id="monteEden"  
+           			value="#{firmaBean.firma.monteEden}">
+           			<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+           			<f:selectItem itemLabel="Evet" itemValue="E"/>
+           			<f:selectItem itemLabel="Hayır" itemValue="H"/>
+           			</p:selectOneMenu>
+           			
+           			  <p:outputLabel for="yetkiliServis" value="#{label.yetkiliServis}"/>
+           		<p:selectOneMenu id="yetkiliServis"  
+           			value="#{firmaBean.firma.yetkiliServis}">
+           			<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+           			<f:selectItem itemLabel="Evet" itemValue="E"/>
+           			<f:selectItem itemLabel="Hayır" itemValue="H"/>
+           			</p:selectOneMenu>
+       			 
+       			 <p:outputLabel for="ceBelgeTipi" value="#{label.ceBelgeTipi}"/>
+           		 <p:inputText id="ceBelgeTipi"   style="width:100%"
+           		 value="#{firmaBean.firma.ceBelgeTipi}" styleClass="uii-inputtext" placeholder="#{label.ceBelgeTipi}">
+           		 </p:inputText>
+         		 <h:outputText></h:outputText>
+              	 <h:outputText></h:outputText>	  		
+     		</h:panelGrid>
+               
+	    
+	 	<f:facet name="footer">
+	 			<p:commandLink  value="#{label.iletisimBilgileri}" id="linkIletisim" style="float:left;" styleClass="label"
+	 			 oncomplete="PF('firmaIletisim').show()" 
+	 			 actionListener="#{firmaBean.firmaIletisimListener}"
+	 			 process="@this" rendered="#{firmaBean.firma.kod gt '0'}" update=":formb"/>
+	 			 
+       			<p:commandButton icon="ui-icon-disk" value="#{label.kaydet}" id="btnKaydet" style="float:right">
+       			<f:ajax execute="pnlfirma" render="growl pnlfirma" listener="#{firmaBean.firmaKaydet}"/>
+       			
+       			 </p:commandButton>
+       	 <p:blockUI trigger="btnKaydet" block="btnKaydet">
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+            </p:blockUI>
+	 	</f:facet>
+                  
+            </p:panel>  
+           
+
+     <p:dialog id="firmaIletisim" widgetVar="firmaIletisim" visible="false" header="İletişim Bilgileri">
+     <p:ajax event="close" listener="#{firmaBean.closeDialogListener}" update="@this"/>
+     <ui:include src="bakimciFirmaIletisim_.xhtml"></ui:include>
+     </p:dialog>
+</h:form>  
+
+</ui:composition>

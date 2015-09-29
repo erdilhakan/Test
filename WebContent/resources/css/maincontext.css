@@ -1,0 +1,152 @@
+
+
+/* ---------------------------------
+	Reset
+ --------------------------------- */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, a, em, font, img, strong, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label{margin:0px;padding:0px;border:0px;font-size:100%;vertical-align:baseline;background:transparent;color:#6986c9;}
+ul {list-style:none;
+
+
+
+}
+*:focus {outline:0px;}
+ins, a {text-decoration:none;}
+table {border-collapse: collapse;border-spacing: 0px;}
+textarea{font-family:Arial, Helvetica, sans-serif;}
+
+/* ---------------------------------
+	Globals
+ --------------------------------- */
+html{font-size:11px;line-height:16px}
+body{background:url(../images/subPage_bg.jpg) center -8px no-repeat;color:#5e5e5e;font-family:Tahoma, Helvetica, Arial, sans-serif;width:100%;height:100%}
+/*
+input{text-transform: uppercase;}
+text{text-transform: uppercase;}
+textarea{text-transform: uppercase;}
+.ui-input{text-transform: uppercase;}
+.ui-inputfield{text-transform: uppercase;}
+.ui-inputtext{text-transform: uppercase;}
+.ui-selectonemenu{text-transform: uppercase;}
+*/
+a, a:visited{color:#488fc2;}
+a:hover{color:#5e5e5e;}
+	
+	/* Classes */
+	.clear{clear:both;}
+	.horizontal li{float:left;}
+	.left{float:left;}
+	.reset{margin:0px;padding:0px;}
+	.right{float:right;}
+
+/* ---------------------------------
+	Skeletons
+ --------------------------------- */
+#wrapper{background:url(../images/header.png) left top no-repeat;margin:0px auto;width:1200px;height: auto}
+#header{height:80px;width:auto;}
+#footer{background:url(../images/yellow-bar-header.png) center repeat;height:13px;width:100%;margin:auto;}
+
+/* ---------------------------------
+	Header
+--------------------------------- */
+#logo{cursor:pointer;display:block;height:70px;left:25px;position:absolute;top:20px;text-indent:-9999px;width:130px;}
+	
+/* ---------------------------------
+	Footer
+ --------------------------------- */
+#footer .left{color:#898989;}
+#footer li{color:#898989;margin:0px 3px;}
+#footer a{color:#898989;font-weight:bold;}
+#footer a:hover{text-decoration:underline;}
+
+/* ---------------------------------
+	Sub Page
+ --------------------------------- */
+#subPageContent{height:auto;position:relative;width:100%;margin:auto;overflow: hidden;padding-left: 2px;padding-right: 2px;}
+#subPageHeader{height:auto;width: 100%;z-index:0}
+.contentContainer{height:auto;padding:3px 3px;overflow:hidden;width: 102%}
+.contentLeft{
+	float: left;
+	overflow:hidden;
+	width: 19%;
+}
+
+.contentRight{
+	margin-left:-2.2%;
+	
+	float: left;
+	overflow:hidden;
+	width: 81%;
+	/*padding-right: 2%;*/
+}
+/* Main Navigation */
+#mainNavContainer a{color:#6f8aa3;display:block;font-size:15px;}
+#mainNavContainer{background:url(../images/resim_05_01.gif) left repeat;width:100%}
+#mainNavContainer a:hover, #mainNavContainer a.active{background-position:left bottom;color:#fff;}
+
+/* Sub Page Main Menu */
+#subPageContent #mainNavContainer{height:20px;padding:0px 0px;width:100%;margin-left:0px;line-height:30px;}
+#subPageContent .horizontalMenu li{float:left;position:relative;margin-right:20px;}
+#subPageContent .horizontalMenu li a{background:none;display:block;font-size:13px;height:23px;padding:14px 10px 0px;width:auto;}
+#subPageContent .horizontalMenu li a:hover,
+#subPageContent .horizontalMenu li a.active{background-color:#d7e0e9;color:#6f8aa3;}
+#subPageContent .horizontalMenu li a.current,
+#subPageContent .horizontalMenu li a.current:hover{background:none;color:#80b9dc;cursor:default;}
+#subPageContent .horizontalMenu ul{background:none;background-color:#d7e0e9;;height:auto;padding:10px;position:absolute;left:0px;width:170px;top:34px;display:none;}
+#subPageContent .horizontalMenu ul li {border-bottom:1px dotted #8bc2e4;margin:0px;}
+#subPageContent .horizontalMenu ul li a{background:url(../images/blue_arrow.gif) 5px 8px no-repeat;border:none;color:#6f8aa3;font-size:11px;font-weight:bold;height:auto;padding:4px 0px 4px 18px;width:152px;}
+#subPageContent .horizontalMenu ul li a:hover, #subPageContent .horizontalMenu ul li a.active{background:#4a779a url(../images/grey_arrow.gif) 5px 9px no-repeat;color:#fff;}
+#subPageContent .horizontalMenu ul ul{background-color:#c6d4e2;left:100%;top:-3px;}
+#subPageContent .horizontalMenu ul{
+	-webkit-border-bottom-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	-webkit-border-top-left-radius: 0px;
+	-moz-border-radius-topleft: 0px;
+	border-top-left-radius: 0px;
+}
+
+.ui-growl {
+    position:absolute;
+    margin-top:25%;
+    
+    left: 48%;
+    
+}
+
+.ui-datatable table td{width: auto;}
+
+
+#l1{
+	vertical-align:text-top;
+	width: 65%;
+	float:left;
+	z-index:1;
+}
+#l2{
+	width: 100%;
+	height: 7%;
+	
+}
+#l3{
+	width: 100%;
+	height: 37%;
+	
+	
+}
+#l4{
+	width:100%;
+	height: 56%
+	
+	
+}
+#r1{
+vertical-align:text-top;
+	width:35%;
+	float:left;
+	
+}
+
+

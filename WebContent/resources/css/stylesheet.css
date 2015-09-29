@@ -1,0 +1,140 @@
+
+
+.ui-panel,.ui-panel-content {
+	border: none;
+}
+
+.uii-inputtext,.uii-inputfield,.uii-inputtextarea{
+	color: #6986c9;
+	height:20px;
+	border: 1px solid #999fd9;
+	webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	
+}
+
+.ui-fieldset, .ui-fieldset .ui-fieldset-legend {
+    color:#6986c9;
+}
+
+.ui-inputtext,.ui-inputfield, .ui-inputtextarea {
+	color: #6986c9;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 1px solid #999fd9;
+	webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+.ui-panel-content .ui-inputtext,.ui-panel-content.ui-inputfield,.ui-panel-content .ui-inputtextarea {
+	color: #6986c9;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 1px solid #999fd9;
+	webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+.ui-selectonemenu{
+	color: #6986c9;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 1px solid #999fd9;
+	webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+.ui-panel-content .ui-selectonemenu{
+	color: #6986c9;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 1px solid #999fd9;
+	webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+.ui-selectonemenu,.ui-panel,.ui-inputtext,.ui-inputarea,.ui-inputfield,.ui-menu{
+	color:#6986c9;
+}
+
+
+.ui-chkbox-label{
+		font-weight: bolder;
+	color :#6986c9;
+}
+
+SPAN.ui-chkbox-label{
+		font-weight: bolder;
+	color :#6986c9;
+}
+
+.ui-panel .ui-chkbox-label{
+		font-weight: bolder;
+	color :#6986c9;
+}
+
+.ui-outputlabel {
+	font-weight: bolder;
+	color :#6986c9;
+}
+.ui-panel-title {
+	font-weight: bolder;
+	color :#6986c9;
+}
+
+.ui-selectonemenu-label {
+	
+	color :#6986c9;
+}
+.ui-layout,
+.ui-layout-doc,
+.ui-layout-unit,
+.ui-layout-wrap,
+.ui-layout-bd,
+.ui-layout-hd
+	{
+	border: none;
+}
+
+/* .ui-menu,.ui-menubar,.ui.megamenu {
+	border: none;
+	background-color: #060855;
+	color: #fff;
+	width: auto;
+	overflow: visible !important;
+	
+}
+
+.ui-layout-north {
+	z-index: 20 !important;
+	overflow: visible !important;
+}
+ 
+.ui-layout-unit-content {
+	overflow: visible !important;
+}
+
+#topPanel {
+	z-index: 2 !important;
+}
+
+#topPanel div {
+	overflow: visible;
+}
+*/
+.ui-growl {
+	position: absolute;
+	margin-top: 25%;
+	left: 48%;
+}
+
+.ui-datatable table td {
+	width: auto;
+}

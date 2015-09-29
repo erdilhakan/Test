@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	
+	<title></title>
+	
+		
+	<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+</h:head>
+<h:form>
+<p:messages id="msg" autoUpdate="true" showDetail="false"></p:messages>
+<p:panel id="pnlparoladegistir" header="">
+ <h:panelGrid columns="3" cellpadding="7">
+ <p:outputLabel value="#{label.kullaniciAdi}" for="txtKullaniciAdi" styleClass="label"></p:outputLabel>
+ <p:inputText value="#{loginBean.user}" readonly="true" style="color: #6986c9;	width: 205px;	height: 25px;	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" id="txtKullaniciAdi"/>
+ 					<h:outputText></h:outputText>
+ 					<p:outputLabel value="Parola" for="txtParola" styleClass="label"></p:outputLabel>
+					<p:password  id="txtParola" feedback="true" promptLabel="#{label.parola} #{label.giriniz}" weakLabel="Güçsüz" goodLabel="Orta" strongLabel="Güçlü"
+						
+							 value="#{kullaniciBean.slctKullanici.parola}"
+							 style="color: #6986c9;	width: 205px;	height: 25px;	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" match="txtParolaOnay" validatorMessage="Girilen parolalar eşleşmiyor!"> 
+							
+							</p:password>
+					<p:watermark value="#{label.parola}" for="txtParola" styleClass="label"></p:watermark>
+					
+					<p:outputLabel value="Parola Onay" for="txtParolaOnay" styleClass="label"></p:outputLabel>
+					<p:password  id="txtParolaOnay" feedback="false" promptLabel="#{label.parola} yı tekrar #{label.giriniz}"
+					style="color: #6986c9;	width: 205px;	height: 25px;	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+					<p:ajax event="blur" update="msg" process="pnlparoladegistir"></p:ajax>
+					</p:password>
+					<p:watermark value="Parolayı tekrar giriniz" for="txtParolaOnay"></p:watermark>
+					<h:outputText></h:outputText>
+					<p:commandButton icon="ui-icon-disk" value="#{label.degistir}" id="btnparoladegistir"
+					style="color: #6986c9;	width: 215px;	height: 35px;	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;"
+					action="#{kullaniciBean.parolaDegistir}" update="@form"></p:commandButton>
+	</h:panelGrid>
+	</p:panel>	
+	<p:blockUI block="pnlparoladegistir" trigger="btnparoladegistir">
+	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+	</p:blockUI>	
+</h:form>		
+	
+	</ui:composition>

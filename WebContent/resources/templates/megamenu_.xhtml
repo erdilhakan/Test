@@ -1,0 +1,120 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+<h:form>
+
+<h:panelGroup rendered="#{loginBean.loggedIn}"  >
+<p:megaMenu orientation="horizontal" style="border:none;float:right;margin-right:5%;overflow:scrool" id="mmenu">
+    <p:submenu label="#{label.basvuru}" icon="ui-icon-person">
+        <p:column>
+             <p:submenu style="border:none">
+                <p:menuitem value="#{label.basvuru}"    icon="ui-icon-person" id="basvuru" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[0]}"/>
+        
+          
+      	<p:menuitem value="#{label.basvuruOdemeli}" id="basvuruListesi" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[1]}"/>
+		<p:menuitem  value="#{label.basvuruOdemesiz}" id="odemesizBasvuruListesi" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[2]}"/>
+            </p:submenu>
+        </p:column>
+        
+    </p:submenu>
+
+    <p:submenu label="#{label.tarama}" icon="ui-icon-search">
+
+        <p:column>
+            <p:submenu style="border:none">
+               <p:menuitem value="#{label.tarama}"    icon="ui-icon-search" id="tarama" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[21]}"/>
+        <p:menuitem value="#{label.taramaYapilmayanBinalar}"    icon="ui-icon-document" id="taranmayanBinaListesi" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[24]}"/>
+            </p:submenu>
+        </p:column>
+
+       
+    </p:submenu>
+
+    <p:submenu label="#{label.randevu}" icon="ui-icon-contact">
+        <p:column>
+            <p:submenu style="border:none">
+               <p:menuitem value="#{label.randevuver}" id="randevuver" icon="ui-icon-circle-plus" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[3]}"/>
+           <p:menuitem value="#{label.randevuListesi}" id="randevuListesi" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[4]}"/>
+        	<p:menuitem value="#{label.randevuListesi}(#{loginBean.kullanici.adi} #{loginBean.kullanici.soyadi})"  id="muhendisIcinRandevuListesi"
+        	  icon="ui-icon-document"  actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[25]}"/>
+            </p:submenu>
+        </p:column>
+   </p:submenu>
+
+    <p:submenu label="#{label.asansor}" icon="ui-icon-gear">
+        <p:column>
+            <p:submenu style="border:none">
+                <p:menuitem value="#{label.kontrol}" id="kontrol" icon="ui-icon-check" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[5]}"/> 
+        <p:menuitem value="#{label.kayit}" id="asansor" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[6]}"/>
+            </p:submenu>
+        </p:column>
+    </p:submenu>
+	
+	
+    
+    <p:submenu label="#{label.bina}" icon="ui-icon-home">
+        <p:column>
+            <p:submenu style="border:none">
+              <p:menuitem value="#{label.binabilgileri}" id="bina" icon="ui-icon-home" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[7]}"/>
+                   <p:menuitem value="#{label.kayit}" id="binakayit" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[8]}"/>
+            </p:submenu>
+        </p:column>
+    </p:submenu>
+    
+    <p:submenu label="#{label.raporlar}" icon="ui-icon-document">
+        <p:column>
+            <p:submenu style="border:none">
+            <p:menuitem value="#{label.raporal}" id="kontrolListesi" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[9]}"/>
+            <p:menuitem value="#{label.raporlar}" id="raporlar" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[10]}"/>
+            <p:menuitem value="#{label.raporteslim}" id="raporteslim" icon="ui-icon-comment" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[22]}"/>
+            </p:submenu>
+        </p:column>
+    </p:submenu>
+    
+    <p:submenu label="#{label.digerislemler}" icon="ui-icon-extlink">
+        <p:column>
+            <p:submenu style="border:none">
+           <p:menuitem value="#{label.belediyeliste}" id="belediyeListe" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[11]}"/>  
+                      <p:menuitem value="#{label.belediyekayit}" id="belediyekayit" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[12]}"/>   
+                      <p:menuitem value="#{label.firmaListesi}" id="bakimciFirmaListe" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[13]}"/>  
+                      <p:menuitem value="#{label.bakimcifirmakayit}" id="bakimcifirmakayit" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[14]}"/>  
+                       <p:menuitem value="#{label.muhendisListesi}" id="muhendisListe" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[15]}"/>
+            </p:submenu>
+        </p:column>
+    </p:submenu>
+    
+    <p:submenu label="#{label.yoneticiislemleri}" icon="ui-icon-star">
+        <p:column>
+            <p:submenu style="border:none">
+           <p:menuitem value="#{label.kullaniciListesi}" id="kullaniciListe" icon="ui-icon-key" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[17]}"/>
+         <p:menuitem value="#{label.kullanicikayit}" id="kullanicikayit" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[18]}"/>
+         <p:menuitem value="#{label.sorugirisduzeltme}" id="testsorulari" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[23]}"/>
+         <p:menuitem value="#{label.randevuListesi}" id="randevuListe" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[26]}"/>
+            </p:submenu>
+        </p:column>
+    </p:submenu>
+    
+    <p:submenu label="#{label.kullaniciislem}" icon="ui-icon-person">
+        <p:column>
+            <p:submenu style="border:none">
+           <p:menuitem value="#{label.sifredegistir}" id="sifredegistir" icon="ui-icon-refresh" actionListener="#{menuStateBean.listener}"  update="mmenu" style="#{menuStateBean.style[19]}"/>
+         <p:menuitem value="#{label.anasayfa}" id="index" icon="ui-icon-home" actionListener="#{menuStateBean.listener}" update="mmenu" style="#{menuStateBean.style[20]}"/>
+            </p:submenu>
+        </p:column>
+    </p:submenu>
+    
+    <p:menuitem value="Quit" url="http://www.primefaces.org" icon="ui-icon-close" />
+    <p:menuitem/>
+    <p:menuitem/>
+    <p:menuitem/>
+	<p:menuitem icon="ui-icon-unlocked" title="#{loginBean.kullanici.adi} #{loginBean.kullanici.soyadi}"/> 
+	  
+</p:megaMenu>
+</h:panelGroup>
+</h:form>
+  
+ 
+</ui:composition>

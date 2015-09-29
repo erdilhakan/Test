@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:form>
+<p:dataTable widgetVar="rollist" id="rollist" var="rol" value="#{loginBean.kullanici.roller}"  
+   emptyMessage="#{label.emptyList}" >
+
+      
+<f:facet name="header">
+	#{label.roller}
+</f:facet>
+<p:column headerText="#{label.rolAdi}">
+	#{rol.rolAdi}
+</p:column>
+<p:column>
+	<p:commandLink id="lnkSil" action="#{loginBean.yetkiSil(loginBean.kullanici.kullaniciId,rol.rolId)}" update="@form">
+	 <p:graphicImage value="${pageContext.request.contextPath}/resources/image/delete.png" title="Sil" />
+	</p:commandLink>
+</p:column>
+</p:dataTable>
+</h:form>
+</ui:composition>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	
+	>
+<h:head>
+
+
+</h:head>
+
+<body>
+<div id="wrapper">
+	<div id="header">
+    	<h1 id="logo" title="TMMOB Makina Mühendisleri Odası">Makina Mühendisleri Odası</h1>
+    	<!-- end topMenu -->
+    </div>
+    <!-- end header -->
+    
+	<div id="subPageContent">
+	<ui:insert name="toppanel">
+    	<ui:include src="/resources/templates/toppanel.xhtml"></ui:include>
+    </ui:insert>
+        <!-- end mainNavContainer -->
+        <div id="subPageHeader"></div>
+       
+   	  <div class="contentContainer">
+   	  
+   	  <div class="contentLeft">
+   
+   	  <ui:insert>
+   	  	<ui:include src="solmenu.xhtml"/>
+   	  </ui:insert>
+   	  </div>
+   	
+   	  
+   	  
+   	  
+   	  <div class="contentRight" id="rightContent" >
+   	  
+   	  <h:form id="sag"> 
+   	 <ui:insert>
+   	 		<ui:include src="/resources/templates/#{menuBean.sayfa}"></ui:include>
+   	  </ui:insert>
+   	   </h:form>
+   	  
+   	  </div>
+   	  
+      </div>
+        <!-- end subPageContentContainer -->
+        
+    </div>
+    <!-- end subPageContent -->
+    
+    
+  <div id="footer">
+  		<div class="left">TMMOB Makina Mühendisleri Odası © 2013</div>
+  		<div class="right">
+        	<ul class="horizontal">
+                <li><a href="http://www.mmo.org.tr/genel/iletisim_bilgileri.php" title="İletişim">İletişim</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- end footer -->
+</div>
+<!-- end wrapper -->
+
+</body>
+</html>

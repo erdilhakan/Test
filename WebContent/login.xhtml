@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	
+	>
+<h:head>
+<f:facet name="first">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</f:facet>
+
+<title>TMMOB Makina Mühendisleri Odası Asansör Periyodik Kontrol Uygulaması</title>
+
+<link rel="shortcut icon"  href="${facesContext.externalContext.requestContextPath}/resources/image/favicon.jpg"/>
+<h:outputScript library="scripts" name="myscrpt.js"></h:outputScript>
+<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/resources/scripts/googleAnalytics.js"></script>
+
+ <link href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+<link href="${facesContext.externalContext.requestContextPath}/resources/css/styles.css" rel="stylesheet" type="text/css"/>
+<link href="${facesContext.externalContext.requestContextPath}/resources/css/style.css" rel="stylesheet" type="text/css"/>
+<link type="text/css" rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/resources/css/delta.css" />
+<style>
+.ui-message-error-detail{
+font-size:8px;
+}
+body {
+height:800px;overflow:hidden; background-position:top;
+/* IE10 Consumer Preview */ 
+background-image: -ms-radial-gradient(center top, ellipse farthest-corner, #FFFFFF 0%, #0095DB 100%);
+
+/* Mozilla Firefox */ 
+background-image: -moz-radial-gradient(center top, ellipse farthest-corner, #FFFFFF 0%, #0095DB 100%);
+
+/* Opera */ 
+background-image: -o-radial-gradient(center top, ellipse farthest-corner, #FFFFFF 0%, #0095DB 100%);
+
+/* Webkit (Safari/Chrome 10) */ 
+background-image: -webkit-gradient(radial, center top, 0, center top, 561, color-stop(0, #FFFFFF), color-stop(1, #0095DB));
+
+/* Webkit (Chrome 11+) */ 
+background-image: -webkit-radial-gradient(center top, ellipse farthest-corner, #FFFFFF 0%, #0095DB 100%);
+
+/* W3C Markup, IE10 Release Preview */ 
+background-image: radial-gradient(ellipse farthest-corner at center top, #FFFFFF 0%, #0095DB 100%);
+}
+
+</style>
+<script>
+var isMobile = {
+   Android: function() {
+       return navigator.userAgent.match(/Android/i);
+   },
+   BlackBerry: function() {
+       return navigator.userAgent.match(/BlackBerry/i);
+   },
+   iOS: function() {
+       return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+   },
+   Opera: function() {
+       return navigator.userAgent.match(/Opera Mini/i);
+   },
+   Windows: function() {
+       return navigator.userAgent.match(/IEMobile/i);
+   },
+   any: function() {
+       return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+   }
+};
+if(isMobile.any()) {
+window.location.href = "http://akm.mmo.org.tr/AsansorMobil/mobile/login.jsf";
+}
+ 
+</script>
+</h:head>
+
+<h:body>
+
+<div class="header">
+
+<center>
+<h:panelGrid columns="2" style="margin-top:10px">
+ 
+ <!-- p:graphicImage value="${pageContext.request.contextPath}/resources/image/tmmob.png" styleClass="imagelogin"/-->
+ <!-- h:panelGrid columns="1">
+ <h1 style="font-size:22px;z-index:-1">
+ <font style="color: #{sessionBean.colors[0]}">T</font>
+ <font style="color: #{sessionBean.colors[1]}">M</font>
+ <font style="color: #{sessionBean.colors[2]}">M</font>
+ <font style="color: #{sessionBean.colors[3]}">O</font>
+ <font style="color: #{sessionBean.colors[4]}">B</font>&nbsp;&nbsp;
+ <font style="color: #{sessionBean.colors[5]}">M</font>
+ <font style="color: #{sessionBean.colors[6]}">a</font>
+ <font style="color: #{sessionBean.colors[7]}">k</font>
+ <font style="color: #{sessionBean.colors[8]}">i</font>
+ <font style="color: #{sessionBean.colors[9]}">n</font>
+ <font style="color: #{sessionBean.colors[10]}">a</font>&nbsp;&nbsp;
+ <font style="color: #{sessionBean.colors[11]}">M</font>
+ <font style="color: #{sessionBean.colors[12]}">ü</font>
+ <font style="color: #{sessionBean.colors[13]}">h</font>
+ <font style="color: #{sessionBean.colors[14]}">e</font>
+ <font style="color: #{sessionBean.colors[15]}">n</font>
+ <font style="color: #{sessionBean.colors[16]}">d</font>
+ <font style="color: #{sessionBean.colors[17]}">i</font>
+ <font style="color: #{sessionBean.colors[18]}">s</font>
+ <font style="color: #{sessionBean.colors[19]}">l</font>
+ <font style="color: #{sessionBean.colors[20]}">e</font>
+ <font style="color: #{sessionBean.colors[21]}">r</font>
+ <font style="color: #{sessionBean.colors[22]}">i</font>&nbsp;&nbsp;
+ <font style="color: #{sessionBean.colors[23]}">O</font>
+ <font style="color: #{sessionBean.colors[24]}">d</font>
+ <font style="color: #{sessionBean.colors[25]}">a</font>
+ <font style="color: #{sessionBean.colors[26]}">s</font>
+ <font style="color: #{sessionBean.colors[27]}">ı</font>
+ </h1>
+ </h:panelGrid-->
+ </h:panelGrid>
+ </center>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<center>
+<div class="loginpanel" >
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+ <ui:include src="/resources/templates/login_.xhtml"/>
+
+</div>
+</center>
+<center>
+<br/>
+<br/>
+
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<!-- p:commandLink  onclick="PF('yardimci').show()" style="colors:#4C53D8;font-size:10px;">
+<p:graphicImage value="${pageContext.request.contextPath}/resources/image/pdf.png" style="border:none"></p:graphicImage>
+Kullanım Klavuzunu indirmek için tıklayınız !
+</p:commandLink-->
+</center>
+<!-- p:dialog visible="false" showEffect="clip" hideEffect="clip" width="80%" height="80%" widgetVar="yardimci" id="yardimci">
+  <a href="${facesContext.externalContext.requestContextPath}/resources/klavuz/yardimci.pdf"  style="colors:#5882FA;">
+  Tarayıcınız pdf görüntüleyemiyor ise,Dosyayı Açmak için tıklayınız !
+  </a>
+ <p:media  value="/resources/klavuz/yardimci.pdf" width="100%" height="100%" >  </p:media>
+  
+   </p:dialog-->
+ 
+</h:body>
+
+</html>

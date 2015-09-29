@@ -1,0 +1,174 @@
+	<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+<style>
+.ui-dialog {
+	padding: .2em;
+	overflow: visible;
+	border: 0 none;
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	background: transparent !important;
+	padding: 0 0 8px 0;
+	margin: 20px 20px 5px 20px;
+	border: solid #e5e5e5;
+	border-width: 0 0 1px 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+
+.ui-dialog .ui-dialog-title {
+	float: left;
+	margin: .1em 16px .1em 0;
+	color: #353536;
+	font-size: 20px !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+	right: -16px !important;
+	top: -16px !important;
+	margin: 0;
+	width: 30px;
+	height: 30px;
+	background: url("#{resource['primefaces-delta:images/modalClose.png']}")
+		0 0 no-repeat;
+	border: 0 !important;
+	z-index: 10000;
+	padding: 0px !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close span {
+	display: none !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover,.ui-dialog .ui-dialog-titlebar-close:focus
+	{
+	padding: 0;
+}
+
+.ui-dialog .ui-dialog-content {
+	border: 0;
+	padding: 15px 20px 20px 20px;
+	background: none;
+	overflow: auto;
+	zoom: 1;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+	text-align: left;
+	border: solid #e5e5e5;
+	border-width: 1px 0 0 0;
+	background: transparent;
+	margin: 20px 20px 10px 20px;
+	padding: 10px 0 0 0;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+	float: right;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+	margin: .5em .4em .5em 0;
+	cursor: pointer;
+}
+
+.ui-dialog .ui-resizable-se {
+	width: 14px;
+	height: 14px;
+	right: 3px;
+	bottom: 3px;
+}
+
+.ui-draggable .ui-dialog-titlebar {
+	cursor: move;
+}
+</style>
+</h:head>
+<p:dataTable id="tablefirmalar" var="firmalar" 
+		
+		value="#{cihazBean.firmaModel}" emptyMessage="#{label.emptyList}" style="width:100%" rowIndexVar="index" paginator="true"
+		paginatorPosition="bottom" rows="5" filteredValue="#{cihazBean.filterFirma}">
+		
+		<p:column headerText="#{label.firma} #{label.adi}" sortBy="#{firmalar.unvan}" style="width:350px">
+		
+		
+		
+              #{firmalar.unvan}
+        
+		</p:column>
+		<p:column headerText="#{label.firmaYetkilisi}">
+		     #{firmalar.adSoyad}
+        
+		</p:column>
+		<p:column headerText="#{label.firmaYetkiliTelefon}">
+		       #{firmalar.gsmTelefon}
+        
+		</p:column>
+		<p:column headerText="#{label.sozlesmetarihi}" sortBy="#{firmalar.asansorBakimTarihi}">
+		       <h:outputText value="#{firmalar.asansorBakimTarihi}">
+		<f:convertDateTime pattern="dd.MM.yyyy" locale="tr"/>
+		</h:outputText>
+        
+		</p:column>
+		<p:column headerText="#{label.bakimciSozlesmeBitisTarih}" sortBy="#{firmalar.sozlesmeTarihi}">
+		       <h:outputText value="#{firmalar.sozlesmeTarihi}">
+		<f:convertDateTime pattern="dd.MM.yyyy" locale="tr"/>
+		</h:outputText>
+        
+		</p:column>
+		
+		</p:dataTable>
+			<p:panel id="bakimcifrm">
+		
+		<h:panelGrid columns="2" id="panelfirmakayit" style="width:100%">
+		<p:outputLabel value="#{label.bakimciFirma}" for="slctfirma" style="width:150px"/>
+		<p:selectOneMenu id="slctfirma"  filter="true" value="#{cihazBean.cihazFirma.firmaId}" 
+		requiredMessage="#{label.firma} #{label.seciniz}"
+		 style="width:500px;float:left" panelStyle="width:500px">
+		<f:selectItem itemLabel="#{label.bakimciFirma} #{label.seciniz}" itemValue=""/>
+		<f:selectItems value="#{binaBean.firmaList}" var="firma" itemLabel="#{firma.unvan}" itemValue="#{firma.kod}"/>
+		
+		</p:selectOneMenu>
+		<h:outputText></h:outputText>
+		<h:panelGrid columns="2" cellspacing="2" cellpadding="1">
+		<p:selectBooleanCheckbox value="#{cihazBean.sozlesmeGiris}">
+		<p:ajax process="@this" update="bakimcifrm"></p:ajax>
+		
+		</p:selectBooleanCheckbox>
+		<p:outputLabel value="Sözleşme girişi yapmak istiyorum"/>
+		</h:panelGrid>
+		
+		<p:outputLabel value="#{label.bakimciSozlesmeTarih}" for="firmatarih"  style="width:150px" rendered="#{cihazBean.sozlesmeGiris}"/>
+		<p:calendar id="firmatarih"  value="#{cihazBean.cihazFirma.sozlesmeTarih}"  style="width:250px;float:left" 
+		requiredMessage="#{label.bakimciSozlesmeTarih} giriniz" navigator="true" pattern="dd.MM.yyyy" locale="tr" rendered="#{cihazBean.sozlesmeGiris}">
+		<p:ajax event="dateSelect" process="@this" update="@this" listener="#{cihazBean.firmaSozlesmeTarihListener}" ></p:ajax>
+		
+		</p:calendar>
+		<p:outputLabel value="#{label.bakimciSozlesmeBitisTarih}" for="firmasozlesmebittarih"  style="width:150px" rendered="#{cihazBean.sozlesmeGiris}"/>
+		<p:calendar id="firmasozlesmebittarih"  value="#{cihazBean.cihazFirma.sozlesmeBitisTarih}" style="width:250px;float:left" 
+		 requiredMessage="#{label.bakimciSozlesmeBitisTarih} giriniz" navigator="true" pattern="dd.MM.yyyy" locale="tr" 
+		 rendered="#{cihazBean.sozlesmeGiris}">
+		<p:ajax event="dateSelect" process="@this" update="@this" listener="#{cihazBean.firmaSozlesmeTarihListener}"></p:ajax>
+		
+		</p:calendar>
+		
+		</h:panelGrid>
+		<f:facet name="footer">
+		<p:commandButton value="#{cihazBean.sozlesmeGiris?'Sözleşme Kayıt/Firma Değiştir':'Kontrol Firması Değiştir'}" style="float:right" 
+		process="@this :formbina:tw:tabfirma"  update=":formbina:tw:tabfirma" 
+		icon="ui-icon-disk"  action="#{cihazBean.bakimciFirmaSozlesmeKaydetBasvuruFirmaDegistir}" id="btnbakimcifirmakaydet"></p:commandButton>
+		<p:blockUI blocked="btnbakimcifirmakaydet" trigger="btnbakimcifirmakaydet" block="btnbakimcifirmakaydet">
+		<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+		</p:blockUI>
+			</f:facet>
+		</p:panel>
+    	</ui:composition>

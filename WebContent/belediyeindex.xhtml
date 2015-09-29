@@ -1,0 +1,37 @@
+<ui:composition template="resources/templates/belediyetemplate.xhtml"  
+xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:define name="content">
+<ui:insert>
+<h:form>
+
+<p style="width:80%; padding:20px 30px 0 30px; float:left;font-size: 11px;">
+Makina Mühendisleri Odası, Anayasanın 135. maddesinde tanımlanan 66 ve 85 sayılı KHK ve 7303 sayılı yasa ile değişik 6235 sayılı yasaya göre kurulmuş kamu kurumu niteliğinde bir meslek kuruluşudur. Makina Mühendisleri Odası 1954 yılında kurulan Türk Mühendis Mimar Odaları Birliği‘ne bağlı 23 odadan biri olup, Merkezi ANKARA‘dadır. Türkiye genelinde 18 Şube, 55 İl Temsilciği, 41 İlçe Temsilciliği, 10 Mesleki Denetim Bürosu bulunmaktadır.
+</p>
+<p style="width:80%; padding:20px 30px 0 30px; float:left;font-size: 11px;">
+Asansör Kontrol Merkezi Makina Mühendisleri Odası Ana Yönetmeliğinde yer alan amaçlar doğrultusunda Asansörlerin Uygunluk Değerlendirilmesine ilişkin denetim ve belgelendirme işlerini yapan, tüm çalışanları MMO Ana Yönetmelik ve Yönetmelikleri kapsamında tarafsız olmakla mükellef olan kar amacı gütmeyen bağımsız bir merkezdir. MMO tarafından desteklenen güçlü mali yapısı ile çalışanların ücretleri ve çalışmaları garanti altına alınarak her türlü çıkar çatışmasının ve finansal baskıların önüne geçilmiştir.
+</p>
+
+<h:panelGrid columns="1" style="float:right">
+
+<p:commandLink actionListener="#{indexBean.listener(0)}" oncomplete="PF('sertifika').show()" update="dsertifika" title="">
+<p:graphicImage url="resources/image/62c17754099367a_ek.jpg" width="70px" height="90px" style="border:1px solid #B7AFAF"></p:graphicImage>
+</p:commandLink>
+<p:commandLink actionListener="#{indexBean.listener(1)}" oncomplete="PF('sertifika').show()" update="dsertifika" title="">
+<p:graphicImage url="resources/image/cd4e254ef2f19b4_ek.jpg" width="70px" height="90px" style="border:1px solid #B7AFAF"></p:graphicImage>
+</p:commandLink>
+</h:panelGrid>
+<p:dialog  modal="true" visible="false" width="auto" height="800px" widgetVar="sertifika" id="dsertifika">
+<p:graphicImage value="resources/image/#{indexBean.img}" />
+</p:dialog>
+
+
+</h:form>
+</ui:insert>
+</ui:define>
+</ui:composition>
+

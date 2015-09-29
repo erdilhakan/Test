@@ -1,0 +1,363 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+
+		<title>#{label.raporlar}</title>
+
+		<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+		<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+		<LINK
+			href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+			<style type="text/css">
+	.ui-dialog {padding: .2em; overflow: visible; border: 0 none; -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.75); -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.75); box-shadow: 0 1px 4px rgba(0,0,0,0.75); }
+.ui-dialog .ui-dialog-titlebar { position: relative; background: transparent !important; padding: 0 0 8px 0; margin: 20px 20px 5px 20px; border: solid #e5e5e5; border-width: 0 0 1px 0; -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; }
+.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .1em 0; color: #353536; font-size: 20px !important; } 
+.ui-dialog .ui-dialog-titlebar-close { position: absolute; right: -16px !important; top: -16px !important; margin: 0; width: 30px; height: 30px; background: url("#{resource['primefaces-delta:images/modalClose.png']}") 0 0 no-repeat; border: 0 !important; z-index: 10000; padding: 0px !important;}
+.ui-dialog .ui-dialog-titlebar-close span { display: none !important; }
+.ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
+.ui-dialog .ui-dialog-content { position: relative; border: 0; padding: 15px 20px 20px 20px; background: none; overflow: auto; zoom: 1; }
+.ui-dialog .ui-dialog-buttonpane { text-align: left; border: solid #e5e5e5; border-width: 1px 0 0 0; background: transparent; margin: 20px 20px 10px 20px; padding: 10px 0 0 0; }
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
+.ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
+.ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.ui-draggable .ui-dialog-titlebar { cursor: move; }
+span.fc-event-title{
+width:100%;}
+.fc-event .fc-event-inner,.fc-event-inner{
+	z-index:-1;
+	margin-top:0px;
+width:100%;
+height: 100px;
+
+}
+ .edit{
+    background: #FFFF99;
+      font-family: comic sans MS;
+      font-weight: bold;
+      font-size: 1.2em;
+       
+      }
+     
+
+.fc-event-title,.fc-event-time,.fc-event-inner{
+	color:#fff;
+	font-size:12px;
+	width:100%;
+	font-family: comic sans MS;
+}
+
+.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin: -1px 0 0 0 !important; }
+.ui-datepicker th { padding: .7em 0; text-align: center; font-weight: bold; border: 0; font-size: 10px; color: #acacac; border-bottom: 1px solid #cdcdcd !important; }
+.ui-datepicker td { border: 0; padding: 0 !important; border: 1px solid #cdcdcd; }
+.ui-datepicker td a { display: block; padding: 0 !important; border: 0 none !important;/*border: 1px solid #cdcdcd !important;*/ 
+line-height: 20px; text-align: center !important; font-size: 10px; text-decoration: none; font-weight: bold !important; }
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active{
+	background:#6986c9;
+	font-weight: bold;
+	
+}
+
+</style>
+
+	</h:head>
+	<h:form id="formrapor">
+		<p:growl id="warn" autoUpdate="true" showDetail="false" />
+		<p:dialog widgetVar="gi" visible="false" modal="true" closable="false"
+			style="border:none;">
+			<p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+		</p:dialog>
+
+		<h:panelGrid columns="2" style="width:100%" rendered="#{raporBean.raporTeslimGoster}">
+			<h:panelGrid columns="4" style="float:left">
+				<p:autoComplete value="#{binaBean.binalar}" var="bina" size="57"
+					converter="binalar" id="binacomplete" panelStyle="width:600px;"
+					cache="true" cacheTimeout="3000" scrollHeight="600"
+					placeholder="Bina Adının ilk üç harfini girerek arama yapabilirsiniz"
+					completeMethod="#{binaBean.searchBina}" forceSelection="true"
+					minQueryLength="3" queryDelay="300" itemValue="#{bina}"
+					itemLabel="#{bina.binaAdi}">
+
+					<p:column headerText="#{label.adi}">
+						#{bina.binaAdi}
+					</p:column>
+					<p:column headerText="#{label.binaId}">
+						#{bina.binaId}
+					</p:column>
+					<p:column headerText="#{label.tescilNo}">
+						#{bina.tescilNo}
+					</p:column>
+
+					<p:column headerText="#{label.binaNo}">
+						#{bina.binaNo}
+					</p:column>
+
+
+					<p:column headerText="#{label.mahalle}">
+						#{bina.mahalle}
+					</p:column>
+					<p:column headerText="#{label.caddesokak}">
+						#{bina.caddeSokak}
+					</p:column>
+
+					<p:column headerText="#{label.il}/#{label.ilce}">
+						#{bina.ilAdi}/#{bina.ilceAdi}
+					</p:column>
+					<p:column headerText="#{label.adres}">
+						#{bina.acikAdres}
+					</p:column>
+
+
+
+				</p:autoComplete>
+				<p:commandButton icon="ui-icon-search" id="binacompletesearch"
+					style="margin-left:-25px;z-index:1;width:20px;height:20px;border-radius:5px;
+				-moz-border-radius:5px;-webkit-border-radius:5px;"
+					actionListener="#{raporBean.raporListener}"
+					process="@this binacomplete" update=":formrapor"></p:commandButton>
+
+				<p:watermark value="#{label.binacomplete}" for="binacomplete" />
+
+				<p:selectBooleanCheckbox value="#{binaBean.searchType}">
+					<p:ajax event="change" listener="#{binaBean.searchTypeListener}"
+						process="@this" update="binacomplete" />
+				</p:selectBooleanCheckbox>
+
+			</h:panelGrid>
+			<h:panelGrid columns="3" style="float:right">
+				<p:outputLabel value="#{label.binaId}" styleClass="label"
+					for="binaid"></p:outputLabel>
+				<p:inputText id="binaid" value="#{raporBean.binaId}" required="true"
+					requiredMessage="#{label.binaId} #{label.giriniz}" />
+				<p:commandButton icon="ui-icon-search" value="#{label.getir}"
+					id="binaidbtn" action="#{raporBean.raporBulById}"
+					update=":formrapor" process="@this binaid">
+
+				</p:commandButton>
+			</h:panelGrid>
+		</h:panelGrid>
+
+		<p:blockUI block="formrapor" trigger="binaidbtn binacompletesearch">
+			<p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+		</p:blockUI>
+		<br />
+
+
+	
+		<p:dataTable id="tblx010x" var="raporlar"
+			value="#{raporBean.raporTeslimModel}"
+			emptyMessage="#{label.emptyList}" rows="10"
+			rendered="#{!empty raporBean.raporTeslimList}"
+			selection="#{raporBean.slctRaporlarTeslim}" paginator="true"
+			filteredValue="#{raporBean.filteredRaporlarTeslim}"
+			paginatorPosition="bottom">
+			<p:ajax event="rowSelect" update="tblx010x"></p:ajax>
+			<p:ajax event="rowSelectCheckbox" update="tblx010x"></p:ajax>
+			<p:ajax event="rowUnselect" update="tblx010x"></p:ajax>
+			<p:ajax event="rowUnselectCheckbox" update="tblx010x"></p:ajax>
+			<p:ajax event="toggleSelect" update="tblx010x"></p:ajax>
+
+			<p:column selectionMode="multiple"
+				style="width:16px;text-align:center" />
+			<p:column headerText="#{label.binaAdi}" sortBy="binaAdi"
+				filterBy="binaAdi">
+         #{raporlar.binaAdi}  
+        </p:column>
+        
+        <p:column headerText="#{label.asansorunyeri}" sortBy="asansorunYeri"
+				filterBy="asansorunYeri">
+         #{raporlar.asansorunYeri}  
+        </p:column>
+        
+			<p:column headerText="#{label.adi}" style="text-align:left">
+       	    #{raporlar.dosyaAdi}  
+        </p:column>
+        
+        <p:column headerText="#{label.uavtAsansorEtiket}" style="text-align:left"
+				sortBy="asansorUavtEtiket">
+				<h:outputText value="#{raporlar.asansorUavtEtiket}"></h:outputText>
+			</p:column>
+        
+			<p:column headerText="#{label.onayDurumu}" style="text-align:left"
+				sortBy="onayDurumu">
+				<h:outputText value="#{raporlar.onayDurumu}"></h:outputText>
+			</p:column>
+			<p:column headerText="#{label.raportarih}" style="text-align:left"
+				sortBy="raporTarih">
+				<h:outputText value="#{raporlar.raporTarih}">
+					<f:convertDateTime pattern="dd.MM.yyyy" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{label.onaytarih}" style="text-align:left"
+				sortBy="onayTarihi">
+				<h:outputText value="#{raporlar.onayTarihi}">
+					<f:convertDateTime pattern="dd.MM.yyyy" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{label.etiket}" style="text-align:left">
+				<p:graphicImage
+					value="${pageContext.request.contexPath}/resources/image/etiketsari.png"
+					rendered="#{raporlar.etiket eq 'S'}">
+					<h:outputText value="#{raporlar.etiket}" rendered="false"></h:outputText>
+				</p:graphicImage>
+				<p:graphicImage
+					value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"
+					rendered="#{raporlar.etiket eq 'Y'}">
+					<h:outputText value="#{raporlar.etiket}" rendered="false" />
+				</p:graphicImage>
+				<p:graphicImage
+					value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"
+					rendered="#{raporlar.etiket eq 'M'}">
+					<h:outputText value="#{raporlar.etiket}" rendered="false" />
+				</p:graphicImage>
+				<p:graphicImage
+					value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"
+					rendered="#{raporlar.etiket eq 'K'}">
+					<h:outputText value="#{raporlar.etiket}" rendered="false" />
+				</p:graphicImage>
+
+			</p:column>
+			<p:column headerText="#{label.kontrolBitisTarihi}">
+				<h:outputText value="#{raporlar.kontrolTarihi}">
+					<f:convertDateTime locale="tr" pattern="dd.MM.yyyy"></f:convertDateTime>
+				</h:outputText>
+			</p:column>
+			<p:column style="width:2%">
+				<p:commandButton icon="ui-icon-folder-open" title="#{label.ac}"
+					actionListener="#{raporBean.listenerOnay(raporlar)}"
+					process="@this" update="@form" onstart="PF('yukleniyor').show()"
+					onsuccess="PF('yukleniyor').hide()"
+					oncomplete="PF('yukleniyor').hide()">
+
+				</p:commandButton>
+
+				<!-- oncomplete="PF('onaydialograpor').show()" -->
+				<br />
+				<p:commandButton icon="ui-icon-comment" title="#{label.raporteslim}"
+					actionListener="#{raporBean.raporTeslimListener(raporlar)}"
+					oncomplete="PF('dialog').show()" process="@this"
+					update=":formrapor:dialog"></p:commandButton>
+			</p:column>
+			<f:facet name="footer">
+				<p:commandButton id="raporgor" icon="ui-icon-search"
+					value="#{label.raporal}"
+					actionListener="#{raporBean.openSelectedTeslim}"
+					rendered="#{!empty raporBean.slctRaporlarTeslim}" process="@this"
+					update="@form">
+				<p:confirm header="Rapor Al" message="UYARI ! OBYS DÖNEMİ RAPORLAR TOPLU OLARAK AÇILMAZ !" icon="ui-icon-notice" />  	
+					
+					
+						
+       
+			</p:commandButton>
+			
+				<p:commandButton id="secilenraporteslim" icon="ui-icon-comment"
+					value="#{label.secilenRaporTeslim}"
+					actionListener="#{raporBean.selectedRaporTeslimListener}"
+					rendered="#{!empty raporBean.slctRaporlarTeslim}"  process="@this"
+					update=":formrapor:dialog">
+				
+					
+					
+						
+       
+			</p:commandButton>
+			
+
+          </f:facet>
+  
+		
+		</p:dataTable>
+		<h:panelGroup  rendered="#{!raporBean.raporTeslimGoster}">
+		<h1>SON 1 AY İÇERİSİNDE OLUŞTURULAN VE TESLİM EDİLMEYEN ONAYLI RAPORLAR LİSTELENMİŞTİR</h1>
+		</h:panelGroup>
+		 <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">  
+        <p:commandButton value="Devam" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+        <p:commandButton value="İptal" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+    </p:confirmDialog>
+		<p:dialog id="yukleniyor" widgetVar="yukleniyor" visible="false"
+			closable="false" modal="true">
+			<p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/yukleniyor.gif" />
+		</p:dialog>
+		<p:dialog widgetVar="dialog" id="dialog" visible="false"
+			header="#{label.raporteslimbilgileri}">
+			<p:panel>
+				<p:messages id="msg" autoUpdate="false" showDetail="false" />
+				<h:panelGrid columns="2" id="teslimgr">
+					<p:outputLabel value="#{label.adSoyad}" styleClass="label"
+						for="adsoyad" />
+					<p:inputText id="adsoyad"
+						value="#{raporBean.slctRapor.teslimEdilenKisi}" required="true"
+						requiredMessage="#{label.adSoyad} #{label.giriniz}"
+						style="color: #6986c9;	width: 80%;	height: 20px;	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" />
+					<p:outputLabel value="#{label.tckimlikno}" styleClass="label"
+						for="txtTCKimlikNo" />
+
+					<p:inputMask mask="99999999999" id="txtTCKimlikNo"
+						value="#{raporBean.slctRapor.tcKimlikNo}"
+						style="color: #6986c9;		height: 20px;	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+						<f:validator validatorId="validators.tcKimlikValidator"></f:validator>
+						<f:ajax render="msg" event="blur"></f:ajax>
+					</p:inputMask>
+					<p:outputLabel value="#{label.telno}" styleClass="label"
+						for="iletisimtel" />
+					<p:inputMask mask="(999)9999999" id="iletisimtel"
+						style="color: #6986c9;		height: 20px;	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"
+						value="#{raporBean.slctRapor.telefonNoStr}">
+
+						<f:validator validatorId="validators.TelefonValidator" />
+						<f:ajax event="blur" />
+					</p:inputMask>
+					<p:outputLabel value="#{label.teslimtarihi}" styleClass="label"
+						for="teslimtarihi" />
+
+					<p:calendar id="teslimtarihi" pattern="dd.MM.yyyy" locale="tr"
+						navigator="true" value="#{raporBean.slctRapor.teslimTarihi}"
+						style="color: #6986c9;		height: 20px;	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;   
+				     border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"
+						required="true"
+						requiredMessage="#{label.teslimtarihi} #{label.giriniz}">
+
+					</p:calendar>
+					<p:outputLabel value="#{label.aciklama}" styleClass="label" />
+					<p:inputTextarea id="aciklama" style="width:500px;height:100px;"
+						cols="400" rows="6" value="#{raporBean.slctRapor.aciklama}">
+
+					</p:inputTextarea>
+					<h:outputText />
+
+					<p:commandButton icon="ui-icon-disk" style="float:right"
+						value="#{label.kaydet}" id="btnKaydet" update="msg"
+						process="@form" action="#{raporBean.raporTeslimKaydet}">
+
+					</p:commandButton>
+
+				</h:panelGrid>
+				<p:blockUI trigger="btnKaydet" block="teslimgr" id="bui">
+					<p:graphicImage
+						value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+				</p:blockUI>
+
+			</p:panel>
+
+		</p:dialog>
+
+
+
+
+	</h:form>
+
+
+
+</ui:composition>

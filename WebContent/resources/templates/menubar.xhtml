@@ -1,0 +1,39 @@
+ <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title></title>
+	
+		
+	<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+
+
+</h:head>
+
+	
+ <h:messages id="messages"></h:messages>
+ <h:form>
+            
+ <p:menubar styleClass="mainNavLink" style="border:none">  
+        <p:menuitem  url="http://www.mmo.org.tr" icon="ui-icon-home" />  
+        <f:facet name="options">  
+          
+            <h:panelGrid columns="2">
+              <p:themeSwitcher value="#{guestPreferences.theme}"  effect="fade" id="statefulSwitcher">  
+              <f:selectItems value="#{themeSwitcherBean.themes}" />
+            <p:ajax listener="#{themeSwitcherBean.saveTheme}" />  
+        </p:themeSwitcher>  
+             <p:commandButton type="button"  icon="ui-icon-power" style="margin-top:0px;" title="Güvenli Çıkış"/>
+            </h:panelGrid>
+        </f:facet>
+         
+           
+         
+    </p:menubar>  
+    
+    </h:form>
+    </ui:composition>

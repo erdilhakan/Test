@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+
+	<title></title>
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+.ui-datatable table td{
+color:#4C538D;
+border-color: #4C538D;
+}
+.ui-datatable table{
+color:#4C538D;
+border-color: #4C538D;
+}
+</style>
+</h:head>
+<h:form id="formraporara">
+<p:growl id="growl"  showDetail="false" autoUpdate="true"/>
+<ui:include src="/resources/templates/raporlararama_.xhtml"/>
+<p:panel id="panelbutton">
+<p:commandButton id="btngetir" value="#{label.getir}" icon="ui-icon-search" process="@this :formraporara:apanel" 
+actionListener="#{information.denetciBazliKontroller}" 
+update="@form" style="float:right" rendered="#{!empty information.selectedSube}"></p:commandButton>
+<p:blockUI trigger="btngetir" block="btngetir">
+      <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+     </p:blockUI> 
+</p:panel>
+     
+
+<br/>
+<br/>
+<p:panel legend="Kontroller" toggleable="true" visible="#{!empty information.denetciKontrolList}" id="panelistatistik" header="DENETÇİLERE GÖRE KONTROL SAYISI DAĞILIMI">
+<p:dataTable id="denetcikontroltable" widgetVar="denetcikontroltable" emptyMessage="#{label.emptyList}" paginator="true" paginatorPosition="bottom" rows="40"
+ value="#{information.denetciKontrolData}" var="list" filteredValue="#{information.filteredDenetciKontrol}" selection="single" sortBy="#{list.muhendisSicilNo}">
+
+<p:column  sortBy="#{list.muhendisSicilNo}">
+<f:facet name="header"><h:outputText value="#{label.sicilNo}"/> </f:facet>
+<h:outputText value="#{list.muhendisSicilNo}"/>
+
+</p:column>
+<p:column  filterBy="#{list.muhendisAdiSoyadi}" sortBy="#{list.muhendisAdiSoyadi}">
+<f:facet name="header"><h:outputText value="#{label.adSoyad}"/> </f:facet>
+<h:outputText value="#{list.muhendisAdiSoyadi}"/>
+
+</p:column>
+<p:column sortBy="#{list.elektrikliKontrolAdet}" style="text-align:right">
+<f:facet name="header"><h:outputText value="#{label.elektrikliKontrolAdet}"/> </f:facet>
+<h:outputText value="#{list.elektrikliKontrolAdet}" style="text-align:right">
+<f:convertNumber pattern="###,###,###"/>
+</h:outputText>
+
+</p:column>
+<p:column  sortBy="#{list.hidrolikKontrolAdet}" style="text-align:right">
+<f:facet name="header"><h:outputText value="#{label.hidrolikKontrolAdet}"/> </f:facet>
+<h:outputText value="#{list.hidrolikKontrolAdet}">
+<f:convertNumber pattern="###,###,###"/>
+</h:outputText>
+</p:column>
+<p:column  sortBy="#{list.toplam}" style="text-align:right">
+<f:facet name="header"><h:outputText value="#{label.toplam}"/> </f:facet>
+<h:outputText value="#{list.toplam}" style="text-align:right">
+<f:convertNumber pattern="###,###,###"/>
+</h:outputText>
+</p:column>
+
+</p:dataTable>
+<h:panelGrid columns="2">
+<h:commandLink>
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/xls.jpg" width="25" height="25"/>  
+          
+
+        <p:dataExporter type="xls" target="denetcikontroltable" fileName="denetcileregorekontrolsayisidagilimi" pageOnly="false" encoding="ISO-8859-9" />
+    </h:commandLink>
+    <h:commandLink>
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/pdf.png" width="25" height="25"/>  
+          
+
+        <p:dataExporter type="pdf" target="denetcikontroltable" fileName="denetcileregorekontrolsayisidagilimi" pageOnly="false" encoding="ISO-8859-9" />
+    </h:commandLink>
+    </h:panelGrid>
+</p:panel>
+ 
+    </h:form>      
+        
+           
+               </ui:composition>

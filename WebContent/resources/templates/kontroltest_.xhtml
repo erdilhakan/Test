@@ -1,0 +1,1045 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+	
+		<title>#{label.kontrolTest}</title>
+
+		<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+		<LINK
+			href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+		<LINK
+			href="${facesContext.externalContext.requestContextPath}/resources/css/style.css"
+			rel="stylesheet" type="text/css" />
+
+		<style type="text/css">
+
+.ui-inputfield,.ui-content .ui-inputfield,.ui-widget-header .ui-inputfield
+	{
+	color: #6986c9;
+	height: 20px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 1px solid #999fd9;
+	webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+.check {
+	border: none;
+}
+
+.aciklama {
+	font-weight: bold;
+	font-size: 11px;
+	font-family: comic sans MS;
+}
+
+.aciklama:HOVER {
+	font-weight: bold;
+	font-size: 12px;
+	font-family: comic sans MS;
+}
+
+.ui-dialog {
+	padding: .2em;
+	overflow: visible;
+	border: 0 none;
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	background: transparent !important;
+	padding: 0 0 8px 0;
+	margin: 20px 20px 5px 20px;
+	border: solid #e5e5e5;
+	border-width: 0 0 1px 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+
+.ui-dialog .ui-dialog-title {
+	float: left;
+	margin: .1em 16px .1em 0;
+	color: #353536;
+	font-size: 20px !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+	right: -16px !important;
+	top: -16px !important;
+	margin: 0;
+	width: 30px;
+	height: 30px;
+	background: url("#{resource['primefaces-delta:images/modalClose.png']}")
+		0 0 no-repeat;
+	border: 0 !important;
+	z-index: 10000;
+	padding: 0px !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close span {
+	display: none !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover,.ui-dialog .ui-dialog-titlebar-close:focus
+	{
+	padding: 0;
+}
+
+.ui-dialog .ui-dialog-content {
+	border: 0;
+	padding: 15px 20px 20px 20px;
+	background: none;
+	overflow: auto;
+	zoom: 1;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+	text-align: left;
+	border: solid #e5e5e5;
+	border-width: 1px 0 0 0;
+	background: transparent;
+	margin: 20px 20px 10px 20px;
+	padding: 10px 0 0 0;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+	float: right;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+	margin: .5em .4em .5em 0;
+	cursor: pointer;
+}
+
+.ui-dialog .ui-resizable-se {
+	width: 14px;
+	height: 14px;
+	right: 3px;
+	bottom: 3px;
+}
+
+.ui-draggable .ui-dialog-titlebar {
+	cursor: move;
+}
+</style>
+
+	</h:head>
+	<h:form id="formbina">
+
+		<p:growl id="warn" autoUpdate="true" />
+		<p:dialog widgetVar="gi" visible="false" modal="true" closable="false"
+			style="border:none;">
+			<p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+		</p:dialog>
+		
+
+
+
+		<p:blockUI trigger="getir" block="@form">
+			<p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+		</p:blockUI>
+		<h:panelGrid columns="2" style="width:100%;background:#F0F0F0 ;opacity:0.90;vertical-align:text-top;"  id="gridlb">
+		
+	<h:panelGrid columns="3" cellpadding="3" style="float:left;">
+				<p:outputLabel value="#{label.randevuId}" styleClass="label"
+					   for="randevuid" />
+			<p:inputText id="randevuid" value="#{binaBean.randevuStr}"
+				required="true"
+				requiredMessage="#{label.randevuId} #{label.giriniz}" />
+
+			<p:commandButton value="#{label.getir}" icon="ui-icon-search"
+				action="#{binaBean.binaGetirByRandevuId}" update="@form"
+				process="@this randevuid" id="getir" />
+
+
+	</h:panelGrid>
+	<h:panelGrid columns="2" style="width:100%">
+			<p:lightBox id="randevular" style="float:right" rendered="#{binaBean.randevuId gt 0 or binaBean.binaDTO.binaId gt 0}" widgetVar="randevular">
+    <p:graphicImage value="${pageContext.request.contextPath}/resources/image/phone.png" width="30" height="27" title="#{binaBean.binaDTO.binaAdi} #{label.randevular}"
+    style="cursor:pointer;background-color:red" />  
+	  <f:facet name="inline">
+	  <p:panel header="#{binaBean.binaDTO.binaAdi}" style="width:400px">
+			<p:dataTable value="#{binaBean.randevuListeModel}" var="randevular" 
+				paginator="true" paginatorPosition="bottom" rows="10" rendered="#{binaBean.binaDTO.binaId gt 0}"
+				emptyMessage="#{label.emptyList}" filteredValue="#{binaBean.filteredRandevuList}"
+				selection="#{binaBean.randevuListe}" id="tbl">
+				
+				<p:ajax event="rowSelect"
+					listener="#{soruTableBean.randevuSelectListener}" update="@form" oncomplete="PF('randevular').hide()"
+					process="tbl"></p:ajax>
+				<p:ajax event="rowSelectRadio"
+					listener="#{soruTableBean.randevuSelectListener}" update="@form" oncomplete="PF('randevular').hide()"
+					process="tbl"></p:ajax>
+
+				<p:column selectionMode="single" style="text-align:center" />
+	
+	<p:column headerText="#{label.randevuId}">
+	#{randevular.randevuId}
+	</p:column>
+				<p:column headerText="#{label.randevuTarihi}" sortBy="#{randevular.randevuTarihi}" filterBy="#{randevular.randevuTarihi}" filterMatchMode="contains">
+				<h:outputText value="#{randevular.randevuTarihi}">
+				<f:convertDateTime pattern="dd.MM.yyyy" locale="tr"></f:convertDateTime>
+				</h:outputText>
+	
+	</p:column>
+	
+	
+	
+			</p:dataTable>
+			</p:panel>
+		</f:facet>
+		</p:lightBox>
+	
+ <p:lightBox iframe="true" id="lbbinaara" widgetVar="lbbinaara" iframeTitle="BİNA DEĞİŞTİR">
+    <h:outputLink value="${pageContext.request.contextPath}/Asansor/kontrolbinaara.jsf" title="BİNA ARA">
+     
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/home.png" width="30" height="27" title="#{label.binaara}" style="cursor:pointer;float:right">
+      </p:graphicImage>
+    </h:outputLink>
+</p:lightBox>
+ 
+  
+
+</h:panelGrid>
+	
+		</h:panelGrid>
+
+
+
+
+
+		
+					
+
+
+
+		
+		
+		<p:fieldset id="panelkontrol" widgetVar="panelkontrol"
+			rendered="#{!empty soruTableBean.cihazlar}"
+			legend="#{binaBean.binaDTO.binaAdi}" toggleable="true">
+					<p:blockUI block="tw" trigger="tw">
+			<p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+		</p:blockUI>
+			
+			<p:tabView activeIndex="0" id="tw">
+			<p:ajax update="@form" process="@this" listener="#{soruTableBean.tabChangeListener}" event="tabChange"></p:ajax>
+				<p:tab title="Kontrol Edilen Cihazlar" id="tab01">
+				<p:blockUI block="tblx0102" trigger="tblx0102">
+			<p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/yukleniyor.gif" />
+		</p:blockUI>
+				<p:dataTable id="tblx0102" var="cihazlar"
+					value="#{soruTableBean.cihazList}"
+					emptyMessage="#{label.emptyList}" paginator="true"
+					paginatorPosition="bottom" rows="3"
+					rendered="#{!empty soruTableBean.cihazlar}"
+					selection="#{soruTableBean.secilen}">
+
+				
+					<p:ajax event="rowSelectRadio" 
+						listener="#{soruTableBean.onRowSelect}"
+						update="@form">
+					
+			
+		
+						</p:ajax>
+					<p:column selectionMode="single" style="width:2%;text-align:center">	
+						<f:facet name="header">
+							<p:commandButton icon="ui-icon-circle-close" title="İptal"
+								actionListener="#{soruTableBean.onRowUnSelect}" process="@this"
+								update=":formbina" rendered="#{soruTableBean.secilen.cihazId gt 0}"></p:commandButton>
+						</f:facet>
+					</p:column>
+
+					<p:column headerText="#{label.asansorkimlikno}"
+						style="text-align:left">
+       	    #{cihazlar.kimlikNo}  
+        </p:column>
+					<p:column headerText="#{label.asansorunyeri}"
+						style="text-align:left">
+  			#{cihazlar.asansorunYeri}
+  		</p:column>
+					<p:column headerText="#{label.tip}" style="text-align:left"> 
+            #{cihazlar.tipAciklama}  
+        </p:column>
+					<p:column headerText="#{label.etiket}" style="text-align:left">
+						<p:graphicImage
+							value="${pageContext.request.contexPath}/resources/image/etiketsari.png"
+							rendered="#{cihazlar.sonKontrolEtiketi eq 'S'}"
+							title="Son Kontrol Etiketi">
+							<h:outputText value="#{cihazlar.sonKontrolEtiketi}"
+								rendered="false"></h:outputText>
+						</p:graphicImage>
+						<p:graphicImage
+							value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"
+							rendered="#{cihazlar.sonKontrolEtiketi eq 'Y'}"
+							title="Son Kontrol Etiketi">
+							<h:outputText value="#{cihazlar.sonKontrolEtiketi}"
+								rendered="false" />
+						</p:graphicImage>
+						<p:graphicImage
+							value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"
+							rendered="#{cihazlar.sonKontrolEtiketi eq 'M'}"
+							title="Son Kontrol Etiketi">
+							<h:outputText value="#{cihazlar.sonKontrolEtiketi}"
+								rendered="false" />
+						</p:graphicImage>
+						<p:graphicImage
+							value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"
+							rendered="#{cihazlar.sonKontrolEtiketi eq 'K'}"
+							title="Son Kontrol Etiketi">
+							<h:outputText value="#{cihazlar.sonKontrolEtiketi}"
+								rendered="false" />
+						</p:graphicImage>
+
+					</p:column>
+					<p:column headerText="#{label.sonKontrolTarihi}">
+						<h:outputText value="#{cihazlar.sonKontrolTarihi}">
+							<f:convertDateTime locale="tr" pattern="dd.MM.yyyy"></f:convertDateTime>
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="#{label.kontroltarihi}"
+						style="text-align:left;font-weight:bold">
+						<h:outputText value="#{cihazlar.kontrolTarihi}"
+							title="Bu randevuya ait kontrol tarihi">
+							<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+						</h:outputText>
+					</p:column>
+					<f:facet name="footer">
+
+					</f:facet>
+				</p:dataTable>
+				</p:tab>
+				<p:tab title="Asansör Teknik Özellikleri" id="tab02" rendered="#{soruTableBean.secilen.cihazId gt 0}">
+				<p:dataGrid var="cihaz" value="#{cihazBean.cihazTeknik}" emptyMessage="#{label.emptyList}"
+				paginator="false" id="cihazteknik" columns="2">
+				<f:facet name="header">
+
+					<h:outputLabel value="#{cihazBean.header}" styleClass="label" />
+				</f:facet>
+
+				<table>
+
+
+					<tr style="width: 100%">
+						<td style="width: 150px">
+								<p:outputLabel
+								value="#{cihaz.baslik}" styleClass="label"
+								rendered="#{!cihaz.zorunluAlan and cihaz.baslik ne 'KAPASİTE(KİŞİ)'}" /> <p:outputLabel
+								value="#{cihaz.baslik} *" styleClass="label"
+								rendered="#{cihaz.zorunluAlan}" style="color:#FF0033" />
+								<p:outputLabel id="kapasitelabel1" 
+value="#{cihaz.baslik}" styleClass="label" rendered="#{!cihaz.zorunluAlan and cihaz.baslik eq 'KAPASİTE(KİŞİ)' and !cihazBean.kapasiteKisi}"/>
+<p:outputLabel 
+id="kapasitelabel2"
+value="#{cihaz.baslik} *" styleClass="label" rendered="#{!cihaz.zorunluAlan and cihaz.baslik eq 'KAPASİTE(KİŞİ)' and cihazBean.kapasiteKisi}" style="color:#FF0033"/>
+								</td>
+						<td />
+						<td style="width: 210px"><p:inputText
+								rendered="#{cihaz.tipi eq 'metin'}"
+								value="#{cihaz.cevap}"
+								style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+								<p:ajax process="@this" update="@this"></p:ajax>
+								</p:inputText>
+							<p:inputText type="number"
+								rendered="#{cihaz.tipi eq 'sayi' and cihaz.baslik ne 'RUHSAT/TESCİL TARİHİ'}"
+								value="#{cihaz.cevap}"
+								style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+								<p:ajax listener="#{cihazBean.numberListener}" process="@this" update="@this"></p:ajax>
+								</p:inputText>
+								<p:inputMask mask="99.99.9999"  rendered="#{cihaz.tipi eq 'sayi' and !cihaz.zorunluAlan and cihaz.baslik eq 'RUHSAT/TESCİL TARİHİ'}" value="#{cihaz.cevap}"
+								style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;
+								-moz-box-shadow: none;box-shadow: none;"  id="ruhsattesciltarihi"/>
+							<p:selectOneMenu
+								rendered="#{cihaz.tipi eq 'coklu' and cihaz.baslik ne 'HIZ(M/S)' and cihaz.baslik ne 'HIZI(M/S)' and cihaz.baslik ne 'KAPASİTE(KİŞİ)' and cihaz.baslik ne 'ASANSÖRÜN CİNSİ' and cihaz.baslik ne 'ÖZEL ASANSÖR ŞARTLAR'}"
+								value="#{cihaz.cevap}" id="data"
+								style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+								<f:selectItem itemLabel="Seçiniz" itemValue="" />
+								<f:selectItems value="#{cihaz.item}" />
+								<p:ajax process="@this" update="@this"></p:ajax>
+							</p:selectOneMenu> 
+								<p:selectOneMenu
+								rendered="#{cihaz.tipi eq 'coklu' and cihaz.baslik eq 'KAPASİTE(KİŞİ)'}"
+								value="#{cihaz.cevap}" id="kapasitekisi"
+								required="#{cihazBean.kapasiteKisi}"  requiredMessage="#{cihaz.baslik} #{label.giriniz}"
+								style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+								<f:selectItem itemLabel="Seçiniz" itemValue="" />
+								<f:selectItems value="#{cihaz.item}" />
+								<p:ajax process="@this" update="@this"></p:ajax>
+							</p:selectOneMenu> 
+							<p:selectOneMenu   rendered="#{cihaz.tipi eq 'coklu' and (cihaz.baslik eq 'ASANSÖRÜN CİNSİ')}" value="#{cihaz.cevap}" id="asansorcinsi"  required="true" requiredMessage="#{cihaz.baslik} #{label.giriniz}"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<f:selectItem itemLabel="Seçiniz" itemValue=""/>
+<f:selectItems value="#{cihaz.item}"/>
+<p:ajax process="@this" update="cihazteknik" listener="#{cihazBean.asansorCinsiListener}"></p:ajax>
+</p:selectOneMenu> 
+							<h:panelGrid columns="2" rendered="#{cihaz.tipi eq 'coklu' and (cihaz.baslik eq 'HIZ(M/S)' or cihaz.baslik eq 'HIZI(M/S)')}" >
+<p:selectOneMenu     value="#{cihaz.cevap}" id="hiz"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<f:selectItem itemLabel="Seçiniz" itemValue=""/>
+<f:selectItems value="#{cihaz.item}"/>
+<p:ajax listener="#{cihazBean.hizListener}" process="@this" update="@this diger"></p:ajax>
+</p:selectOneMenu>
+<h:panelGrid columns="1" id="diger" rendered="#{cihaz.baslik eq 'HIZ(M/S)' or cihaz.baslik eq 'HIZI(M/S)'}">
+<p:inputText type="number" rendered="#{cihazBean.hizDiger}" value="#{cihaz.cevap}" style="width:3em">
+<p:ajax listener="#{cihazBean.numberListener}" process="@this" update="@this"></p:ajax>
+</p:inputText> 
+</h:panelGrid>
+</h:panelGrid>
+<p:selectManyMenu   rendered="#{cihaz.tipi eq 'coklu' and cihaz.baslik eq 'ÖZEL ASANSÖR ŞARTLAR'}" value="#{cihaz.ozelAsansorSartlar}" id="ozelasansorsartlar"  
+showCheckbox="true"
+style="color: #6986c9;width: 350px;border-radius: 5px;-webkit-border-radius: 5px;
+-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;height:100px">
+
+<f:selectItems value="#{cihaz.item}"/>
+
+</p:selectManyMenu>
+</td>
+					</tr>
+				</table>
+
+			</p:dataGrid>
+		<p:blockUI block="kaydet" trigger="kaydet">
+			<p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+		</p:blockUI>
+			<p:commandButton id="kaydet" value="#{label.kaydet}"
+				icon="ui-icon-disk" actionListener="#{cihazBean.asansorGuncelle}"
+				update="@form" style="float:right" process="tab02"
+				>
+			</p:commandButton>
+				</p:tab>
+				<p:tab title="Bakımcı Firma" id="tabfirma" rendered="#{soruTableBean.secilen.cihazId gt 0}">
+		
+
+				<h:panelGrid columns="2" style="width:100%">
+				<p:outputLabel styleClass="label"  value="KONTROL FİRMASI :" style="color:#000;font-size:1.2em"  />		
+				
+				
+				<p:outputLabel styleClass="label" id="bakimcifirmaadi" value="#{soruTableBean.kontrolDTO.firma.unvan}" style="color:#000;font-size:1.2em" />			
+				
+				<p:outputLabel styleClass="label" for="firmakontrolekatildi" value="#{label.firmakontrolekatildi}*" />
+				
+				<p:selectBooleanCheckbox value="#{soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaKontroleKatildi}" id="firmakontrolekatildi">
+				<p:ajax listener="#{soruTableBean.firmaKontroleKatildiListener}" update="@this firmapersonel1 firmapersonel1label firmapersonel2 firmapersonel3 firmapersonel1gorev firmapersonel2gorev firmapersonel3gorev"></p:ajax>
+				</p:selectBooleanCheckbox>	
+				
+				<p:outputLabel styleClass="label" for="firmapersonel1" value="#{label.firmapersonel1}*" id="firmapersonel1label"/>
+				<h:panelGrid columns="2">
+				<p:inputText id="firmapersonel1"
+				 disabled="#{!soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaKontroleKatildi}"
+				value="#{soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaGorevli1}" style="width:30em"></p:inputText>
+				<p:inputText id="firmapersonel1gorev"
+				 disabled="#{!soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaKontroleKatildi}"
+				value="#{soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaGorevli1Gorev}" style="width:20em" placeholder="Görevi"></p:inputText>
+				</h:panelGrid>
+				
+				<p:outputLabel styleClass="label" for="firmapersonel2" value="#{label.firmapersonel2}"/>
+				<h:panelGrid columns="2">
+				<p:inputText id="firmapersonel2"  disabled="#{!soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaKontroleKatildi}"
+				value="#{soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaGorevli2}" style="width:30em"></p:inputText>
+				<p:inputText id="firmapersonel2gorev"
+				 disabled="#{!soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaKontroleKatildi}"
+				value="#{soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaGorevli2Gorev}" style="width:20em" placeholder="Görevi"></p:inputText>
+				</h:panelGrid>
+				
+				<p:outputLabel styleClass="label" for="firmapersonel3" value="#{label.firmapersonel3}"/>
+				<h:panelGrid columns="2">
+				<p:inputText id="firmapersonel3"  disabled="#{!soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaKontroleKatildi}"
+				value="#{soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaGorevli3}" style="width:30em"></p:inputText>
+				<p:inputText id="firmapersonel3gorev"
+				 disabled="#{!soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaKontroleKatildi}"
+				value="#{soruTableBean.kontrolDTO.kontrolFirmaKatilimDTO.firmaGorevli3Gorev}" style="width:20em" placeholder="Görevi"></p:inputText>
+				</h:panelGrid>
+				</h:panelGrid>
+						<br/>
+<p:selectBooleanButton onIcon="ui-icon-wrench" offIcon="ui-icon-wrench" iconPos="top" onLabel="Bakım Firması Değiştir" offLabel="Bakım Firması Değiştir"
+ id="firmadegistir" value="#{soruTableBean.bakimFirmaDegButton}">
+  <p:ajax  listener="#{soruTableBean.firmaBul}" process="@this"
+				  update="@this :formbina:tw:tablefirmalar :formbina:tw:bakimcifrm" 	 
+         ></p:ajax>
+  </p:selectBooleanButton>
+ <p:blockUI trigger="firmadegistir" block="firmadegistir" blocked="firmadegistir">
+  <p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+  </p:blockUI>
+  <br/>
+				<p:dialog widgetVar="dfirma" id="dfirma" width="900" 
+				header="Bakım Firması Sözleşme Giriş/Kontrol Firması Değiştir" closable="true">
+				<p:growl id="g1" showDetail="false" autoUpdate="true" sticky="false"></p:growl>
+ <p:ajax event="close" listener="#{soruTableBean.handleClose}" process="@this" update=":formbina:tw:tablefirmalar :formbina:tw:firmadegistir 
+ :formbina:tw:bakimcifrm :formbina:tw:bakimcifirmaadi"></p:ajax>
+
+<p:dataTable id="tablefirmalar" var="firmalar" 
+		
+		value="#{cihazBean.firmaModel}" emptyMessage="#{label.emptyList}" style="width:100%" rowIndexVar="index" paginator="true"
+		paginatorPosition="bottom" rows="5" filteredValue="#{cihazBean.filterFirma}">
+		
+		<p:column headerText="#{label.firma} #{label.adi}" sortBy="#{firmalar.unvan}" style="width:350px">
+		
+		
+		
+              #{firmalar.unvan}
+        
+		</p:column>
+		<p:column headerText="#{label.firmaYetkilisi}">
+		     #{firmalar.adSoyad}
+        
+		</p:column>
+		<p:column headerText="#{label.firmaYetkiliTelefon}">
+		       #{firmalar.gsmTelefon}
+        
+		</p:column>
+		<p:column headerText="#{label.sozlesmetarihi}" sortBy="#{firmalar.asansorBakimTarihi}">
+		       <h:outputText value="#{firmalar.asansorBakimTarihi}">
+		<f:convertDateTime pattern="dd.MM.yyyy" locale="tr"/>
+		</h:outputText>
+        
+		</p:column>
+		<p:column headerText="#{label.bakimciSozlesmeBitisTarih}" sortBy="#{firmalar.sozlesmeTarihi}">
+		       <h:outputText value="#{firmalar.sozlesmeTarihi}">
+		<f:convertDateTime pattern="dd.MM.yyyy" locale="tr"/>
+		</h:outputText>
+        
+		</p:column>
+		
+		</p:dataTable>
+			<p:panel id="bakimcifrm">
+		
+		<h:panelGrid columns="2" id="panelfirmakayit" style="width:100%">
+		<p:outputLabel value="#{label.bakimciFirma}" for="slctfirma" style="width:150px"/>
+		<p:selectOneMenu id="slctfirma"  filter="true" value="#{cihazBean.cihazFirma.firmaId}" 
+		requiredMessage="#{label.firma} #{label.seciniz}"
+		 style="width:500px;float:left" panelStyle="width:500px">
+		<f:selectItem itemLabel="#{label.bakimciFirma} #{label.seciniz}" itemValue=""/>
+		<f:selectItems value="#{binaBean.firmaList}" var="firma" itemLabel="#{firma.unvan}" itemValue="#{firma.kod}"/>
+		<p:ajax process="@this" update="@this"></p:ajax>
+		</p:selectOneMenu>
+		<h:outputText></h:outputText>
+		<h:panelGrid columns="2" cellspacing="2" cellpadding="1">
+		<p:selectBooleanCheckbox value="#{cihazBean.sozlesmeGiris}">
+		<p:ajax process="@this" update="t1 t2 t3 t4 btnbakimcifirmakaydet"></p:ajax>
+		
+		</p:selectBooleanCheckbox>
+		<p:outputLabel value="Sözleşme girişi yapmak istiyorum"/>
+		</h:panelGrid>
+		<h:panelGroup id="t1" >
+		<p:outputLabel value="#{label.bakimciSozlesmeTarih}" for="firmatarih"  style="width:150px" rendered="#{cihazBean.sozlesmeGiris}" id="firmatarihlabel"/>
+		</h:panelGroup>
+		<h:panelGroup id="t2" >
+		<p:calendar id="firmatarih"  value="#{cihazBean.cihazFirma.sozlesmeTarih}"  style="width:250px;float:left" 
+		requiredMessage="#{label.bakimciSozlesmeTarih} giriniz" navigator="true" pattern="dd.MM.yyyy" locale="tr" rendered="#{cihazBean.sozlesmeGiris}">
+		<p:ajax event="dateSelect" process="@this" update="@this" listener="#{cihazBean.firmaSozlesmeTarihListener}" ></p:ajax>
+		
+		</p:calendar>
+		</h:panelGroup>
+		<h:panelGroup id="t3" >
+		<p:outputLabel value="#{label.bakimciSozlesmeBitisTarih}" for="firmasozlesmebittarih"  style="width:150px" rendered="#{cihazBean.sozlesmeGiris}" id="firmasozlesmebittarihlabel"/>
+		</h:panelGroup>
+		<h:panelGroup id="t4" >
+		<p:calendar id="firmasozlesmebittarih"  value="#{cihazBean.cihazFirma.sozlesmeBitisTarih}" style="width:250px;float:left" 
+		 requiredMessage="#{label.bakimciSozlesmeBitisTarih} giriniz" navigator="true" pattern="dd.MM.yyyy" locale="tr" 
+		 rendered="#{cihazBean.sozlesmeGiris}">
+		<p:ajax event="dateSelect" process="@this" update="@this" listener="#{cihazBean.firmaSozlesmeTarihListener}"></p:ajax>
+		
+		</p:calendar>
+		</h:panelGroup>
+		
+		</h:panelGrid>
+		<f:facet name="footer">
+		<p:commandButton value="#{cihazBean.sozlesmeGiris?'Sözleşme Kayıt/Firma Değiştir':'Kontrol Firması Değiştir'}" style="float:right" 
+		process="@this panelfirmakayit"  update="panelfirmakayit tablefirmalar g1" oncomplete="PF('dfirma').show()"
+		icon="ui-icon-disk"  action="#{cihazBean.bakimciFirmaSozlesmeKaydetBasvuruFirmaDegistir}" id="btnbakimcifirmakaydet"></p:commandButton>
+		<p:blockUI blocked="btnbakimcifirmakaydet" trigger="btnbakimcifirmakaydet" block="btnbakimcifirmakaydet">
+		<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+		</p:blockUI>
+			</f:facet>
+		</p:panel>
+
+</p:dialog>
+				</p:tab>
+				<p:tab title="Periyodik Bakım Test" id="tab03" rendered="#{soruTableBean.secilen.cihazId gt 0}">
+			
+				<p:outputPanel id="pnl" style="width:100%;vertical-align: text-top;"
+					visible="#{!empty soruTableBean.soruListSmall}">
+					
+			
+					<h:panelGrid columns="2" style="width:100%;">
+						
+						<h:panelGrid columns="2" cellpadding="4">
+							
+							<p:outputLabel value="#{label.kontrolturu}*" for="kontrolturu"
+								styleClass="label" style="float:left;width:100px"></p:outputLabel>
+							<h:selectOneRadio id="kontrolturu" style="float:left;color:#000;"
+							
+								value="#{soruTableBean.kontrolDTO.kontrolTuru}" layout="pageDirection">
+								<f:selectItem itemLabel="Periyodik Kontrol" itemValue="N" />
+								<f:selectItem itemLabel="Eksiklik Kontrolü" itemValue="E" />
+							</h:selectOneRadio>
+					
+							<p:outputLabel value="#{label.kontrolZamani}*" styleClass="label"
+								for="tarih" />
+							<h:panelGrid columns="3" id="tarih">
+								<p:calendar id="baslangictarih" locale="tr" navigator="true"
+									pattern="dd.MM.yyyy HH:mm"
+									value="#{soruTableBean.kontrolDTO.kontrolBaslangicTarihi}"
+									minHour="00" maxHour="24" size="20" 
+									
+									title="#{label.kontrolBaslangicTarihi} - #{label.kontrolBaslangicSaati}">
+									
+
+									<p:ajax event="dateSelect"
+										process="@this" update="@this" />
+								</p:calendar>
+								<p:separator></p:separator>
+								<p:calendar id="bitistarih" locale="tr" navigator="true"
+									pattern="dd.MM.yyyy HH:mm"
+									value="#{soruTableBean.kontrolDTO.kontrolBitisTarihi}"
+									minHour="00" maxHour="24" size="20"
+									title="#{label.kontrolBitisTarihi} - #{label.kontrolBitisSaati}">
+									<p:ajax event="dateSelect"
+										process="@this" update="@this" />
+								</p:calendar>
+
+							</h:panelGrid>
+
+
+							<p:outputLabel value="#{label.onaylayan}*" for="onaylayan"
+								styleClass="label" />
+							<p:selectOneMenu id="onaylayan"
+								value="#{soruTableBean.kontrolDTO.onaylayanSicilNo}"
+								style="width:250px" 
+								
+								filter="true" filterMatchMode="startsWith">
+								<f:selectItem itemLabel="#{label.seciniz}" itemValue="" />
+								<f:selectItems value="#{loginBean.onayciList}" var="varonay"
+									itemLabel="#{varonay.adi} #{varonay.soyadi}"
+									itemValue="#{varonay.sicilNo}" />
+							<p:ajax process="@this" update="@this"></p:ajax>
+							</p:selectOneMenu>
+							
+							<p:commandButton icon="ui-icon-search" value="Kontrol Soruları"
+								process="pnl" rendered="false"
+								actionListener="#{soruTableBean.kontrolSorulariListener}"
+								update="@form"></p:commandButton>
+								
+				
+						</h:panelGrid>
+						
+						
+						
+						<p:dialog widgetVar="oncekikontrol" id="oncekikontrol" width="400"
+							style="background:#000; ">
+							<f:facet name="header">
+								<h:outputLabel value="Kontrol Tarihi :" />
+								<p:outputLabel
+									value="#{soruTableBean.kontrolDTO.kontrolBitisTarihi}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:outputLabel>
+							</f:facet>
+							<h:panelGrid columns="2">
+								<p:outputLabel value="#{label.kontrolturu} :"
+									style="color:#FFF;  font-weight: bold ;" />
+								<p:outputLabel
+									value="#{soruTableBean.kontrolDTO.kontrolTuru eq 'N'?'Periyodik Kontrol':'Eksiklik Kontrolü'}"
+									style="color:#FFF;  font-weight: bold ;" />
+								<p:outputLabel value="#{label.onaylayan} :"
+									style="color:#FFF;  font-weight: bold ;" />
+								<p:outputLabel
+									value="#{soruTableBean.oncekiKontrolOnaylayanKisi}"
+									style="color:#FFF;  font-weight: bold ;" />
+								<p:outputLabel value="#{label.kontrol} Mühendisi  :"
+									style="color:#FFF;  font-weight: bold ;" />
+								<p:outputLabel
+									value="#{soruTableBean.oncekiKontrolMuhendisi}"
+									style="color:#FFF;  font-weight: bold ;" />
+							</h:panelGrid>
+						</p:dialog>
+
+
+					</h:panelGrid>
+				
+					 
+						
+						
+				</p:outputPanel>
+				
+				</p:tab>
+				</p:tabView>
+
+
+		</p:fieldset>
+
+	<p:panel visible="#{!empty soruTableBean.soruListSmall and soruTableBean.rrender and soruTableBean.secilen!=null and soruTableBean.secilen.cihazId gt 0}"
+					id="pnloncekikontrol">
+					
+ 
+					
+					<h:panelGrid style="width:100%" columns="2">
+						<p:selectBooleanButton offLabel="Normal Rapor"
+					onLabel="Revizyon Rapor" onIcon="ui-icon-check"
+					offIcon="ui-icon-close" value="#{soruTableBean.revizyonRaporMu}"
+					style="float:left">
+					<p:ajax listener="#{soruTableBean.setRevizyonRapor}"
+						process="@this" update="@form" />
+				</p:selectBooleanButton>
+				
+						
+						<h:panelGrid columns="2" style="float:right">
+							<p:outputLabel value="Önceki Kontroller" styleClass="label" />
+							<p:selectOneMenu style="width:170px;" filter="true"
+								filterMatchMode="contains" id="kontroltarihleri">
+								<f:selectItem itemLabel="#{label.oncekikontroltarihleri}"
+									itemValue="" />
+								<f:selectItems value="#{soruTableBean.cihazOncekiKontroller}" />
+								<p:ajax event="change"
+									listener="#{soruTableBean.cihazTestYanitlariByKontrolId}"
+									update="@form" process="@this"/>
+
+
+							</p:selectOneMenu>
+							 <p:blockUI trigger="kontroltarihleri" block="kontroltarihleri">
+      	<p:graphicImage
+					value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+</p:blockUI>
+						</h:panelGrid>
+						
+						
+						
+					</h:panelGrid>
+
+				</p:panel>
+					
+			<p:dataList style="width:100%"  rendered="#{!empty soruTableBean.soruListSmall and soruTableBean.rrender and soruTableBean.secilen!=null and soruTableBean.secilen.cihazId gt 0}"
+				value="#{soruTableBean.soruListSmall}"
+				emptyMessage="#{label.emptyList}" var="soruListe1"
+				id="accrdnsorular">
+				
+				<f:facet name="header">
+        <h:panelGrid style="width:100%" columns="2">
+        <h:outputText value="TEST SORULARI" style="float:left;width:55%"/>
+      <p:selectOneButton id="durumNGenel"
+					value="#{soruTableBean.genelDurum}" style="float:right;width:45%">
+					
+					<f:selectItem itemLabel="Uygun" itemValue="Uygun"></f:selectItem>
+					<f:selectItem itemLabel="Uygulanmaz" itemValue="Uygulanmaz"></f:selectItem>
+					<f:selectItem itemLabel="Uygun Değil" itemValue="Uygun Değil"></f:selectItem>
+					<f:selectItem itemLabel="İptal" itemValue="B"></f:selectItem>
+					<p:ajax listener="#{soruTableBean.genelDurumListener}" process="@this"
+						update="accrdnsorular"></p:ajax>
+
+				</p:selectOneButton>
+				 <p:blockUI trigger="durumNGenel" block="durumNGenel">
+      	<p:graphicImage
+					value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+</p:blockUI>
+				</h:panelGrid>
+        </f:facet>
+
+         
+ 
+            <p:outputPanel>
+                <h:panelGrid columns="2" cellspacing="5" cellpadding="5" style="width:100%">
+                <h:panelGrid columns="3" id="grcheck" style="float:left;width:90%">
+						
+					
+						
+                    <h:outputText value="#{soruListe1.sorun}" style="font-weight: bold"/>
+                    <h:outputText value="#{soruListe1.soru}" style="font-weight: bold"/>
+ 				</h:panelGrid>
+ 				<p:selectOneMenu id="durumGenel" value="#{soruListe1.durum}" 
+                         effect="fade" var="t" style="width:110px;float:right" panelStyle="width:110px;">
+                         <f:selectItem itemLabel="Seçiniz" itemValue="B"></f:selectItem>
+							<f:selectItem itemLabel="Uygun" itemValue="Uygun"></f:selectItem>
+
+							<f:selectItem itemLabel="Uygulanmaz" itemValue="Uygulanmaz"></f:selectItem>
+							<f:selectItem itemLabel="Uygun Değil" itemValue="Uygun Değil"></f:selectItem>
+
+							<p:ajax update="accrdnaltsorular @this accrdnOptAltsorular"
+ 								listener="#{soruTableBean.dListener}" process="@this" />
+                  </p:selectOneMenu>
+                 <p:blockUI trigger="durumGenel" block="durumGenel">
+      	<p:graphicImage
+					value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+</p:blockUI>
+ 				
+                </h:panelGrid>
+				
+				
+					
+						
+
+									
+						
+
+						<p:accordionPanel value="#{soruListe1.altSorular}" var="soruliste"  
+							multiple="true" id="accrdnaltsorular" activeIndex="#{soruTableBean.activeIndex1}">
+							<p:tab>
+							<f:facet name="title">
+							
+							<p:graphicImage
+						value="${pageContext.request.contextPath}/resources/image/add.png" id="check" rendered="#{soruliste.check}"/>
+						<p:outputLabel value="#{soruliste.sorun} #{soruliste.yildiz}#{soruliste.soru}" styleClass="label"/>
+						
+							</f:facet> 
+							
+							<h:panelGrid columns="1" style="width:100%;margin-top:-5px">
+							 <p:selectOneButton id="durum"
+					value="#{soruliste.durum}" style="float:left;width:50%;" disabled="#{soruListe1.durum eq 'B' || soruListe1.durum eq ''}">
+						
+                        
+                         <f:selectItem itemLabel="x" itemValue="B"></f:selectItem>
+							<f:selectItem itemLabel="Uygun" itemValue="Uygun"></f:selectItem>
+
+							<f:selectItem itemLabel="Uygulanmaz" itemValue="Uygulanmaz"></f:selectItem>
+							<f:selectItem itemLabel="Uygun Değil" itemValue="Uygun Değil"></f:selectItem>
+
+							<p:ajax update="accrdnaltsorular"
+ 								 process="@this" listener="#{soruTableBean.durumListener}" />
+                </p:selectOneButton>
+                  </h:panelGrid>
+                  <br/>
+                  
+                 <p:blockUI trigger="durum" block="durum">
+      	<p:graphicImage
+					value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+</p:blockUI>
+
+								<p:selectManyCheckbox id="mcb"
+									value="#{soruliste.selectedListId}" layout="grid" columns="1"
+									style="width:100%;margin-top:0;"
+									rendered="#{!empty soruliste.list}"
+									disabled="#{!soruliste.enableOnTanimli}">
+									<f:selectItems value="#{soruliste.list}" var="ls"
+										itemValue="#{ls.id}" itemLabel="#{ls.aciklama}">
+									
+									</f:selectItems>
+									<p:ajax process="@this" listener="#{soruTableBean.check1(soruliste)}" update="accrdnaltsorular"></p:ajax>
+								</p:selectManyCheckbox>
+
+							</p:tab>
+									
+
+						</p:accordionPanel>
+						<p:outputPanel rendered="#{!empty soruListe1.optionalAltSorular}">
+						<h1 >Kapsam Dışı Ön Tanımlı Açıklamalar</h1>
+						<p:accordionPanel value="#{soruListe1.optionalAltSorular}" var="opSoruliste"
+							multiple="true" id="accrdnOptAltsorular" activeIndex="#{soruTableBean.activeIndex2}">
+							<p:tab>
+							<f:facet name="title">
+							<p:graphicImage
+						value="${pageContext.request.contextPath}/resources/image/add.png" id="check1" rendered="#{opSoruliste.check}"/>
+						#{opSoruliste.sorun} #{opSoruliste.yildiz}#{opSoruliste.soru}
+						
+							
+							</f:facet> 
+							<h:panelGrid columns="1" style="width:100%;margin-top:-5px">
+							 <p:selectOneButton id="durum1"
+					value="#{opSoruliste.durum}" style="float:left;width:50%;" disabled="#{soruListe1.durum eq 'B' || soruListe1.durum eq ''}">
+						
+                        
+                         <f:selectItem itemLabel="x" itemValue="B"></f:selectItem>
+							<f:selectItem itemLabel="Uygun" itemValue="Uygun"></f:selectItem>
+
+							<f:selectItem itemLabel="Uygulanmaz" itemValue="Uygulanmaz"></f:selectItem>
+							<f:selectItem itemLabel="Uygun Değil" itemValue="Uygun Değil"></f:selectItem>
+
+							<p:ajax update="accrdnOptAltsorular"
+ 								 process="@this" listener="#{soruTableBean.durum1Listener}" />
+                </p:selectOneButton>
+                  </h:panelGrid>
+                  <br/>
+                  
+                 <p:blockUI trigger="durum1" block="durum1">
+      	<p:graphicImage
+					value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+</p:blockUI>
+
+	<p:selectManyCheckbox id="mcbOpAlt"
+									value="#{opSoruliste.selectedListId}" layout="grid" columns="1"
+									style="width:100%;margin-top:0;"
+									rendered="#{!empty opSoruliste.list}"
+									disabled="#{!opSoruliste.enableOnTanimli}">
+									<f:selectItems value="#{opSoruliste.list}" var="ls"
+										itemValue="#{ls.id}" itemLabel="#{ls.aciklama}">
+									
+									</f:selectItems>
+									<p:ajax process="@this" listener="#{soruTableBean.check3(opSoruliste)}" update="accrdnOptAltsorular"></p:ajax>
+								</p:selectManyCheckbox>
+								
+								
+								
+								
+
+							</p:tab>
+									
+
+						</p:accordionPanel>
+						</p:outputPanel>
+							
+				</p:outputPanel>
+				</p:dataList>
+			<br />
+			
+				<p:dataList style="width:100%"  rendered="#{!empty soruTableBean.optionalSoruListSmall and soruTableBean.rrender}"
+				value="#{soruTableBean.optionalSoruListSmall}"
+				emptyMessage="#{label.emptyList}" var="opSoru"
+				id="accrdnOptionalSorular">
+				
+				<f:facet name="header">
+        <h:panelGrid style="width:100%" columns="2">
+        <h:outputText value="KAPSAM DIŞI SEÇMELİ SORULAR" style="float:left;color:#FF0000;font-weight: bold"/>
+     
+				</h:panelGrid>
+        </f:facet>
+ 
+      
+         
+ 
+            <p:outputPanel>
+                <h:panelGrid columns="2" cellspacing="5" cellpadding="5" style="width:100%">
+                <h:panelGrid columns="2" id="grcheck0" style="float:left;width:100%">
+                   <h:outputText value="#{opSoru.sorun}" style="font-weight: bold"/>
+                    <h:outputText value="#{opSoru.soru}" style="font-weight: bold"/>
+                   
+ 				</h:panelGrid>
+ 				<p:selectOneMenu id="durumGenel0" value="#{opSoru.durum}" 
+                         effect="fade" var="t" style="width:110px;float:right" panelStyle="width:110px;">
+                         <f:selectItem itemLabel="Seçiniz" itemValue="B"></f:selectItem>
+							<f:selectItem itemLabel="Uygun" itemValue="Uygun"></f:selectItem>
+
+							<f:selectItem itemLabel="Uygulanmaz" itemValue="Uygulanmaz"></f:selectItem>
+							<f:selectItem itemLabel="Uygun Değil" itemValue="Uygun Değil"></f:selectItem>
+
+							<p:ajax update="accrdnaltsorular0  @this"
+ 								listener="#{soruTableBean.dOpListener}" process="@this" />
+                  </p:selectOneMenu>
+		  <p:blockUI trigger="durumGenel0" block="durumGenel0">
+      	<p:graphicImage
+					value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+</p:blockUI>
+				</h:panelGrid>
+			
+					
+						
+
+						<p:accordionPanel value="#{opSoru.altSorular}" var="soruliste0"
+							multiple="true" id="accrdnaltsorular0" activeIndex="#{soruTableBean.activeIndex3}">
+							<p:tab>
+							<f:facet name="title">
+								<p:graphicImage
+						value="${pageContext.request.contextPath}/resources/image/add.png"  id="check0" rendered="#{soruliste0.check}"/>
+						#{soruliste0.sorun} #{soruliste0.yildiz}#{soruliste0.soru}
+							</f:facet>
+								<h:panelGrid columns="1" style="width:100%;margin-top:-5px">
+							 <p:selectOneButton id="durum0"
+					value="#{soruliste0.durum}" style="float:left;width:50%;" disabled="#{opSoru.durum eq 'B' || opSoru.durum eq ''}">
+						
+                        
+                         <f:selectItem itemLabel="x" itemValue="B"></f:selectItem>
+							<f:selectItem itemLabel="Uygun" itemValue="Uygun"></f:selectItem>
+
+							<f:selectItem itemLabel="Uygulanmaz" itemValue="Uygulanmaz"></f:selectItem>
+							<f:selectItem itemLabel="Uygun Değil" itemValue="Uygun Değil"></f:selectItem>
+
+							<p:ajax update="accrdnaltsorular0"
+ 								 process="@this" listener="#{soruTableBean.durum0Listener}" />
+                </p:selectOneButton>
+                  </h:panelGrid>
+                  <br/>
+                  
+                 <p:blockUI trigger="durum0" block="durum0">	
+      	<p:graphicImage
+					value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+</p:blockUI>
+							
+
+								<p:selectManyCheckbox id="mcbOptAnaSoru"
+									value="#{soruliste0.selectedListId}" layout="grid" columns="1"
+									style="width:100%;margin-top:0;"
+									rendered="#{!empty soruliste0.list}"
+									disabled="#{!soruliste0.enableOnTanimli}">
+									<f:selectItems value="#{soruliste0.list}" var="ls"
+										itemValue="#{ls.id}" itemLabel="#{ls.aciklama}">
+
+									</f:selectItems>
+									<p:ajax process="@this" listener="#{soruTableBean.check2(soruliste0)}" update="accrdnaltsorular0"></p:ajax>
+								</p:selectManyCheckbox>
+
+							</p:tab>
+
+						</p:accordionPanel>
+
+</p:outputPanel>
+</p:dataList>
+
+						
+			<p:panel style="width:100%" rendered="#{not empty soruTableBean.soruListSmall and soruTableBean.rrender}">
+				<h:panelGrid columns="2" style="width:100%" >
+						<p:outputLabel value="#{label.aciklama}" styleClass="label"/>
+					<p:inputTextarea id="aciklamalar"
+						value="#{soruTableBean.kontrolDTO.aciklamalar}" cols="50"
+						rows="10" style="height:100px;width:80%" />
+				
+			</h:panelGrid>
+					
+			</p:panel>
+			
+			<br/>
+			<br/>
+			
+			<h:panelGrid columns="2" style="width:100%" id="grd1">
+			<h:panelGrid columns="2" cellpadding="3" cellspacing="3" style="float:left" 
+			rendered="#{not empty soruTableBean.soruListSmall and soruTableBean.rrender and soruTableBean.kontrolTasiRender}">
+        		<p:selectBooleanCheckbox value="#{soruTableBean.kontrolYanitlariTasinsin}" id="eskiRaporTasi" rendered="#{!soruTableBean.kontrolYanitlariTasinsinDisable}"
+        		 >
+        		<p:ajax listener="#{soruTableBean.kontrolTasiListener}" process="@this" update="grd1 accrdnsorular accrdnOptionalSorular"/>
+        		</p:selectBooleanCheckbox>
+        		<h:outputText value="Test sonuçlarını bu kontrole taşımak istiyorum" style="color:#000;font-weight:bold;font-size:1.1em" rendered="#{!soruTableBean.kontrolYanitlariTasinsinDisable}"/>
+			</h:panelGrid>
+			
+        
+			<p:commandButton style="float:right" icon="ui-icon-disk"
+				id="testkaydet" 
+				
+				value="#{label.testKaydet}"  process="@form"
+				actionListener="#{soruTableBean.testKaydet}"
+				rendered="#{not empty soruTableBean.soruListSmall and soruTableBean.rrender and soruTableBean.kaydetButtonTasiRender and (soruTableBean.kontrolDTO.kontrolId eq 0 or (soruTableBean.kontrolDTO.kontrolId gt 0 and soruTableBean.kaydetButtonRender))}" update="@form"
+				oncomplete="$('html, body').animate({ scrollTop: 0 }, 'slow')">
+
+			</p:commandButton>
+			
+		
+
+			<p:blockUI block="testkaydet" trigger="testkaydet">
+			<p:graphicImage
+					value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+			</p:blockUI>
+			</h:panelGrid>
+			<p:dialog widgetVar="load" id="load" modal="true" closable="false">
+				<p:graphicImage
+					value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+			</p:dialog>
+		<p:blockUI trigger=":formbina:eskiRaporTasi" block="@form">
+			<p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+		</p:blockUI>
+	
+	</h:form>
+
+</ui:composition>

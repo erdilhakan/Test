@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:panelGroup>
+<div id="MENUSIDEindent">
+            <span id="LOGO" class="bordersOfMenuSide">
+               
+               
+                <div id="hiddenLogoTextEl" class="hiddenLogoText">
+                    <span class="dispBlock logoDarkText fontSize30">TMMOB</span> <span class="dispBlock logoBlueText fontSize30 mediumFont">Makina Mühendisleri Odası</span>
+                </div>
+            </span>
+            <span class="emptyBox"></span>
+            <div class="MenuSideMainLink bordersOfMenuSide">
+            <h:graphicImage name="main/images/zoom.svg" class="zoomIcon"/><input id="menuSearch" type="text" placeholder="Ara" class="mediumFont fontSize14 mustClose searchInput"/></div>
+            <span class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);"><h:graphicImage name="./main/images/mono/file.svg" /><h:graphicImage styleClass="hiddenIcons" name="main/images/mono/fileBlue.svg" /><span class="MainLinkText">#{label.basvuru}</span></span>
+            <div class="SubMenuLinkContainer">
+            	<a class="SubMenuLink" href="basvuru.jsf" >&bull; #{label.basvuru}</a>
+        		<a class="SubMenuLink" href="basvuruListesi.jsf" >&bull; #{label.basvuruOdemeli}</a>
+                <a class="SubMenuLink" href="odemesizBasvuruListesi.jsf">&bull; #{label.basvuruOdemesiz}</a>
+                <a class="SubMenuLink" href="kontrolhaberliste.jsf">&bull; #{label.kontrolTarihiYaklasanlar}</a>
+         
+                        
+            </div>
+           
+            
+            <span class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);"><h:graphicImage name="./main/images/mono/file.svg" /><h:graphicImage styleClass="hiddenIcons" name="main/images/mono/fileBlue.svg" /><span class="MainLinkText">#{label.tarama}</span></span>
+            <div class="SubMenuLinkContainer">
+                <a class="SubMenuLink" href="tarama.jsf" >&bull; #{label.tarama}</a>
+                <a class="SubMenuLink" href="taranmayanBinaListesi.jsf">&bull; #{label.taramaYapilmayanBinalar}</a>
+               
+            </div>
+            
+            <span class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);"><h:graphicImage name="./main/images/mono/file.svg" /><h:graphicImage styleClass="hiddenIcons" name="main/images/mono/fileBlue.svg" /><span class="MainLinkText">#{label.randevu}</span></span>
+            <div class="SubMenuLinkContainer">
+            	<a class="SubMenuLink" href="randevuver.jsf">&bull; #{label.randevuver}</a>
+                <a class="SubMenuLink" href="randevuListesi.jsf">&bull; #{label.randevuListesi}</a>
+                <a class="SubMenuLink" href="muhendisIcinRandevuListesi.jsf">&bull; #{label.randevuListesi}(#{loginBean.kullanici.adi} #{loginBean.kullanici.soyadi})</a>
+               
+            </div>
+             
+            <span class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);"><h:graphicImage name="./main/images/mono/file.svg" /><h:graphicImage styleClass="hiddenIcons" name="main/images/mono/fileBlue.svg" /><span class="MainLinkText">#{label.asansor}</span></span>
+            <div class="SubMenuLinkContainer">
+                <a class="SubMenuLink" href="kontrol.jsf">&bull; #{label.kontrol}</a>
+                <a class="SubMenuLink" href="asansor.jsf">&bull; #{label.kayit}</a>
+               
+               
+            </div>
+            
+            <span class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);"><h:graphicImage name="main/images/mono/panel.svg" /><h:graphicImage styleClass="hiddenIcons" name="main/images/mono/panelBlue.svg" /><span class="MainLinkText">#{label.bina}</span></span>
+            <div class="SubMenuLinkContainer">
+            	<a class="SubMenuLink" href="bina.jsf">&bull; #{label.binabilgileri}</a>
+                <a class="SubMenuLink" href="binakayit.jsf">&bull; #{label.kayit}</a>
+              
+            </div>
+           
+          
+            <span class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);"><h:graphicImage name="main/images/mono/overlay.svg" /><h:graphicImage styleClass="hiddenIcons" name="main/images/mono/overlayBlue.svg" /><span class="MainLinkText">#{label.raporlar}</span></span>
+            <div class="SubMenuLinkContainer">
+                <a class="SubMenuLink" href="kontrolListesi.jsf">&bull; #{label.raporal}</a>
+               
+                <a class="SubMenuLink" href="raporlar.jsf">&bull; #{label.raporlar}</a>
+                <a class="SubMenuLink" href="raporteslim">&bull; #{label.raporteslim}</a>
+               
+            </div>
+            
+            <span class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);"><h:graphicImage name="main/images/mono/clientSideValidation.svg" /><h:graphicImage styleClass="hiddenIcons" name="main/images/mono/clientSideValidationBlue.svg" /><span class="MainLinkText">#{label.odeme}</span></span>
+            <div class="SubMenuLinkContainer">
+                <a class="SubMenuLink" href="odemeGiris.jsf">&bull; #{label.odemegiris}</a>
+               
+                <a class="SubMenuLink" href="odemeGorme.jsf">&bull; #{label.odemegorme}</a>
+                <a class="SubMenuLink">&bull; MegaMenu</a>
+               
+            </div>
+            
+            <span class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);"><h:graphicImage name="main/images/mono/misc.svg" /><h:graphicImage styleClass="hiddenIcons" name="main/images/mono/miscBlue.svg" /><span class="MainLinkText">#{label.digerislemler}</span></span>
+            <div class="SubMenuLinkContainer">
+            	<a class="SubMenuLink" href="belediyeListe.jsf">&bull; #{label.belediyeliste}</a>
+            	<a class="SubMenuLink" href="belediyekayit.jsf">&bull; #{label.belediyekayit}</a>
+            	<a class="SubMenuLink" href="bakimciFirmaListe.jsf">&bull; #{label.firmaListesi}</a>
+            	<a class="SubMenuLink" href="bakimcifirmakayit.jsf">&bull; #{label.bakimcifirmakayit}</a>
+               <a class="SubMenuLink" href="muhendisListe.jsf">&bull; #{label.muhendisListesi}</a>
+            </div>
+             
+              
+            <span class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);"><h:graphicImage name="main/images/mono/dialogFramework.svg" /><h:graphicImage styleClass="hiddenIcons" name="main/images/mono/dialogFrameworkBlue.svg" /><span class="MainLinkText">#{label.yoneticiislemleri}</span></span>
+            <div class="SubMenuLinkContainer">
+                <a class="SubMenuLink" href="istatistik.jsf">&bull; #{label.islemler}</a>
+                <a class="SubMenuLink" href="kullaniciListe.jsf">&bull; #{label.kullaniciListesi}</a>
+                <a class="SubMenuLink" href="kullanicikayit.jsf">&bull; #{label.kullanicikayit}</a>
+                <a class="SubMenuLink" href="testsorulari.jsf">&bull; #{label.sorugirisduzeltme}</a>
+                <a class="SubMenuLink" href="randevuListe.jsf">&bull; #{label.randevuListesi}</a>
+                <a class="SubMenuLink" href="rolyetki.jsf">&bull; #{label.rollervegorevler}</a>
+                <a class="SubMenuLink" href="belediyeleregorekontrolsayisidagilimi.jsf">&bull; #{label.belediyeleregorekontroldagilim}</a>
+                <a class="SubMenuLink" href="denetcileregorekontrolsayisidagilimi.jsf">&bull; #{label.denetcileregorekontroldagilim}</a>
+                <a class="SubMenuLink" href="etiketveyapitiplerinegorekontrolsayisidagilimi.jsf">&bull; #{label.etiketveyapitiplerinegorekontroldagilim}</a>
+                <a class="SubMenuLink" href="kontrolveodemelerlistesi.jsf">&bull; #{label.kontrolveodemelerlistesi}</a>
+                 <a class="SubMenuLink" href="belediyebilgi.jsf">&bull; #{label.belediyebilgi}</a>
+                  <a class="SubMenuLink" href="ikitariharasikontrolugelenler.jsf">&bull; #{label.ikitariharasikontrolugelenler}</a>
+            </div>
+            
+            <span class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);"><h:graphicImage name="main/images/mono/misc.svg" /><h:graphicImage styleClass="hiddenIcons" name="main/images/mono/miscBlue.svg" /><span class="MainLinkText">#{label.kullaniciislem}</span></span>
+            <div class="SubMenuLinkContainer">
+            	<a class="SubMenuLink" href="sifredegistir.jsf">&bull; #{label.sifredegistir}</a>
+                <a class="SubMenuLink" href="index.jsf">&bull; #{label.anasayfa}</a>
+              
+            </div>
+              
+        </div>
+        </h:panelGroup>
+        </html>
+     
+        
+        

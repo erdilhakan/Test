@@ -1,0 +1,42 @@
+<ui:composition  
+xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+<style>
+a:hover{text-decoration: underline;font-weight: bold;}
+</style>
+</h:head>
+<h:form id="form">
+
+
+<p:growl severity="error" autoUpdate="true" showDetail="false" sticky="false" id="growl" widgetVar="growl"/>
+<center>
+<h:panelGrid columns="1"  cellspacing="1" cellpadding="1" style="z-index:-1;opacity: 0.80;    filter: alpha(opacity=80);left:3%;top:40%;">
+
+<p:inputText value="#{loginBean.user}" id="kullaniciadi" immediate="true"   placeholder="#{label.kullaniciAdi}" 
+required="true" requiredMessage="Kullanıcı Adı Giriniz" style="text-align:center;font-size:14px;color:#0066CC;height:20px;width:200px"/>
+
+<p:message for="kullaniciadi" id="msgkullanici"/>
+
+<p:password value="#{loginBean.pass}"  id="parola" immediate="false" placeholder="#{label.parola}" 
+required="true" requiredMessage="Şifre Giriniz" style="text-align:center;font-size:14px;color:#0066CC;height:20px;width:200px;"/>
+<h:outputText/>
+
+<p:message for="parola"/>
+
+<p:commandButton styleClass="loginbutton" value="#{label.giris}" id="loginButton"
+ action="#{loginBean.login}" process="@form" style="width:210px"
+ icon="ui-icon-person" update="@form" iconPos="ui-icon-refresh"/>
+<p:blockUI block="loginButton" trigger="loginButton">
+ <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+</p:blockUI>
+</h:panelGrid>
+</center>
+
+<p:commandLink style="color: #221100;opacity:0.80; font-size: 0.70em; font-family:comic sans MS;text-decoration:none;" value="Şifreni mi unuttun ?" action="#{loginBean.sifremiUnuttum}" process="@this" update="@this"/>
+</h:form>
+
+</ui:composition>

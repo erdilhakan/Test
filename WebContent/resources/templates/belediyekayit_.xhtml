@@ -1,0 +1,469 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+
+	<title></title>
+		<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+.ui-widget .hasDatepicker{
+width:70px;
+}
+
+</style>
+
+<script> 
+function validate(evt) {
+	  var theEvent = evt || window.event;
+	  var key = theEvent.keyCode || theEvent.which;
+	  key = String.fromCharCode( key );
+	  var regex = /[0-9]|\./;
+	  if( !regex.test(key) ) {
+	    theEvent.returnValue = false;
+	    if(theEvent.preventDefault) theEvent.preventDefault();
+	  }
+	}
+function validateDecimal(evt) {
+	  var theEvent = evt || window.event;
+	  var key = theEvent.keyCode || theEvent.which;
+	  key = String.fromCharCode( key );
+	  var regex = ^\d+(\.\d{1,2})?$;
+	  if( !regex.test(key) ) {
+	    theEvent.returnValue = false;
+	    if(theEvent.preventDefault) theEvent.preventDefault();
+	  }
+	}
+
+</script>
+
+</h:head>
+
+<h:form id="formb">  
+  	
+    <p:growl id="growl" sticky="false" showDetail="false" autoUpdate="true"/>
+    <p:wizard flowListener="#{belediyeBean.onFlowProcess}" nextLabel="İleri" backLabel="Geri" id="vzrd" widgetVar="vzrd">  
+      
+      
+      
+        <p:tab id="genel" title="#{label.genel}">  
+  
+            <p:panel header="#{label.genel}">  
+              
+                <p:messages errorClass="error" id="msgs"/>  
+     			 <h:panelGrid columns="2" style="width:100%;margin-top:10px" cellpadding="4" cellspacing="5" id="grd">
+                <h:panelGrid>
+              
+           		 <p:outputLabel for="belediyeAdi" value="#{label.adi}"/>
+           		 <p:inputText id="belediyeAdi"  required="true" requiredMessage="#{label.adi}  #{label.giriniz}" style="width:300px"
+           		 value="#{belediyeBean.belediye.adi}">
+           		 </p:inputText>
+           		 </h:panelGrid>
+       			<h:panelGrid>
+       			 
+           		  <p:outputLabel for="sube" value="#{label.sube}" />
+           		  <p:selectOneMenu required="true" id="sube" requiredMessage="#{label.sube} #{label.seciniz}"
+           		  style="width:300px" value="#{belediyeBean.belediye.sube}" valueChangeListener="#{belediyeBean.changeSube}">
+           		  <p:ajax event="change" update="temsilcilik"/>
+           		  <f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+           		  <f:selectItems value="#{sessionBean.subeler}" var="sube" itemLabel="#{sube.sube}" itemValue="#{sube.kod}"></f:selectItems>
+           		  
+           		  </p:selectOneMenu>
+           		 
+       			 </h:panelGrid>
+       			 
+       			<h:panelGrid>
+       			 
+           		  <p:outputLabel for="temsilcilik" value="#{label.temsilcilik}" />
+           		  <p:selectOneMenu  id="temsilcilik"  filter="true"
+           		  style="width:300px" value="#{belediyeBean.belediye.temsilcilik}">
+           		  
+           		  <f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+           		  <f:selectItems value="#{belediyeBean.temsilcilikler}" var="temsilcilik" itemLabel="#{temsilcilik.adi}" itemValue="#{temsilcilik.kod}"></f:selectItems>
+           		  </p:selectOneMenu>
+           		 
+       			 </h:panelGrid>
+       			 
+       			 
+       			 
+       			 <h:panelGrid>
+       			 
+           		  <p:outputLabel for="il" value="#{label.il}" />
+           		  <p:selectOneMenu required="true" id="il" requiredMessage="#{label.il}  #{label.seciniz}"
+           		  style="width:300px" value="#{belediyeBean.belediye.il}" filter="true">
+           		  <f:validator validatorId="validators.mustGreatThanZero"/>
+           		  <f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+           		  <f:selectItems value="#{applicationBean.iller}"/>
+           		  <p:ajax update="ilce" listener="#{belediyeBean.ilChange}"></p:ajax>
+           		  </p:selectOneMenu>
+           		 
+       			 </h:panelGrid>
+       			 <h:panelGrid id="grdilce">
+       			 
+           		  <p:outputLabel for="ilce" value="#{label.ilce}" />
+           		  <p:selectOneMenu required="true" id="ilce" requiredMessage="#{label.ilce} : #{label.seciniz}"
+           		  style="width:300px" value="#{belediyeBean.belediye.ilce}" filter="true">
+           		  <f:validator validatorId="validators.mustGreatThanZero"/>
+           		  <f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+           		   <p:ajax update="@this grduavt" listener="#{belediyeBean.ilceChange}"/>
+           		  <f:selectItems value="#{belediyeBean.ilceler}"></f:selectItems>
+           		  </p:selectOneMenu>
+           		 
+       			 </h:panelGrid>
+       			  <h:panelGrid>
+       			  <p:outputLabel for="uavtkod" value="#{label.uavtKod}" />
+       			  <h:panelGrid columns="2" id="grduavt">
+           		  <p:inputText required="true" id="uavtkod" readonly="true"
+           		 
+           		  style="width:100px" value="#{belediyeBean.belediye.uavtKod}"  onkeydown="alert('Butonu kullanınız')" 
+           		  onclick="alert('Butonu kullanınız')" onkeypress="alert('Butonu kullanınız')">
+           		  <f:validator validatorId="validators.mustGreatThanZero"/>
+           		 </p:inputText>
+           		 <p:commandButton icon="ui-icon-help" title="#{label.uavtKodGetir}" style="width:12px;" id="btnuavtkod"
+           		 actionListener="#{belediyeBean.ileGoreBelediyeSorgulama}"
+           		 process="@this :formb:grdilce" update=":formb:uavtkod :formb:growl" ></p:commandButton>
+           		    <p:blockUI trigger="btnuavtkod" block="grduavt">
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+            </p:blockUI>
+           		 </h:panelGrid>
+       			 </h:panelGrid>
+       			 
+       			 <f:facet name="footer">
+       			 <p:commandButton icon="ui-icon-disk" value="#{label.kaydet}" id="btnKaydet">
+       			 <f:ajax execute="grd bui" render="msgs" listener="#{belediyeBean.belediyeKaydet}"/>
+       			 </p:commandButton>
+       			 </f:facet>
+     		</h:panelGrid>
+               
+	    
+	 
+                  
+            </p:panel>  
+         
+            <p:blockUI trigger="btnKaydet" block="grd" id="bui">
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+            </p:blockUI>
+        </p:tab>  
+              
+        <p:tab id="iletisim" title="#{label.iletisim}">  
+            <p:panel header="#{label.iletisim}" id="pnliletisim">  
+              
+                 
+                 <p:dataTable editable="true" id="iletisimtable" var="iletisim" emptyMessage="#{label.emptyList}" value="#{belediyeBean.iletisimList}"
+                  filteredValue="#{belediyeBean.filteredVal}" style="width:100%">
+                  <p:ajax event="rowEdit" listener="#{belediyeBean.onEdit}" update="iletisimtable :formb:growl"  process="@this"/>  
+        			<p:ajax event="rowEditCancel" listener="#{belediyeBean.onCancel}" update="@this"/>
+                 <p:column filterBy="adi"  filterMatchMode="contains" headerText="#{label.adi}" style="width:20%">  
+                 <p:cellEditor>
+                 <f:facet name="output">
+                 <h:outputText value="#{iletisim.adi}"/>
+                 </f:facet>
+                 <f:facet name="input">
+                 <p:inputText value="#{iletisim.adi}" required="true" requiredMessage="#{label.girilmedi}" style="width:100px"/>
+                 </f:facet>
+                 </p:cellEditor>               
+                 </p:column>
+                 <p:column filterBy="soyadi"  filterMatchMode="contains" headerText="#{label.soyadi}" style="width:20%">  
+                 <p:cellEditor>
+                 <f:facet name="output">
+                   <h:outputText value="#{iletisim.soyadi}"/>
+                 </f:facet>
+                 <f:facet name="input">
+                 <p:inputText value="#{iletisim.soyadi}" required="true" requiredMessage="#{label.girilmedi}" style="width:100px"/>
+                 </f:facet>
+                 </p:cellEditor>               
+                 </p:column>
+                 <p:column  headerText="#{label.unvan}" style="width:20%">
+                 <p:cellEditor> 
+                 <f:facet name="output"> 
+                  <h:outputText value="#{iletisim.unvani}"/>
+                 </f:facet>
+                 <f:facet name="input">
+                 <p:inputText value="#{iletisim.unvani}" required="true" requiredMessage="#{label.girilmedi}" style="width:100px"/>
+                 </f:facet>
+                 </p:cellEditor>               
+                 </p:column>
+                 <p:column  headerText="#{label.telno}" style="width:10%">  
+                 
+                 <p:cellEditor>
+                 <f:facet name="output">
+                  <h:outputText value="#{iletisim.telefonNoStr}"/>
+                 </f:facet>
+                  
+                 <f:facet name="input">
+                  <p:inputMask mask="(999)9999999"  id="iletisimtel"  style="width:100px"
+							 value="#{iletisim.telefonNoStr}">
+							 <f:validator validatorId="validators.TelefonValidator"/>
+							 <f:ajax event="blur"/>
+							</p:inputMask>
+                 </f:facet>
+                  
+                 </p:cellEditor>    
+                            
+                 </p:column>
+                 <p:column  headerText="#{label.eposta}" style="width:20%">
+                 <p:cellEditor>  
+                 <f:facet name="output">
+                  <h:outputText value="#{iletisim.ePosta}" style="width:100px"/>
+                 </f:facet>
+                 <f:facet name="input">
+                 <p:inputText value="#{iletisim.ePosta}" required="true" requiredMessage="#{label.girilmedi}" style="width:100px">
+                 <f:validator validatorId="validators.EMailValidator"/>
+							<f:ajax  event="blur"/>
+                 </p:inputText>
+                 </f:facet>
+                 </p:cellEditor>               
+                 </p:column>
+                 <p:column style="2%">
+                 
+                  <p:rowEditor/>
+            <br/>
+            <p:commandLink id="lnksil1" action="#{belediyeBean.deleteRow(iletisim)}" process="@this" update="iletisimtable :formb:growl">
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/delete.png" title="Sil" />
+            </p:commandLink>
+                 </p:column>
+                 <f:facet name="footer">
+                 <p:commandButton  icon="ui-icon-plus" value="#{label.ekle}" oncomplete="PF('pnl11').show()" 
+                 update=":formb:pnl11" process="@this"
+                 actionListener="#{belediyeBean.iletisimPanelListener}"/>
+                 </f:facet>
+                 </p:dataTable>  
+                  
+            </p:panel>  
+           
+            
+    <p:panel id="pnl11" widgetVar="pnl11" header="#{label.iletisimyeni}" style="margin-bottom:10px;" visible="false" closable="true" toggleable="false">  
+          <p:ajax event="close" listener="#{belediyeBean.closePanel}" process="@this" update="pnl11"></p:ajax>
+        <center>
+          <h:panelGrid columns="2" id="ilt" style="margin:auto;width:50%" cellpadding="3" cellspacing="3" >
+            <p:outputLabel for="iletisimadi" value="#{label.adi}" />
+            <p:inputText id="iletisimadi"   style="width:200px" value="#{belediyeBean.iletisim.adi}" required="#{belediyeBean.iletisimReq}" requiredMessage="#{label.adi} #{label.giriniz}"/>
+           	<p:outputLabel for="iletisimsoyadi" value="#{label.soyadi}"/>
+            <p:inputText id="iletisimsoyadi"   style="width:200px" value="#{belediyeBean.iletisim.soyadi}" required="#{belediyeBean.iletisimReq}" requiredMessage="#{label.soyadi} #{label.giriniz}"/>
+            <p:outputLabel for="iletisimunvan" value="#{label.unvan}" required="true" requiredMessage="#{label.unvan} #{label.giriniz}"/>
+            <p:inputText id="iletisimunvan"   style="width:200px" value="#{belediyeBean.iletisim.unvani}"/>
+            
+            <p:outputLabel for="iletisimeposta" value="#{label.eposta}"/>
+            <p:inputText id="iletisimeposta" 
+							style="width:200px" value="#{belediyeBean.iletisim.ePosta}">
+							<f:validator validatorId="validators.EMailValidator"/>
+							<f:ajax render=":formb:growl" event="blur"/>
+							</p:inputText>
+            <p:outputLabel for="iletisimtelefon" value="#{label.telno}"/>
+            <p:inputMask mask="(999) 999 9999"  id="iletisimtelefon" required="#{belediyeBean.iletisimReq}" requiredMessage="#{label.telno} #{label.giriniz}"
+							style="width:200px" value="#{belediyeBean.iletisim.telefonNoStr}">
+							 <f:validator validatorId="validators.TelefonValidator"></f:validator>
+							<f:ajax render=":formb:growl" event="blur"></f:ajax>
+							</p:inputMask>
+            </h:panelGrid>
+            </center>
+            <f:facet name="footer">
+            <center>
+            
+            <p:commandButton  icon="ui-icon-disk" value="#{label.kaydet}" id="saveBtn" actionListener="#{belediyeBean.iletisimKaydet}"
+            update=":formb:growl :formb:iletisimtable pnl11"/>
+            </center>
+            </f:facet>
+        
+    </p:panel>  
+    <p:blockUI block="formb" trigger="saveBtn" id="blui">
+    <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+    </p:blockUI>  
+        </p:tab>  
+           
+        <p:tab id="sozlesme" title="#{label.sozlesme}"> 
+         <p:growl id="growlsozlesme" showDetail="false" autoUpdate="true"></p:growl>
+            <p:panel header="#{label.sozlesme}">  
+             <p:panel id="szlpanel">
+             <table id="grdsozlesme" style="width:100%;vertical-align:text-top;border-color:  currentcolor">
+             <tr style="width:100%;vertical-align:text-top;opacity:0.75;background: #FFFF99">
+             <td><p:outputLabel value="#{label.yil}" for="yil"/></td>
+             <td><p:outputLabel value="#{label.sozlesmetip}" for="sozlesmetip"/></td>
+             <td> <p:outputLabel for="sozbinatipid" value="#{label.binaTipi}"></p:outputLabel></td>
+             <td> <p:outputLabel for="tip" value="#{label.asansorTipi}"/></td>
+             <td><p:outputLabel for="sozlesmetarihi" value="#{label.sozlesmetarihi}"/></td>
+             <td> <p:outputLabel for="bitistarihi" value="#{label.bitistarihi}"/></td>
+             <td> <p:outputLabel for="kapasite" value="#{label.kapasite}"/></td>
+             <td><p:outputLabel for="fiyat" value="#{label.fiyat}"/></td>
+             </tr>
+             <tr>
+             <td colspan="7">
+             <p:separator></p:separator>
+             </td>
+             </tr>
+             
+             <tr style="width:100%;vertical-align:text-top;opacity:1.00;">
+             <td> <p:selectOneMenu id="yil"  value="#{belediyeBean.sozlesme.yil}" required="true" requiredMessage="#{label.yil} #{label.seciniz}">
+             <f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+             <f:selectItems value="#{belediyeBean.yillar}" var="yillar" itemLabel="#{yillar}" itemValue="#{yillar}"/>
+             </p:selectOneMenu></td>
+              <td> <p:selectManyCheckbox id="sozlesmetip" value="#{belediyeBean.sozlesme.kontrolTipiArr}" layout="grid" columns="1"
+             required="true" requiredMessage="Sözleşme Tipi Seçiniz !">
+           
+            <f:selectItem itemLabel="2.Eksiklik Kontrolü"  itemValue="K"/>
+            <f:selectItem itemLabel="Normal Kontrol"  itemValue="N"/>
+            <p:ajax process="@this" update="@this"></p:ajax>
+        	</p:selectManyCheckbox></td>
+             <td> <p:selectManyCheckbox id="sozbinatipid" value="#{belediyeBean.sozlesmeBinaTipList}" layout="grid" columns="1"
+             required="true" requiredMessage="Sözleşme Bina Tiplerini Seçiniz !">
+            <f:selectItems itemLabel="#{sozlesmebinatip.aciklama}"  itemValue="#{sozlesmebinatip.id}" value="#{applicationBean.sozlesmeBinaTipList}" var="sozlesmebinatip"  />
+        	</p:selectManyCheckbox></td>
+             <td> <p:selectManyCheckbox id="tip" value="#{belediyeBean.sozlesme.arrCihazTip}" layout="grid" columns="1" 
+              required="true"  requiredMessage="#{label.asansorTipi} #{label.seciniz}">
+             
+				<f:selectItem itemLabel="ELEKTRİKLİ"  itemValue="66" />
+				<f:selectItem itemLabel="HİDROLİK"  itemValue="68" />
+              </p:selectManyCheckbox> </td>
+             <td><p:calendar id="sozlesmetarihi" pattern="dd.MM.yyyy" locale="tr" navigator="true"  
+                style="width:100px"
+             value="#{belediyeBean.sozlesme.sozlesmeBaslangicTarihi}" required="true" requiredMessage="#{label.sozlesmetarihi} #{label.giriniz}">
+              <p:ajax event="dateSelect" listener="#{belediyeBean.dateListener}" update="@this"></p:ajax>
+              </p:calendar></td>
+             <td><p:calendar id="bitistarihi" pattern="dd.MM.yyyy" locale="tr" navigator="true"
+             style="width:100px"
+               value="#{belediyeBean.sozlesme.sozlesmeBitisTarihi}" required="true" requiredMessage="#{label.bitistarihi} #{label.giriniz}">
+             <p:ajax event="dateSelect" listener="#{belediyeBean.dateListener}" update="@this"></p:ajax>
+             </p:calendar>
+             
+             </td>
+            
+             <td> 
+             
+            
+              <p:inputMask id="kapasite"  style="width:50px;text-align:right" maxlength="5" value="#{belediyeBean.sozlesme.kapasite}" required="true" 
+              requiredMessage="#{label.kapasite} #{label.giriniz}" 
+              converterMessage="#{label.rakamgiriniz}" validatorMessage="#{label.kapasite} #{label.giriniz}" onkeypress="validate(event)">
+              <f:validateLongRange minimum="1" maximum="99999"></f:validateLongRange>
+              <f:converter converterId="digitsOnly" />
+              <f:ajax render="growl" event="keyup"/>
+              </p:inputMask>
+               <br/>
+              <p:selectOneRadio value="#{belediyeBean.sozlesme.kapasiteOlcut}" validatorMessage="#{label.kapasite} #{label.seciniz}" layout="grid" columns="1">
+               
+                <f:selectItem itemLabel="Durak" itemValue="D"/>
+                <f:selectItem itemLabel="Yük" itemValue="K"/>
+                </p:selectOneRadio>    
+              
+  
+            </td>
+             <td style="vertical-align:text-top"><p:inputText id="fiyat"  value="#{belediyeBean.sozlesme.fiyat}" required="true"  style="width:60px;text-align:right" styleClass="currency"
+           requiredMessage="#{label.fiyat} #{label.giriniz}" validatorMessage="#{label.fiyat} #{label.giriniz}" converterMessage="#{label.fiyat} hatalı">
+           <f:validateDoubleRange maximum="999999.01" minimum="0.01"/>
+           <f:convertNumber pattern="###,###,##0.00"/>
+           <f:ajax render="growl" event="keyup"/>
+           </p:inputText></td>
+             </tr>
+             </table>
+             
+            
+              <f:facet name="footer">
+               <p:commandButton value="#{label.kaydet}" id="sozlesmekaydet" icon="ui-icon-disk"  style="float:right" 
+              update="@form" action="#{belediyeBean.sozlesmeKaydet}">
+              
+             </p:commandButton>
+              </f:facet>
+             </p:panel>
+            
+              
+             
+              
+                   
+                  
+              
+            </p:panel>  
+           
+              
+            
+              
+              <p:blockUI trigger="sozlesmekaydet" block=":formb" id="bui2">
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+            </p:blockUI>
+            <p:panel id="sozlesmepanel">
+          <p:blockUI trigger="sozlesmetable" block="sozlesmetable">
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+            </p:blockUI>
+           <p:dataTable id="sozlesmetable" selection="#{belediyeBean.slctSozlesme}"  var="sozlesmeler"
+           rowKey="#{sozlesmeler.id}"
+            value="#{belediyeBean.sozlesmeDataModel}" paginator="true" rows="10" 
+            emptyMessage="#{label.emptyList}" paginatorPosition="bottom" rendered="#{!empty belediyeBean.sozlesmeList}">
+            <f:facet name="header">#{label.yapilansozlesmeler}</f:facet>
+            <p:ajax event="rowSelect" listener="#{belediyeBean.onRowSelect}" update=":formb:szlpanel @this"/>
+             <p:ajax event="rowUnselect"  update=":formb:szlpanel @this"/>
+			 <p:ajax event="rowSelectRadio" listener="#{belediyeBean.onRowSelect}" update=":formb:szlpanel @this"/>
+			 
+			 
+            
+           <p:column selectionMode="single">
+           <f:facet name="header">
+           <p:commandButton title="Seçim İptal" icon="ui-icon-circle-close" actionListener="#{belediyeBean.onRowUnselect}" process="@this" update=":formb:sozlesmetable :formb:szlpanel"></p:commandButton>
+           </f:facet>
+           </p:column>
+           
+            <p:column headerText="#{label.yil}" sortBy="#{sozlesmeler.yil}">
+            #{sozlesmeler.yil}
+            </p:column>
+            
+            <p:column headerText="#{label.asansorTipi}" sortBy="#{sozlesmeler.cihazTipi}">
+            <h:outputText value="ELEKTRİKLİ" rendered="#{sozlesmeler.cihazTipi==66}"/>
+   			<h:outputText value="HİDROLİK" rendered="#{sozlesmeler.cihazTipi==68}"/>
+       		
+            </p:column>
+            <p:column headerText="#{label.sozlesmetarihi}">
+            <h:outputText value="#{sozlesmeler.sozlesmeBaslangicTarihi}" style="text-align:right">
+            <f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+            </h:outputText>
+            </p:column>
+            <p:column headerText="#{label.bitistarihi}">
+            <h:outputText value="#{sozlesmeler.sozlesmeBitisTarihi}"  style="text-align:right">
+            <f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+            </h:outputText>
+            </p:column>
+            <p:column headerText="#{label.kapasite}" sortBy="#{sozlesmeler.kapasite}">
+            <div style="float:left">
+            #{sozlesmeler.kapasite}
+            </div>
+            <div  style="float:left;padding-left:5px;"> 
+            <h:outputText value="Kg" rendered="#{sozlesmeler.kapasiteOlcut eq 'K'}"/>
+            <h:outputText value="Durak" rendered="#{sozlesmeler.kapasiteOlcut eq 'D'}"/>
+            </div>
+            
+            </p:column>
+            <p:column headerText="#{label.tip}" sortBy=" #{sozlesmeler.binaTipStr}" filterBy=" #{sozlesmeler.binaTipStr}">
+             #{sozlesmeler.binaTipStr}
+            </p:column>
+             <p:column headerText="#{label.sozlesmetip}" sortBy="#{sozlesmeler.kontrolTipi}" filterBy="#{sozlesmeler.kontrolTipi}">
+             <h:outputText value="#{sozlesmeler.kontrolTipi eq 'K'?'2.EKSİKLİK KONTROLÜ':'NORMAL KONTROL'}" />
+            </p:column>
+            <p:column headerText="#{label.fiyat}">
+            <h:outputText value="#{sozlesmeler.fiyat}" style="float:right">
+            <f:convertNumber pattern="###,###,##0.00"/>
+            </h:outputText>
+            </p:column>
+            
+         
+  	
+             <f:facet name="footer">
+  		
+            <p:commandLink id="lnksil1" action="#{belediyeBean.deleteRow}" update="@form" process=":formb:sozlesmetable"
+            style="float:right">
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/delete.png" title="Sil" width="22" height="22"/>
+            </p:commandLink>
+            </f:facet>
+            
+           
+  	
+  		
+            </p:dataTable>
+            </p:panel>
+        </p:tab>  
+          
+    </p:wizard>  
+     
+</h:form>  
+
+</ui:composition>

@@ -1,0 +1,138 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="https://github.com/primefaces-extensions/primefaces-extensions.github.com.git"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+
+	<title>#{label.randevuListesi}</title>
+	
+<h:outputStylesheet library="css" name="maincontext.css"/>
+<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+ 
+ <h:outputScript>
+ $(function(){
+
+ $('.lnk').click(function(event){
+    	var offset=$(this).offset();
+    	event.stopPropagation();
+ /*   	$('div[id="form2:notif"]').offset({left:offset.left,top:offset.top});*/
+    	$('.ui-growl').offset({left:offset.left+70,top:offset.top});
+        
+    });
+ });
+ 
+
+  </h:outputScript>
+  	<style type="text/css">
+  .ui-widget-content	.ui-datalist-content,.ui-datalist-content,   	.ui-datalist-item{
+  	border:none;
+  	}
+  	</style>
+  
+</h:head>
+
+
+<h:form id="form1">
+<p:panel id="p" rendered="#{facesContext.viewRoot.viewId eq '/randevuListe.xhtml'}">
+<p:selectOneMenu style="width:80%" filter="true"  value="#{randevuListBean.muhendisSicilNo}">
+<f:selectItem itemLabel="Mühendis Seçiniz" itemValue=""/>
+<f:selectItems itemLabel="#{muhendis.adi} #{muhendis.soyadi}" 
+itemValue="#{muhendis.sicilNo}" value="#{randevuListBean.muhendisList}" var="muhendis"/> 
+<p:ajax  listener="#{randevuListBean.muhendisChangeListener}"  process="@this" update=":form1"></p:ajax>
+</p:selectOneMenu>
+
+</p:panel>
+<p:growl autoUpdate="true" showDetail="false" id="warn"/>
+<p:growl autoUpdate="true" showDetail="false" id="info" sticky="true"/>
+	    <p:fieldset legend="#{label.randevuListesi}" id="fset" style="width:auto" rendered="#{randevuListBean.render}" toggleable="true">
+	     
+	    <p:dataTable id="rand" var="randevular" value="#{randevuListBean.randevu.randevuList}" 
+	    filteredValue="#{randevuListBean.filteredBasvuru}" editable="true" emptyMessage="#{label.emptyList}" style="width:100%;font-size:10px;">                      
+        
+       <p:ajax event="rowEdit" update=":form1:rand :form1:warn" process="@this" listener="#{randevuListBean.edit}"/>
+       <p:column style="width:3%">
+       <f:facet name="header">Randevu No</f:facet>
+        <p:commandLink title="Kontrol Sayfasına Git" value="#{randevular.randevuId}" 
+        rendered="#{facesContext.viewRoot.viewId ne '/randevuListe.xhtml'}"
+            action="#{randevuListBean.toKontrol(randevular)}" style="color: #6986c9;font-size:10px;text-decoration:underline">
+           
+            </p:commandLink>
+            <h:outputText value="#{randevular.randevuId}" rendered="#{facesContext.viewRoot.viewId eq '/randevuListe.xhtml'}"></h:outputText>
+       </p:column> 
+        <p:columns value="#{randevuListBean.columns}" var="column" columnIndexVar="colIndex"   
+                    sortBy="#{column.property}" filterBy="#{column.property}">
+               
+            <f:facet name="header">  
+               #{column.header} 
+            </f:facet>
+            <div class="lnk">
+            <p:commandLink id="lnkBasvuruYapan"  value="#{randevular.basvuruYapan}" rendered="#{colIndex==0}" action="#{randevuListBean.kisiListener(randevular)}"
+			 style="color: #6986c9;font-size:10px;" update=":form1:info" process="@this">
+			
+			</p:commandLink>
+			</div>
+			
+			
+			
+    		<p:cellEditor rendered="#{colIndex==1}">  
+                <f:facet name="output">
+                	<h:outputText value="#{randevular[column.property]} -  #{randevular.randevuSaati}" rendered="#{colIndex==1}">
+                	<f:convertDateTime pattern="dd.MM.yyyy - HH:mm" locale="tr_TR" timeZone="GMT+3"></f:convertDateTime>
+                	</h:outputText>
+                	                 </f:facet>  
+                <f:facet name="input">  
+               <p:calendar mode="popup" locale="tr"
+                id="tarih"  navigator="true"   pattern="dd.MM.yyyy HH:mm" value="#{randevuListBean.editDate}" minHour="00" maxHour="24">
+        		</p:calendar> 	      
+                </f:facet>  
+                
+           </p:cellEditor>
+          	<!-- 
+  		<h:panelGroup rendered="#{colIndex==3}">	
+        <ui:repeat var="muhendis" value="#{randevular.muhendis}">
+        <h:panelGrid columns="1" style="border:none">
+		<h:outputText 	value="#{muhendis}" style="border:none"></h:outputText>
+		</h:panelGrid>
+		</ui:repeat>
+        </h:panelGroup>
+       		 -->
+       		     <p:tree  rendered="#{colIndex==3}" value="#{randevular.muhendis}" var="muhendis" id="tree"  style="background:none;transparent:none;border:none;width:200px">  
+        			<p:treeNode id="treeNode">
+        			 <p:outputLabel value="#{muhendis}" id="lblNode"/>  
+        			</p:treeNode>  
+    		</p:tree>
+        </p:columns>  
+       
+        
+        <p:column headerText="#{label.firma}">
+       <p:dataList var="firma" value="#{randevular.firmalar}" >
+       	#{firma.unvan}
+       </p:dataList>
+      
+		
+		
+        </p:column>
+            
+      
+  		<p:column style="width:2%" rendered="#{facesContext.viewRoot.viewId ne '/randevuListe.xhtml'}">
+  		 <p:rowEditor/>
+            
+            <br/>
+            <p:commandLink id="lnksil1" action="#{randevuListBean.deleteRow(randevular)}" update=":form1">
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/delete.png" title="Sil" />
+            </p:commandLink>
+  		</p:column>
+    </p:dataTable>  
+         </p:fieldset>  
+	    
+	     
+        
+
+</h:form>
+
+</ui:composition>

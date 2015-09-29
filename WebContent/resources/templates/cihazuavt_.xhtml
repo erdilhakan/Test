@@ -1,0 +1,217 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+<style type="text/css">
+	.ui-dialog {padding: .2em; overflow: visible; border: 0 none; -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.75); -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.75); box-shadow: 0 1px 4px rgba(0,0,0,0.75); }
+.ui-dialog .ui-dialog-titlebar { position: relative; background: transparent !important; padding: 0 0 8px 0; margin: 20px 20px 5px 20px; border: solid #e5e5e5; border-width: 0 0 1px 0; -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; }
+.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .1em 0; color: #353536; font-size: 20px !important; } 
+.ui-dialog .ui-dialog-titlebar-close { position: absolute; right: -16px !important; top: -16px !important; margin: 0; width: 30px; height: 30px; background: url("#{resource['primefaces-delta:images/modalClose.png']}") 0 0 no-repeat; border: 0 !important; z-index: 10000; padding: 0px !important;}
+.ui-dialog .ui-dialog-titlebar-close span { display: none !important; }
+.ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
+.ui-dialog .ui-dialog-content { position: relative; border: 0; padding: 15px 20px 20px 20px; background: none; overflow: auto; zoom: 1; }
+.ui-dialog .ui-dialog-buttonpane { text-align: left; border: solid #e5e5e5; border-width: 1px 0 0 0; background: transparent; margin: 20px 20px 10px 20px; padding: 10px 0 0 0; }
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
+.ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
+.ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.ui-draggable .ui-dialog-titlebar { cursor: move; }
+</style>
+</h:head>
+      <h:form id="form1">
+<p:growl autoUpdate="true" showDetail="false" id="warn"/>
+  <p:outputPanel  style="width:100%"  id="panelc">
+  <p:fieldset legend="Bina Ara"  style="width:97%" toggleable="true"  rendered="#{binaBean.sessionBina.binaId eq 0}" >
+  <table style="width:100%" border="0">
+  <tr style="width:100%;vertical-align:text-top;opacity:1.00;">
+  <td colspan="2">
+  <h:panelGrid columns="1">
+  <p:outputLabel styleClass="label" value="#{label.binaAdi}" for="binacomplete"/>
+<h:panelGrid columns="3" id="gridbina">
+
+  		<p:autoComplete value="#{binaBean.binalar}" var="bina"  size="67" converter="binalar" 
+  		id="binacomplete"  disabled="#{cihazBean.cihazUpdate}" placeholder="Bina Adının ilk üç karakterini yazınız"
+  		cache="true" cacheTimeout="3000" scrollHeight="600" panelStyle="width:600px;"
+completeMethod="#{binaBean.searchBina}" forceSelection="true"  required="true" 
+requiredMessage="Bina adı yazarak arama yapınız ve işlem yapacağınız binayı sonuçlar içerisinden seçiniz"
+ minQueryLength="3" queryDelay="300" itemValue="#{bina}" itemLabel="#{bina.binaAdi}">
+<p:ajax event="itemSelect" listener="#{binaBean.listener}" process="@this" update=":form1 :form2 :form3"/>
+
+<p:column headerText="#{label.adi}">
+#{bina.binaAdi}
+</p:column>
+<p:column headerText="#{label.binaId}">
+#{bina.binaId}
+</p:column>
+<p:column headerText="#{label.tescilNo}">
+#{bina.tescilNo}
+</p:column>
+
+<p:column headerText="#{label.binaNo}">
+#{bina.binaNo}
+</p:column>
+
+<p:column headerText="#{label.il}/#{label.ilce}">
+#{bina.ilAdi}/#{bina.ilceAdi}
+</p:column>
+<p:column headerText="#{label.mahalle}">
+#{bina.mahalle}
+</p:column>
+<p:column headerText="#{label.caddesokak}">
+#{bina.caddeSokak}
+</p:column>
+					<p:column headerText="#{label.adres}">
+#{bina.acikAdres}
+</p:column>
+
+
+</p:autoComplete>
+<p:commandButton icon="ui-icon-search"  
+				id="binacompletesearch"
+				style="margin-left:-25px;z-index:1;width:20px;height:20px;border-radius:5px;
+				-moz-border-radius:5px;-webkit-border-radius:5px;" 
+				disabled="true"></p:commandButton>
+				
+				<p:selectBooleanCheckbox value="#{binaBean.searchType}" disabled="#{cihazBean.cihazUpdate}">
+				<p:ajax event="change" listener="#{binaBean.searchTypeListener}" process="@this" update="binacomplete"/>
+				</p:selectBooleanCheckbox>
+				</h:panelGrid>
+				</h:panelGrid>
+  
+  </td>
+  
+  <td>
+  <h:panelGrid columns="1" id="gridbinaid">
+  <p:outputLabel for="txtbinaid" value="#{label.binaId}"/>
+  <p:inputText id="txtbinaid" required="true" requiredMessage="#{label.binaId} #{label.giriniz}" value="#{cihazBean.binaIdString}"
+  disabled="#{cihazBean.cihazUpdate}">
+  <p:ajax event="blur" listener="#{binaBean.binaBulByIdListener}" process="@this" update=":form1 :form2 :form3">
+   <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  </p:ajax>
+  </p:inputText>
+  </h:panelGrid>
+  </td>
+  <td>
+  <h:panelGrid columns="1" id="gridobys">
+  <p:outputLabel for="txtobyskod" value="#{label.obysbinakod}"/>
+  <p:inputText id="txtobyskod" value="#{binaBean.binalar.tescilNo}" disabled="#{cihazBean.cihazUpdate}">
+  <p:ajax event="blur" listener="#{binaBean.binaBulByTescilNoListener}" process="@this" update=":form1 :form2 :form3">
+   <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  </p:ajax>
+  
+  </p:inputText>
+  </h:panelGrid>
+  </td>
+  </tr>
+ 
+ 
+  </table>
+  </p:fieldset>
+  <p:fieldset legend="#{cihazBean.cihaz.kimlikNo}" rendered="false" toggleable="true">
+  <table style="width:100%" border="0">
+  <tr style="width:100%;vertical-align:text-top;opacity:1.00">
+ 
+  <td>
+  <h:panelGrid columns="1">
+<p:outputLabel value="#{label.asansorkimlikno}" for="asansorkimlik" />
+<p:inputText id="asansorkimlik" value="#{cihazBean.cihaz.kimlikNo}" disabled="true"
+ style="color: #6986c9;width: 190px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;"></p:inputText> 
+ </h:panelGrid>
+  
+  </td>
+  
+  
+  
+  </tr>
+  </table>
+  </p:fieldset>
+  <br/>
+  <br/>
+  <p:fieldset legend="#{cihazBean.cihaz.kimlikNo}" rendered="#{cihazBean.cihazUpdate}" style="width:97%" toggleable="true" >
+ <h:panelGrid columns="4" cellpadding="5" cellspacing="5" style="width:100%;vertical-align:text-top;opacity:1.00">
+<h:panelGrid  columns="1" id="gridetiket">
+<p:outputLabel value="#{label.uavtEtiket}"/>
+<p:inputText disabled="true" value="#{cihazBean.cihaz.uavtEtiket}"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; 
+border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;"
+></p:inputText>
+
+</h:panelGrid>
+  <h:panelGrid  columns="1" id="griduavtsirano">
+<p:outputLabel value="#{label.uavtSiraNo}" for="txtsirano"/>
+<p:inputText  id="txtsirano" value="#{cihazBean.uavtAsansorSiraNo}" style="color: #6986c9;width: 100px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; 
+border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<p:ajax event="keydown" process="@this" update="grduavt gridetiket" listener="#{cihazBean.uavtSiraNoKeyDownListener}"></p:ajax>
+</p:inputText>
+
+</h:panelGrid>
+   <h:panelGrid  columns="1">
+    <p:outputLabel for="uavtkod" value="#{label.uavtKod}"/>
+ <h:panelGrid columns="2" id="grduavt">
+           		  <p:inputText  id="uavtkod" readonly="true"
+           		 style="color: #6986c9;width: 100px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; 
+border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;"   onkeydown="alert('Butonu kullanınız')" value="#{cihazBean.cihazUavtKod}"
+           		  onclick="alert('Butonu kullanınız')" onkeypress="alert('Butonu kullanınız')">
+           		  <f:validator validatorId="validators.mustGreatThanZero"/>
+           		 <p:ajax event="blur" process="@this" update="@this" listener="#{cihazBean.uavtKodOnBlurListener}"></p:ajax>
+           		 </p:inputText>
+           		 <p:commandButton icon="ui-icon-help" title="#{label.uavtKodGetir}" style="width:12px;" id="btnuavtkod"
+           		process="@this gridbinaid griduavtsirano" update=":form1:panelc" actionListener="#{cihazBean.asansorKimlikKodSorgula}">
+           		 </p:commandButton>
+           		    <p:blockUI trigger="btnuavtkod" block="grduavt">
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+            </p:blockUI>
+           		 </h:panelGrid>
+
+</h:panelGrid>
+ 
+   <h:panelGrid columns="1">
+<p:outputLabel value="#{label.durum}" for="cihazDurum"/>
+<p:selectOneMenu id="cihazDurum"  style="width:100px" value="#{cihazBean.cihaz.durum}">
+<f:selectItem itemLabel="Aktif" itemValue="A"/>
+<f:selectItem itemLabel="Pasif" itemValue="P"/>
+<p:ajax event="change" process="@this" update="@this"></p:ajax>
+</p:selectOneMenu>
+</h:panelGrid>
+ </h:panelGrid>
+ 
+ 
+  </p:fieldset>
+  		
+
+
+ 
+          </p:outputPanel> 
+<p:dialog id="uavtcihaz" widgetVar="uavtCihaz" visible="false" modal="true" width="auto" header="UAVT Kayıtlı Asansörler">
+<p:ajax event="close" process="@this" update=":form1"></p:ajax>
+				<p:dataTable id="uavtCihazTable" widgetVar="uavtCihazTable" value="#{cihazBean.uavtCihazList}" var="uavtCihaz" paginator="true"  paginatorPosition="top"
+				filteredValue="#{cihazBean.uavtCihazFilter}"
+				
+				rows="10" selectionMode="single"
+				emptyMessage="#{label.emptyList}">
+				<p:column headerText="#{label.asansorSiraNo}" sortBy="#{uavtCihaz.asansorSiraNo}" filterBy="#{uavtCihaz.asansorSiraNo}">
+				#{uavtCihaz.asansorSiraNo}
+				</p:column>
+				<p:column headerText="#{label.etiketYil}" sortBy="#{uavtCihaz.etiketYil}" filterBy="#{uavtCihaz.etiketYil}">
+				#{uavtCihaz.etiketYil}
+				</p:column>
+				<p:column headerText="#{label.uavtKod}" sortBy="#{uavtCihaz.asansorNo}" filterBy="#{uavtCihaz.asansorNo}">
+				#{uavtCihaz.asansorNo}
+				</p:column>
+				<p:column headerText="#{label.uavtEtiket}" sortBy="#{uavtCihaz.asansorEtiket}" filterBy="#{uavtCihaz.asansorEtiket}">
+				#{uavtCihaz.asansorEtiket}
+				</p:column>
+				<p:column headerText="#{label.gecerlilikTarih}" sortBy="#{uavtCihaz.gecerlilikTarih}" filterBy="#{uavtCihaz.gecerlilikTarih}">
+				<h:outputText value="#{uavtCihaz.gecerlilikTarih}"> 
+				<f:convertDateTime pattern="dd.MM.yyyy" locale="tr"></f:convertDateTime>
+				</h:outputText>
+				</p:column>
+					<p:column headerText="#{label.durum}" sortBy="#{uavtCihaz.aktif?'Aktif':'Pasif'}" filterBy="#{uavtCihaz.aktif?'Aktif':'Pasif'}">
+				<h:outputText value="#{uavtCihaz.aktif?'Aktif':'Pasif'}"/>
+				</p:column>
+				</p:dataTable>
+				</p:dialog>
+</h:form>
+
+    </ui:composition>

@@ -1,0 +1,79 @@
+<ui:composition  
+xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+     
+   
+<p:panel id="pnlCihaz"  toggleable="false"  header="Asansörler"
+					closable="false" toggleSpeed="500" closeSpeed="500" 
+					widgetVar="panelcihaz"   rendered="#{not empty cihazBean.cihazlar}">
+				
+	<p:dataTable id="tblx0102x" var="cihazlar" value="#{cihazBean.cihazList}" emptyMessage="#{label.emptyList}"  
+  	 style="width:101%" paginator="true" paginatorPosition="bottom" rows="20" selectionMode="single">
+  		 	
+           
+        <p:column headerText="#{label.asansorkimlikno}" style="text-align:left">
+       	    #{cihazlar.kimlikNo}  
+         
+        </p:column>  
+  		<p:column headerText="#{label.asansorunyeri}" style="text-align:left">
+       	    #{cihazlar.asansorunYeri}  
+         
+        </p:column> 
+        <p:column headerText="#{label.tip}" style="text-align:left"> 
+        
+            #{cihazlar.tipAciklama}  
+        </p:column>
+         <p:column headerText="#{label.uavtKod}" style="text-align:left"> 
+        
+            #{cihazlar.uavtKod}  
+        </p:column>
+         <p:column headerText="#{label.uavtEtiket}" style="text-align:left"> 
+        
+            #{cihazlar.uavtEtiket}  
+        </p:column>
+         <p:column headerText="#{label.uavtSiraNo}" style="text-align:left"> 
+        
+            #{cihazlar.uavtSiraNo}  
+        </p:column>
+        <p:column headerText="#{label.etiket}" style="text-align:left"> 
+          <p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketsari.png"  rendered="#{cihazlar.sonKontrolEtiketi eq 'S'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{cihazlar.sonKontrolEtiketi}" rendered="false"></h:outputText>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"  rendered="#{cihazlar.sonKontrolEtiketi eq 'Y'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{cihazlar.sonKontrolEtiketi}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"  rendered="#{cihazlar.sonKontrolEtiketi eq 'M'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{cihazlar.sonKontrolEtiketi}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"  rendered="#{cihazlar.sonKontrolEtiketi eq 'K'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{cihazlar.sonKontrolEtiketi}"  rendered="false"/>
+	</p:graphicImage>
+	  
+        </p:column>
+        <p:column headerText="#{label.sonKontrolTarihi}">
+        <h:outputText value="#{cihazlar.sonKontrolTarihi}">
+        <f:convertDateTime locale="tr" pattern="dd.MM.yyyy"></f:convertDateTime>
+        </h:outputText>
+        </p:column>
+         <p:column headerText="#{label.durum}" style="text-align:left"> 
+        
+            #{cihazlar.durum eq 'A'?'Aktif':'Pasif'}  
+        </p:column>
+        <p:column style="width:2%">
+        <p:commandLink title="#{label.degistir}" actionListener="#{cihazBean.asansorGuncelle(cihazlar)}"  process="@this tblx0102x">
+        <p:graphicImage value="${pageContext.request.contextPath}/resources/image/edit.png"/>
+        </p:commandLink>
+        </p:column>
+       
+        
+    	</p:dataTable> 
+    	
+    	
+		</p:panel>
+		
+		
+		
+				</ui:composition>

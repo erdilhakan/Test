@@ -1,0 +1,212 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+
+	<title></title>
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+
+.ui-datatable table td{
+color:#4C538D;
+border-color: #4C538D;
+}
+.ui-datatable table{
+color:#4C538D;
+border-color: #4C538D;
+}
+#rowClass1{
+background-color: currentcolor;
+}
+#rowClass2{
+background-color: #fff;
+}
+</style>
+
+</h:head>
+<h:form id="formraporara">
+<h:body>
+<p:growl id="growl"  showDetail="false" autoUpdate="true"/>
+<p:fieldset id="tarpanel" toggleable="true" legend="Asansör Kontrol" style="margin-left:3%;">
+
+<h:panelGrid columns="2" id="tarihtable" cellpadding="10" cellspacing="10">
+<h:panelGrid style="width:50%">
+<p:outputLabel value="#{label.kontroltarihi} 1" for="tarih1"></p:outputLabel>
+<p:calendar id="tarih1" pattern="dd.MM.yyyy" locale="tr" navigator="true"  
+                mode="inline"  
+             value="#{belediyeRaporBean.tarih1}">
+            
+             <p:ajax event="dateSelect" listener="#{belediyeRaporBean.dateBlurListener}" update=":formraporara:panelistatistik :formraporara:growl"></p:ajax>
+            
+             </p:calendar>
+</h:panelGrid>
+     <h:panelGrid style="width:50%">
+     <p:outputLabel value="#{label.kontroltarihi} 2" for="tarih2"></p:outputLabel>
+<p:calendar id="tarih2" pattern="dd.MM.yyyy" locale="tr" navigator="true" mode="inline"  
+               
+             value="#{belediyeRaporBean.tarih2}">
+              
+             <p:ajax event="dateSelect" listener="#{belediyeRaporBean.dateBlurListener}" process=":formraporara:tarih1 :formraporara:tarih2" update=":formraporara:panelistatistik :formraporara:growl"></p:ajax>
+             
+           </p:calendar>  
+         </h:panelGrid>
+</h:panelGrid> 
+<p:panel  style="border:none;float:right" id="btng">
+<p:commandButton id="btngetir" value="#{label.getir}" icon="ui-icon-search" 
+ process="@this :formraporara:tarihtable" 
+actionListener="#{belediyeRaporBean.binaKontroller}" 
+update="@form" ></p:commandButton>
+<p:blockUI trigger="btngetir" block="btngetir">
+      <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+     </p:blockUI> 
+</p:panel>
+</p:fieldset>
+
+
+
+     
+
+<br/>
+<br/>
+<p:panel  toggleable="true" visible="#{!empty belediyeRaporBean.belediyeKontroller}" id="panelistatistik" style="width:100%;margin-left:1%" > 
+<f:facet name="header">
+
+<h:outputText value="#{belediyeRaporBean.tarih1}" style="float:left">
+<f:convertDateTime pattern="dd.MM.yyyy"/>
+</h:outputText>
+<h:outputText value=" - " style="float:left"/>
+
+<h:outputText value="#{belediyeRaporBean.tarih2}" style="float:left">
+<f:convertDateTime pattern="dd.MM.yyyy"/>
+</h:outputText>
+<h:outputText value="   " style="float:left"/>
+<h:outputText value="  TARİHLERİ ARASINDA YAPILAN KONTROLLER (#{loginBean.kullanici.adi})" style="float:left"/>
+
+</f:facet>
+<p:commandButton icon="ui-icon-refresh" style="float:right" process="@form" title="Görünüm Değiştir" 
+update=":formraporara:panelistatistik" actionListener="#{belediyeRaporBean.changeTableViewListener}"></p:commandButton>
+<p:dataTable id="binakontrolodemetable" widgetVar=""  emptyMessage="#{label.emptyList}" paginator="true" paginatorPosition="bottom" rows="40"
+rowStyleClass="rowClass1;rowClass2" selectionMode="single"
+value="#{belediyeRaporBean.belediyeKontrolData}" var="list" filteredValue="#{belediyeRaporBean.filteredBinaKontrol}"
+style="overflow:scroll;font-size:0.8em;width:100%" rowIndexVar="rowindex" resizableColumns="true" liveResize="true" liveScroll="true">
+
+
+<p:column filterBy="#{list.binaKodu}" sortBy="#{list.binaKodu}" width="5%">
+<f:facet name="header"><h:outputText value="#{label.binaId}"/></f:facet>
+<h:outputText value="#{list.binaKodu}"/>
+</p:column>
+<p:column filterBy="#{list.binaAdi}" sortBy="#{list.binaAdi}" width="20%">
+<f:facet name="header"><h:outputText value="#{label.binaAdi}"/></f:facet>
+<h:outputText value="#{list.binaAdi}"/>
+</p:column>
+
+<p:column filterBy="#{list.acikAdres}" sortBy="#{list.acikAdres}" width="30%">
+<f:facet name="header"><h:outputText value="#{label.bina} #{label.adres}"/></f:facet>
+<h:outputText value="#{list.acikAdres}"/>
+</p:column>         
+<p:column sortBy="#{list.kontrolTarihi}" width="7%">
+<f:facet name="header"><h:outputText value="#{label.kontroltarihi}"/></f:facet>
+<h:outputText value="#{list.kontrolTarihi}">
+<f:convertDateTime pattern="dd.MM.yyyy"/>
+</h:outputText>
+</p:column>     
+<p:column sortBy="#{list.yapiTipiAdi}" filterBy="#{list.yapiTipiAdi}" width="10%">
+<f:facet name="header"><h:outputText value="#{label.yapikonusu}"/></f:facet>
+<h:outputText value="#{list.yapiTipiAdi}"/>
+</p:column>  
+<p:column sortBy="#{list.yoneticiAdiSoyadi}" filterBy="#{list.yoneticiAdiSoyadi}" width="20%">
+<f:facet name="header"><h:outputText value="#{label.yoneticiAdiSoyadi}"/></f:facet>
+<h:outputText value="#{list.yoneticiAdiSoyadi}"/>
+</p:column> 
+<p:column width="8%">
+<f:facet name="header"><h:outputText value="#{label.yoneticiTelefon}"/></f:facet>
+<h:outputText value="#{list.yoneticiTelefon}"/>
+</p:column> 
+<p:column sortBy="#{list.basvuruAsansor.bakimciFirmaAdi}" filterBy="#{list.basvuruAsansor.bakimciFirmaAdi}" width="25%">
+<f:facet name="header" ><h:outputText value="#{label.bakimciFirma}"/></f:facet>
+<h:outputText value="#{list.basvuruAsansor.bakimciFirmaAdi}"/>
+
+</p:column>
+<p:column filterBy="#{list.cihazTipi}" sortBy="#{list.cihazTipi}" width="7%">
+<f:facet name="header"><h:outputText value="#{label.asansorTipi}"/></f:facet>
+<h:outputText value="#{list.cihazTipi}"/>
+</p:column>  
+<p:column width="2%">
+  <p:commandButton icon="ui-icon-folder-open" title="#{label.ac}" actionListener="#{belediyeRaporBean.raporGetir(list)}" ajax="false"
+      id="btnrapor" />
+     
+</p:column>
+<p:blockUI trigger="btnrapor" block="btnrapor">
+      <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+     </p:blockUI> 
+</p:dataTable>
+<h:panelGrid columns="2">
+<h:commandLink>
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/xls.jpg" width="25" height="25"/>  
+          
+
+        <p:dataExporter type="xls" target="exporttable" fileName="yapilankontroller" pageOnly="false" encoding="ISO-8859-9" />
+    </h:commandLink>
+    
+    </h:panelGrid>
+</p:panel>
+<p:dataTable id="exporttable" widgetVar=""  emptyMessage="#{label.emptyList}" paginator="true" paginatorPosition="bottom" rows="40"
+rendered="false"
+rowStyleClass="rowClass1;rowClass2" selectionMode="single"
+value="#{belediyeRaporBean.belediyeKontrolData}" var="list" filteredValue="#{belediyeRaporBean.filteredBinaKontrol}"
+style="overflow:scroll;font-size:0.8em;width:100%" rowIndexVar="rowindex" resizableColumns="true" liveResize="true" liveScroll="true">
+
+
+<p:column filterBy="#{list.binaKodu}" sortBy="#{list.binaKodu}" width="5%">
+<f:facet name="header"><h:outputText value="#{label.binaId}"/></f:facet>
+<h:outputText value="#{list.binaKodu}"/>
+</p:column>
+<p:column filterBy="#{list.binaAdi}" sortBy="#{list.binaAdi}" width="20%">
+<f:facet name="header"><h:outputText value="#{label.binaAdi}"/></f:facet>
+<h:outputText value="#{list.binaAdi}"/>
+</p:column>
+
+<p:column filterBy="#{list.acikAdres}" sortBy="#{list.acikAdres}" width="30%">
+<f:facet name="header"><h:outputText value="#{label.bina} #{label.adres}"/></f:facet>
+<h:outputText value="#{list.acikAdres}"/>
+</p:column>         
+<p:column sortBy="#{list.kontrolTarihi}" width="7%">
+<f:facet name="header"><h:outputText value="#{label.kontroltarihi}"/></f:facet>
+<h:outputText value="#{list.kontrolTarihi}">
+<f:convertDateTime pattern="dd.MM.yyyy"/>
+</h:outputText>
+</p:column>     
+<p:column sortBy="#{list.yapiTipiAdi}" filterBy="#{list.yapiTipiAdi}" width="10%">
+<f:facet name="header"><h:outputText value="#{label.yapikonusu}"/></f:facet>
+<h:outputText value="#{list.yapiTipiAdi}"/>
+</p:column>  
+<p:column sortBy="#{list.yoneticiAdiSoyadi}" filterBy="#{list.yoneticiAdiSoyadi}" width="20%">
+<f:facet name="header"><h:outputText value="#{label.yoneticiAdiSoyadi}"/></f:facet>
+<h:outputText value="#{list.yoneticiAdiSoyadi}"/>
+</p:column> 
+<p:column width="8%">
+<f:facet name="header"><h:outputText value="#{label.yoneticiTelefon}"/></f:facet>
+<h:outputText value="#{list.yoneticiTelefon}"/>
+</p:column> 
+<p:column sortBy="#{list.basvuruAsansor.bakimciFirmaAdi}" filterBy="#{list.basvuruAsansor.bakimciFirmaAdi}" width="25%">
+<f:facet name="header" ><h:outputText value="#{label.bakimciFirma}"/></f:facet>
+<h:outputText value="#{list.basvuruAsansor.bakimciFirmaAdi}"/>
+
+</p:column>
+<p:column filterBy="#{list.cihazTipi}" sortBy="#{list.cihazTipi}" width="7%">
+<f:facet name="header"><h:outputText value="#{label.asansorTipi}"/></f:facet>
+<h:outputText value="#{list.cihazTipi}"/>
+</p:column>  
+
+</p:dataTable>
+ </h:body>
+    </h:form>      
+        
+           
+               </ui:composition>

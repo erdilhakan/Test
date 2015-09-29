@@ -1,0 +1,31 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<p:dataGrid var="cihaz" value="#{cihazBean.secilen.cihaz}"
+paginator="false"  columns="2"  id="cihazdata" emptyMessage="#{label['emptycihazteknikbilgi']}" rendered="#{not empty cihazBean.secilen.cihaz}">
+<f:facet name="header">
+#{cihazBean.header}
+</f:facet>
+ 
+<table>
+<tr style="width: 100%">
+<td style="width: 150px">
+<p:outputLabel value="#{cihaz.baslik}" styleClass="label"/></td>
+<td/>
+<td style="width: 210px">
+
+<p:inputText   value="#{cihaz.cevap}" readonly="true"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;"/>
+
+</td>
+</tr>
+</table>
+</p:dataGrid>
+
+
+
+</ui:composition>

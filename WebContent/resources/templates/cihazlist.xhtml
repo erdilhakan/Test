@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	
+	<title></title>
+	
+		
+	<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+
+</h:head>
+<h:form id="formcihaz">
+
+<p:dataTable id="tblx0102" var="cihazlar" value="#{cihazBean.cihazList}" emptyMessage="#{label.emptyList}"  
+  	selection="#{cihazBean.secilen}" selectionMode="single">
+  	
+  	    <p:ajax event="rowSelect" listener="#{cihazBean.onRowSelect}" update="@form(cihazdata)" process="tblx0102"/>
+        <p:ajax event="rowUnselect" listener="#{cihazBean.onRowUnselect}"/>
+        	      
+        <p:column headerText="#{label.asansorkimlikno}" style="text-align:left">
+       	    #{cihazlar.kimlikNo}  
+        </p:column>  
+  
+        <p:column headerText="#{label.tip}" style="text-align:left"> 
+            #{cihazlar.tipAciklama}  
+        </p:column>
+    </p:dataTable> 
+ 	<ui:include src="cihazbilgi.xhtml"/>
+ 
+   
+</h:form>
+
+</ui:composition>

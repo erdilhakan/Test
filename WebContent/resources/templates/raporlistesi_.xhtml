@@ -1,0 +1,316 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	
+		<title>#{label.raporlar}</title>
+	
+		
+	<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+	<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+
+</h:head>
+<h:form id="formrapor">
+<p:growl id="warn" autoUpdate="true" showDetail="false"/>
+<h:panelGroup id="grptarih">
+<h2>#{raporBean.ay} raporları listelenmektedir.Değiştirmek için
+ <p:commandLink id="lnkovpan" value="tıklayınız" style="color:#0066CC"></p:commandLink>
+
+ </h2>
+  </h:panelGroup>
+
+
+
+  
+    <p:overlayPanel id="listeDegistir" for="lnkovpan" hideEffect="fade" dynamic="true" style="width:auto">
+    <h:panelGrid columns="1">
+    <p:calendar locale="tr" navigator="true" mode="inline" value="#{raporBean.secilenTarih}" id="raporTarih"></p:calendar>
+    <p:commandButton icon="ui-icon-document" iconPos="top"
+    id="btnraporliste"
+    value="Listele" actionListener="#{raporBean.raporByTarihListener}" process="@this raporTarih" update="tabview grptarih warn"></p:commandButton>
+    <p:blockUI blocked="@form" trigger="btnraporliste">
+<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+</p:blockUI>
+    </h:panelGrid>
+   
+       </p:overlayPanel>
+       <br/>
+<p:tabView id="tabview" style="width:99%">
+<p:tab title="#{label.onaybekleyenraporlar}" >
+
+<p:dataTable id="tblx0102" var="raporlar" value="#{raporBean.raporModel}" emptyMessage="#{label.emptyList}" style="width:98%;margin-left:-2%;"
+  	selection="#{raporBean.selected}" paginator="true" paginatorPosition="bottom" filteredValue="#{raporBean.filteredRaporlar}"
+  	 rows="20"
+   paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10,20,30,40,50">
+  	
+  	     <p:column selectionMode="multiple" style="text-align:center"/>
+        <p:column headerText="#{label.binaAdi}" sortBy="binaAdi" filterBy="binaAdi" filterMatchMode="contains">
+         #{raporlar.binaAdi}
+        </p:column>
+        <p:column headerText="#{label.asansorunyeri}" filterBy="asansorunYeri" sortBy="asansorunYeri">
+          #{raporlar.asansorunYeri}
+        </p:column>	      
+        <p:column headerText="#{label.adi}" style="text-align:left" filterBy="dosyaAdi">
+       	    #{raporlar.dosyaAdi}  
+        </p:column>
+        <p:column headerText="#{label.raportarih}" style="text-align:left" sortBy="raporTarihi" filterBy="#{raporlar.raporTarihi}" filterMatchMode="contains">
+        <h:outputText value="#{raporlar.raporTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText> 
+        </p:column>
+         <p:column headerText="#{label.etiket}" style="text-align:left"> 
+          <p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketsari.png"  rendered="#{raporlar.etiket eq 'S'}">
+	<h:outputText value="#{raporlar.etiket}" rendered="false"></h:outputText>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"  rendered="#{raporlar.etiket eq 'Y'}">
+	<h:outputText value="#{raporlar.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"  rendered="#{raporlar.etiket eq 'M'}" >
+	<h:outputText value="#{raporlar.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"  rendered="#{raporlar.etiket eq 'K'}" >
+	<h:outputText value="#{raporlar.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	  
+        </p:column>
+        <p:column headerText="#{label.kontrolBitisTarihi}">
+        <h:outputText value="#{raporlar.kontrolTarihi}">
+        <f:convertDateTime locale="tr" pattern="dd.MM.yyyy"></f:convertDateTime>
+        </h:outputText>
+        </p:column>
+         <p:column headerText="#{label.durum}" style="background:#ADB5B1;color:860B22" sortBy="onayDurum">
+         
+       #{raporlar.onayDurum eq 'T'?"Kontrol mühendisi onayı bekleniyor":(raporlar.onayDurum eq 'Y'?"Onaycı kontrolü bekleniyor":(raporlar.onayDurum eq 'M'?"Onay bekleniyor":""))}
+        </p:column>
+        <p:column style="width:2%">
+        <p:commandButton icon="ui-icon-folder-open" title="#{label.ac}" actionListener="#{raporBean.onayListener(raporlar)}" action="#{raporBean.listener(raporlar)}" 
+        process="@this" update="@form">
+       	
+        </p:commandButton>
+      
+        <br/>
+        <p:commandButton icon="ui-icon-trash" title="#{label.sil}"  rendered="#{raporlar.onaylayanSicilNo eq loginBean.kullanici.sicilNo}"
+        actionListener="#{raporBean.raporSil(raporlar)}" update=":formrapor:tabview:tblx0102 :formrapor:warn">
+        <p:confirm header="Rapor Sil" message="Raporu silmek istediğinizden emin misiniz?" icon="ui-icon-check" />
+        </p:commandButton>
+
+     <br/>
+     
+        <p:commandButton icon="	ui-icon-check" title="Mühendis Onay" lt="Mühendisin onaylaması bekleniyor"  id="btnMuhendisOnay" 
+        rendered="#{raporlar.onaylayanSicilNo ne loginBean.kullanici.sicilNo and raporlar.onayDurum eq 'T'}">
+        <p:ajax listener="#{raporBean.muhendisOnay(raporlar)}" update="@form">
+        
+	    </p:ajax>
+     <br/>
+     </p:commandButton>
+        <p:commandButton icon="	ui-icon-check" title="Onaycı Kontrol" lt="Onaycının kontrol etmesi bekleniyor"  id="btnOnayciKontrol" 
+        rendered="#{raporlar.onaylayanSicilNo eq loginBean.kullanici.sicilNo and raporlar.onayDurum eq 'Y'}">
+         <p:ajax listener="#{raporBean.onayciKontrol(raporlar)}" update="@form">
+        
+	    </p:ajax>
+        </p:commandButton>
+        <br/>
+        <p:commandButton icon="	ui-icon-check" title="#{label.onayla}"  id="btnonay" ajax="false" action="#{raporBean.onayla(raporlar)}"
+         rendered="#{raporlar.onaylayanSicilNo eq loginBean.kullanici.sicilNo and raporlar.onayDurum eq 'M'}"
+         >
+	    </p:commandButton>
+	     <p:blockUI trigger="btnonay" blocked="btnonay">
+     <p:graphicImage url="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+    </p:blockUI>
+    <p:blockUI trigger="btnOnayciKontrol" blocked="btnOnayciKontrol">
+     <p:graphicImage url="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+    </p:blockUI>
+     <p:blockUI trigger="btnMuhendisOnay" blocked="btnMuhendisOnay">
+     <p:graphicImage url="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+    </p:blockUI>
+        </p:column>
+       <f:facet name="footer">
+       <p:commandButton icon="ui-icon-folder-open" id="ta1" value="Seçilenleri Aç" title="Seçilenleri Aç" actionListener="#{raporBean.openSelected}" 
+       style="float:right" 
+        process=":formrapor:tabview:tblx0102" update=":formrapor:warn :formrapor:tabview:tblx0102">
+       	<p:confirm header="Rapor Al" message="UYARI ! OBYS DÖNEMİ RAPORLAR TOPLU OLARAK AÇILMAZ !" icon="ui-icon-notice" />  
+       
+</p:commandButton>
+
+        
+       </f:facet>
+    </p:dataTable>
+            
+ <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">  
+        <p:commandButton value="Devam" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="$('html, body').animate({ scrollTop: 50 }, 'slow')"/>  
+        <p:commandButton value="İptal" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+    </p:confirmDialog>
+    <p:dialog visible="false" showEffect="clip" hideEffect="clip" width="80%" height="50%" widgetVar="dialograpor" id="dialograpor">
+   
+  Tarayıcınız pdf görüntüleyemiyor ise,Dosyayı Açmak için <h:commandLink  style="color:#5882FA;" action="#{raporBean.raporAc}" value="Tıklayınız"/>
+ <p:media  value="#{raporBean.mediaPdf}" width="100%" height="300px" >  </p:media>
+  
+   </p:dialog>
+    
+    
+  </p:tab>
+  <p:tab title="#{label.onaylanmisraporlar}" id="tab002">
+  <p:growl id="tabgrowl" autoUpdate="true"/>
+  <p:dataTable id="tblx010x" var="onayliraporlar" value="#{raporBean.raporOnayModel}" emptyMessage="#{label.emptyList}" style="width:98%;margin-left:-2%;"
+  selection="#{raporBean.selected}" filteredValue="#{raporBean.slctRaporlar}" paginator="true" paginatorPosition="bottom"  rows="20"
+   paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10,20,30,40,50">
+  	  <p:column selectionMode="multiple" style="width:16px;text-align:center;"/>
+        <p:column headerText="#{label.binaAdi}" sortBy="binaAdi" filterBy="binaAdi" style="width:21%">
+         #{onayliraporlar.binaAdi}
+        </p:column>
+  	    
+          <p:column headerText="#{label.asansorunyeri}" filterBy="asansorunYeri" sortBy="asansorunYeri" style="width:19%">
+          #{onayliraporlar.asansorunYeri}
+        </p:column>	 
+        	      
+        <p:column headerText="#{label.adi}" style="text-align:left;width:19%" sortBy="dosyaAdi" filterBy="dosyaAdi">
+       	    #{onayliraporlar.dosyaAdi}  
+        </p:column>
+        <p:column headerText="#{label.raportarih}" style="text-align:left;width:9%" sortBy="raporTarihi" filterBy="#{onayliraporlar.raporTarihi}" filterMatchMode="contains">
+        <h:outputText value="#{onayliraporlar.raporTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText> 
+        </p:column>
+        <p:column headerText="#{label.onaytarih}" style="text-align:left;width:9%" sortBy="onayTarihi">
+        <h:outputText value="#{onayliraporlar.onayTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText> 
+        </p:column>
+        <p:column headerText="#{label.etiket}" style="text-align:left;width:10%"> 
+          <p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketsari.png"  rendered="#{onayliraporlar.etiket eq 'S'}">
+	<h:outputText value="#{onayliraporlar.etiket}" rendered="false"></h:outputText>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"  rendered="#{onayliraporlar.etiket eq 'Y'}">
+	<h:outputText value="#{onayliraporlar.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"  rendered="#{onayliraporlar.etiket eq 'M'}" >
+	<h:outputText value="#{onayliraporlar.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"  rendered="#{onayliraporlar.etiket eq 'K'}" >
+	<h:outputText value="#{onayliraporlar.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	  
+        </p:column>
+        <p:column headerText="#{label.kontrolBitisTarihi}" style="width:9%">
+        <h:outputText value="#{onayliraporlar.kontrolTarihi}">
+        <f:convertDateTime locale="tr" pattern="dd.MM.yyyy"></f:convertDateTime>
+        </h:outputText>
+        </p:column>
+        <p:column headerText="#{label.durum}">
+        <h:outputText value="#{onayliraporlar.raporIptal?'İptal':''}"></h:outputText>
+        </p:column>
+         
+        <p:column style="width:2%">
+        <p:commandButton icon="ui-icon-folder-open" title="#{label.ac}" actionListener="#{raporBean.listener(onayliraporlar)}" process="@this"  update="@form" >
+        
+        </p:commandButton>
+        <br/>
+         <p:commandButton icon="ui-icon-circle-plus" title="#{label.asansorDenetimKaydet}" actionListener="#{raporBean.asansorDenetimKayit(onayliraporlar)}" 
+         id="btnuavt"  process="@this"  update="@form" rendered="#{onayliraporlar.raporKayit.denetimKayitId eq '0' and !onayliraporlar.raporIptal}">
+        <p:blockUI block='btnuavt' trigger="btnuavt">
+		<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+		</p:blockUI>
+        </p:commandButton>
+        <br/>
+        
+        <p:commandButton icon="ui-icon-cancel" title="#{label.iptal}"   rendered="#{onayliraporlar.onaylayanSicilNo eq loginBean.kullanici.sicilNo and !onayliraporlar.raporIptal}"
+         id="btnonayraporiptal" actionListener="#{raporBean.onayliRaporIptal(onayliraporlar)}" process="@this">
+        </p:commandButton>
+         
+         <br/>
+         <p:commandButton icon="ui-icon-trash" title="#{label.asansorDenetimKayitSil}" actionListener="#{raporBean.asansorDenetimKayitSil(onayliraporlar)}" 
+         id="btnuavtsil"  process="@this"  update="@form" rendered="#{onayliraporlar.raporKayit.denetimKayitId gt '0'}">
+        <p:blockUI block='btnuavtsil' trigger="btnuavtsil">
+		<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+		</p:blockUI>
+        </p:commandButton>
+
+ 
+        
+        <!-- oncomplete="PF('onaydialograpor').show()" -->
+        </p:column>
+        <f:facet name="footer">
+       <p:commandButton icon="ui-icon-folder-open" id="ta2" value="Seçilenleri Aç" title="Seçilenleri Aç" actionListener="#{raporBean.openSelected}" 
+       style="float:right" 
+        process="tblx010x" update=":formrapor:warn tblx010x">
+       	<p:confirm header="Rapor Al" message="UYARI ! OBYS DÖNEMİ RAPORLAR TOPLU OLARAK AÇILMAZ !" icon="ui-icon-notice" />  
+        </p:commandButton>
+         
+       </f:facet>
+    </p:dataTable>
+    
+    <p:dialog widgetVar="confirmiptal" id="iptalconfirm" modal="true" width="60%" height="500px;" showEffect="fade" hideEffect="explode" closable="false" header="Onaylı Rapor İptal">
+      <p:selectOneRadio id="raporiptalkod" value="#{raporBean.onayliRaporIptalKod}" style="width:100%" 
+      layout="grid" columns="1">
+            <f:selectItem itemLabel="Raporu yeniden oluşturacağım" itemValue="0" />
+            <f:selectItem itemLabel="Raporu yeniden oluşturmayacağım(Ödeme iptal edilecek)" itemValue="1"/>
+            <p:ajax listener="#{raporBean.onayliRaporIptalKodListener}" process="@this" update="@this tableasansorliste pasansorliste btnonayraporiptalok"></p:ajax>
+        </p:selectOneRadio>
+          <p:blockUI trigger="raporiptalkod" block="raporiptalkod">
+     <p:graphicImage url="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+    </p:blockUI>
+    <br/>
+   <p:panel visible="#{raporBean.onayliRaporIptalKod gt -1}" header="Aynı randevuda kontrol edilen asansörler" id="pasansorliste">
+    <p:dataTable id="tableasansorliste"  value="#{raporBean.randevuAsansorListe}" var="ral" widgetVar="tableasansorliste" paginator="true" paginatorPosition="bottom" 
+    rows="5" emptyMessage="#{label.emptyList}">
+    <p:column headerText="#{label.cihazId}">
+     #{ral.cihazId}
+    </p:column>
+    <p:column headerText="#{label.kontroltarihi}">
+         <h:outputText value="#{ral.kontrolTarihi}">
+         <f:convertDateTime pattern="dd.MM.yyyy"/>
+         </h:outputText>
+  </p:column>
+         <p:column headerText="#{label.kontrolTutari}">
+          <h:outputText value="#{ral.kontrolTutari}">
+          <f:convertNumber pattern="###,##0.00"></f:convertNumber>
+          </h:outputText>
+   </p:column>
+    <p:column>
+          <h:outputText value="#{ral.kontrolIptal?'Ödemesi iptal edilecek':''}">
+    </h:outputText>
+    </p:column>
+    </p:dataTable>
+    </p:panel>
+    <br/>
+  
+  <h:panelGrid columns="2" cellspacing="30" style="width:100%"> 
+       <p:commandButton value="Rapor İptal" style="float:left" disabled="#{raporBean.onayliRaporIptalKod eq -1}"
+       actionListener="#{raporBean.onayliRaporIptal}" ajax="false" 
+        styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="$('html, body').animate({ scrollTop: 50 }, 'slow')" id="btnonayraporiptalok"/>  
+        <p:commandButton value="Vazgeç" process="@this" actionListener="#{raporBean.onayliRaporIptalVazgec}" style="float:right"
+        update="iptalconfirm" styleClass="ui-confirmdialog-no" icon="ui-icon-close" oncomplete="PF('confirmiptal').hide()"/>
+     </h:panelGrid>
+  
+     <p:blockUI trigger="btnonayraporiptalok" block="btnonayraporiptalok">
+     <p:graphicImage url="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+    </p:blockUI>
+    </p:dialog>
+   
+   <p:dialog visible="false" showEffect="clip" hideEffect="clip" width="80%" height="50%" widgetVar="onaydialograpor" id="onaydialograpor">
+   
+  Tarayıcınız pdf görüntüleyemiyor ise,Dosyayı Açmak için <h:commandLink  style="color:#5882FA;" action="#{raporBean.raporAc}" value="Tıklayınız"/>
+ <p:media  value="#{raporBean.mediaPdf}" width="100%" height="300px" >  </p:media>
+  
+   </p:dialog>
+    
+    
+  </p:tab>
+ 
+    </p:tabView> 
+ 	
+ 
+	
+<p:blockUI blocked="@form" trigger="@form(ta1) @form(ta2)">
+<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+</p:blockUI>
+</h:form>
+
+
+
+</ui:composition>

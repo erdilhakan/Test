@@ -1,0 +1,205 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+	<style type="text/css">
+	
+.uyari {
+    width: 100%;
+    
+    background: #FFCC00;
+    -webkit-animation: myfirst 5s; /* Chrome, Safari, Opera */
+    animation: myfirst 5s;
+}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes myfirst {
+    from {background: #FFCC00 ;}
+    to {background:#680000 ;}
+}
+
+/* Standard syntax */
+@keyframes myfirst {
+   from {background: #FFCC00 ;}
+    to {background:#680000 ;}
+}
+.ui-growl {
+    position:absolute;
+    top:0;
+    left:70%;
+    z-index:9999;
+}
+
+	</style>
+	</h:head>
+	<p:panel id="pnlCihaz"  toggleable="false"  header="#{label.kontrolcihaz}" 
+					closable="false" toggleSpeed="500" closeSpeed="500" 
+					widgetVar="panelcihaz" rendered="#{basvuruBean.cihazlarVisible}" visible="#{!basvuruBean.islemiTamamla}">
+				
+				<p:dataTable var="asansorler" value="#{basvuruBean.asansorData}" selection="#{basvuruBean.selectedAsansor}" id="binaasansorler"
+				 paginator="true" paginatorAlwaysVisible="true" emptyMessage="#{label.emptyList}" paginatorPosition="bottom" rows="15" editable="true"
+				 style="width:100%;font-size:0.8em">
+				
+				<p:ajax event="rowEdit" update="binaasansorler" listener="#{basvuruBean.rowEditListener}" process="@this"></p:ajax>
+				<p:ajax event="rowSelectCheckbox" update=":formbasvuru:pnlkaydet binaasansorler" listener="#{basvuruBean.rowSelectListener}" process="@this"></p:ajax>
+				<p:ajax event="rowUnselectCheckbox" update=":formbasvuru:pnlkaydet binaasansorler" listener="#{basvuruBean.rowUnSelectListener}" process="@this"></p:ajax>
+				<p:ajax event="rowSelect" disabled="true"></p:ajax>
+				
+				<p:ajax event="toggleSelect" update=":formbasvuru:pnlkaydet binaasansorler" listener="#{basvuruBean.rowToggleSelectListener}" process="@this"></p:ajax>
+				
+				<p:column selectionMode="multiple" style="width:2%"/>  
+				<p:column headerText="#{label.id}">
+				#{asansorler.cihazId}
+				</p:column>
+				<p:column headerText="#{label.asansorkimlikno}" style="width:10%">
+				#{asansorler.kimlikNo}
+				</p:column>
+				<p:column headerText="#{label.asansorunyeri}" style="width:22%">
+				#{asansorler.asansorunYeri}
+				</p:column>
+				
+				<p:column headerText="#{label.asansorTipi}" style="width:8%">
+				#{asansorler.tipAciklama}
+				
+				</p:column>
+				<p:column headerText="#{label.bakimciFirma}" style="width:30%">
+				<p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{asansorler.bakimciFirmaAdi}"  title="Bakımcı firmayı hücreye tıklayarak girebilirsiniz!" style="width:100%"/>
+              <h:outputText value="?" 
+               rendered="#{asansorler.bakimciFirmaAdi eq '' or asansorler.bakimciFirmaAdi eq null or asansorler.bakimciFirmaAdi eq ' ' }"
+                style="font-size:1.1em;color:#00CC33 ;cursor: pointer;" title="Bakımcı firmayı kaleme  tıklayarak girebilirsiniz!"/>  
+                 
+              
+               </f:facet>
+               <f:facet name="input">
+                <p:selectOneMenu id="firma"  filter="true" filterMatchMode="contains"
+                	 value="#{asansorler.bakimciFirmaId}"
+                style="color: #6986c9;	width: 250px;" panelStyle="250px">
+                 <f:selectItem itemLabel="FİRMA SEÇİNİZ" itemValue="" />
+                 <f:selectItem itemLabel="BİNA YÖNETİMİNİN YETKİ BELGELİ ASANSÖR BAKIM FİRMASIYLA SÖZLEŞMESİ BULUNMAMAKTADIR !" itemValue="999999"></f:selectItem>
+                <f:selectItems value="#{basvuruBean.firmalar}"/>
+               
+                </p:selectOneMenu>
+               
+               </f:facet>
+           </p:cellEditor>
+           </p:column>
+           <p:column headerText="#{label.sonKontrolTarihi}" style="width:8%">
+           <h:outputText value="#{asansorler.kontrolTarihi}">
+           <f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+           </h:outputText>
+           </p:column>
+           <p:column headerText="#{label.etiket}" style="width:8%">
+              <p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketsari.png"  rendered="#{asansorler.sonKontrolEtiketi eq 'S'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{asansorler.sonKontrolEtiketi}" rendered="false"></h:outputText>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"  rendered="#{asansorler.sonKontrolEtiketi eq 'Y'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{asansorler.sonKontrolEtiketi}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"  rendered="#{asansorler.sonKontrolEtiketi eq 'M'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{asansorler.sonKontrolEtiketi}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"  rendered="#{asansorler.sonKontrolEtiketi eq 'K'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{asansorler.sonKontrolEtiketi}"  rendered="false"/>
+	</p:graphicImage>
+	  
+           </p:column>
+           <p:column headerText="#{label.kontrolturu}/#{label.kontrolTutari}" id="columntur" style="width:10%">
+           <p:cellEditor>
+           <f:facet name="output">
+          #{asansorler.kontrolTuru eq 'E'?'Eksiklik Kontrolü':(asansorler.kontrolTuru eq 'N'?'Normal Kontrol':(asansorler.kontrolTuru eq 'K'?'2.Eksiklik':''))}
+           </f:facet>
+           <f:facet name="input">
+           <p:selectOneRadio value="#{asansorler.kontrolTuru}" layout="grid" columns="1">
+           <f:selectItem itemLabel="Eksiklik" itemValue="E"/>
+           <f:selectItem itemLabel="2. Eksiklik" itemValue="K"/>
+           <f:selectItem itemLabel="Normal" itemValue="N"/>
+           
+           </p:selectOneRadio>
+           </f:facet>
+           
+           </p:cellEditor>
+           <br/>
+           <h:outputText value="#{asansorler.kontrolTutari}" rendered="#{asansorler.kontrolTutari gt '0'}">
+           <f:convertNumber pattern="###,##0.00"></f:convertNumber>
+           </h:outputText>
+           <h:outputText value=" TL" rendered="#{asansorler.kontrolTutari gt '0'}"/>
+           </p:column>
+           <p:column style="width:2%">
+           <p:rowEditor/>
+              <br/>
+        <p:commandButton icon="ui-icon-gear" title="#{label.degistir}" actionListener="#{basvuruBean.asansorGuncelle(asansorler)}"  process="@this binaasansorler" 
+        rendered="#{loginBean.loggedIn}">
+       
+        </p:commandButton>
+           </p:column>
+          	</p:dataTable>
+          	<div id="uyari" class="uyari">
+          	 <h:outputText style="font-style:oblique;font-size:0.8em" value="Firma belirlemek ya da kontrol türü değiştirmek için edit işlemi yapınız! Önceki seçimlerinizin 
+          	 kaybolmaması için edit işlemi süresince  CTRL tuşuna basınız !" />
+          	</div>
+          	 <br/>
+          		
+          	
+				
+				<p:commandButton id="asansorekle" value="#{label.asansor} #{label.ekle}" icon="ui-icon-plus" style="float:right"
+				actionListener="#{basvuruBean.asansorEkleListener}" 
+				 oncomplete="PF('asansorekle').show()" process="@this" update="panelasansorekle" >
+				
+				</p:commandButton>
+				
+				</p:panel>
+				<br/>
+				<br/>
+	<p:panel id="panelasansorekle" widgetVar="asansorekle" visible="false" closable="true" header="">
+	<ui:include src="asansorekle.xhtml"></ui:include>
+	</p:panel>
+	<br/>
+	<p:outputPanel id="kaydetpanel" visible="#{!basvuruBean.islemiTamamla}">
+	<h:panelGrid columns="3" style="width:100%" id="pnlkaydet">
+				
+				<p:commandButton icon="ui-icon-notice" value="#{label.animsat}" onclick="PF('bar').show()" type="button" style="margin-left:40%;" id="animsatbtn" rendered="false"/>
+			<p:commandButton id="btnkaydet"  style="float:right" icon="ui-icon-disk" 
+			value="#{label.basvuruTamamla}" process="@this" rendered="#{!basvuruBean.kontrolSekli}"
+				update="@form" actionListener="#{basvuruBean.kaydet}" disabled="#{empty basvuruBean.selectedAsansor}" 
+				title="Listeden kontrol yapılması gereken cihazları seçerek başvurunuzu tamamlayınız !"
+				 oncomplete="$('html, body').animate({ scrollTop: 0 }, 'slow');">
+				<p:confirm message="Kontrol türünü ve kontrol tutarını incelemeden kaydetmeyiniz !" header="Uyarı" icon="ui-icon-notice"></p:confirm>
+				</p:commandButton>
+				
+				</h:panelGrid>
+				</p:outputPanel>
+ 				
+			
+				<p:notificationBar position="bottom" effect="slide" widgetVar="bar" styleClass="top" autoDisplay="true" id="notificationbar" rendered="false">  
+     			<p:commandButton icon="ui-icon-close" onclick="PF('bar').hide()" type="button" style="float:right;margin-right:30px;" title="Gizle"/>
+     			<ul style="list-style: disc outside;padding-left:30px; color:#8B0000;font-size:20px;padding-bottom:15px;font-style:bold">
+				<li style="padding-bottom:15px;"> Binanız daha önceden kontrol edilmiş ise "Bina Ara" butonu yardımı ile binanızı bularak ,
+				
+				 
+				</li>
+				<li>Arama sonrası binanızı bulamadınız ve ya  ilk defa başvuru işlemi yapıyorsanız  </li>
+				
+				</ul>
+				<li style="padding-left:30px; color:#8B0000;font-size:20px;font-style:bold">doldurulması zorunlu alanları girerek kaydet butonu ile başvuru işleminizi yapabilirsiniz.</li>
+				<f:facet name="footer">
+				
+				</f:facet>
+				</p:notificationBar>  
+					
+				
+				<p:blockUI trigger="btnkaydet" block="formbasvuru">
+				<p:graphicImage url="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+				 </p:blockUI>
+				
+		 
+         <p:notificationBar effect="slide" position="bottom" rendered="#{basvuruBean.basvuru.basvuru.basvuruId gt '0'}" autoDisplay="true"
+        widgetVar="bb" id="bb">
+        <p:commandButton value="Gizle" icon="ui-icon-arrow-1-s" type="button" onclick="PF('bb').hide()"></p:commandButton>
+        <h1 style="font-size:13px;font-family: comic sans MS; color: #000;">Kontrol tutarı hesaplanamayan asansör id numarası/numaraları</h1>
+        <ui:repeat var="b" value="#{basvuruBean.tutarHesaplanmayanAsansorler}">
+        #{b.cihazId}
+        </ui:repeat>
+        </p:notificationBar>		
+	</ui:composition>

@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+		<h:head>
+		<style>
+		.rowClass{
+		background: #FFCC00;
+		color :#380000 ;
+		}
+		</style>
+
+	<title>#{label.firmaListesi}</title>
+	
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+	</h:head>
+<h:form id="formfirma">
+<p:growl id="growl" autoUpdate="true"></p:growl>
+<p:fieldset legend="#{label.firmaListesi}" id="fset" style="width:96%">
+<p style="font-style:italic;font-size:0.7 em;">Aktif olmayan firmalar turuncu renkte gösterilmektedir.</p>
+<p:dataTable widgetVar="firmalist" id="firmalist" var="firmalar" value="#{firmaListeBean.firmaListModel}"
+rowStyleClass="#{firmalar.durumu eq 'A'?null:'rowClass'}"
+ style="width:100%;font-size:10px;" selection="#{firmaListeBean.slctFirma}" 
+selectionMode="single"  filteredValue="#{firmaListeBean.filteredList}" paginator="true" paginatorAlwaysVisible="true" emptyMessage="#{label.emptyList}" paginatorPosition="bottom" rows="10">
+
+<f:facet name="header">
+#{label.firmalar}
+</f:facet>
+<p:column headerText="#{label.unvan}" filterBy="unvan" sortBy="unvan">
+#{firmalar.unvan}
+</p:column>
+<p:column headerText="#{label.il}" filterBy="ilAdi" sortBy="ilAdi">
+#{firmalar.ilAdi}
+</p:column>
+<p:column headerText="#{label.sozlesmetarihi}"  sortBy="sozlesmeTarihi">
+<h:outputText value="#{firmalar.sozlesmeTarihi}">
+<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+</h:outputText>
+
+</p:column>
+<p:column headerText="#{label.gecerlilikSuresi}"  sortBy="gecerlilikSuresi">
+<h:outputText value="#{firmalar.gecerlilikSuresi}">
+<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+</h:outputText>
+
+</p:column>
+<p:column headerText="#{label.tseBelgeNo}"  sortBy="tseBelgeNo">
+#{firmalar.tseBelgeNo}
+</p:column>
+<p:column headerText="#{label.telno}"  sortBy="telefonNoStr">
+#{firmalar.telefonNoStr}
+</p:column>
+
+
+
+<p:column>
+<p:commandButton action="#{firmaListeBean.onRowSelect(firmalar)}" icon="ui-icon-search"  ajax="false"></p:commandButton>
+<br/>
+<p:commandButton action="#{firmaListeBean.firmaSil(firmalar)}" icon="ui-icon-trash"  id="firmasil" process="firmalist" update="firmalist :formfirma:growl">
+<p:confirm header="Firma Bilgisi Silinecek" message="Firmayı kayıtlardan silmek istediğinizden emin misiniz?" icon="ui-icon-alert"></p:confirm>
+</p:commandButton>
+<p:blockUI trigger="firmasil" block="firmalist">
+<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"></p:graphicImage>
+</p:blockUI>
+</p:column>
+</p:dataTable>
+</p:fieldset>
+<p:commandButton icon="ui-icon-plus" id="yenifirma" value="#{label.yeniFirma}" style="float:right" action="bakimcifirmakayit?faces-redirect=true"/>
+<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                <p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>     
+
+<p:blockUI trigger="yenifirma" block="firmalist">
+<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"></p:graphicImage>
+</p:blockUI>
+</h:form>
+</ui:composition>

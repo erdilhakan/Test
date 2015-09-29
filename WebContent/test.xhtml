@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Test</title>
+</h:head>
+<h:body>
+<h:form>
+<p:growl id="growl"></p:growl>
+<h1>TEST</h1>
+<p:commandButton actionListener="#{testBean.getPdf}" update="growl" value="RAPOR"></p:commandButton>
+
+
+   <p:dataTable value="#{randevuBean.randevuBilgiModel}" var="b" id="bilgitable">
+    	<p:column headerText="#{label.adi} #{label.soyadi}">
+    	#{b.adiSoyadi}
+    	</p:column>
+    	<p:column headerText="#{label.rolAdi}">
+    	#{b.rol}
+    	</p:column>
+    	<p:column headerText="#{label.eposta}">
+    	#{b.ePosta}
+    	</p:column>
+    	<p:column headerText="#{label.telno}">
+    	#{b.telefonNo}
+    	</p:column>
+    	</p:dataTable>
+    	
+   <p:dataTable id="binatable" widgetVar="binatable" value="#{sessionBean.tumBinalar}" paginator="true" paginatorPosition="top" rows="20" var="bina">
+   <p:column headerText="bina no">
+   <h:outputText value="#{bina.binaNo}"/>
+   </p:column>
+   <p:column headerText="bina adı">
+   <h:outputText value="#{bina.binaAdi}"/>
+   </p:column>
+   
+   </p:dataTable>
+  <h3>IFrame</h3>
+<p:lightBox iframe="true" id="lighbox3">
+    <h:outputLink value="${pageContext.request.contextPath}/Asansor/test1.jsf" title="PrimeFaces HomePage" target="_blank">
+        <h:outputText value="PrimeFaces HomePage" />
+    </h:outputLink>
+</p:lightBox>
+
+</h:form>
+
+</h:body>
+</html>

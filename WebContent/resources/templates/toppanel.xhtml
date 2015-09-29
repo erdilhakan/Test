@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+	<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+	<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+	 
+
+</h:head>
+   
+<h:form>  
+<div id="mainNavContainer">
+<h:panelGrid columns="2" style="width:100%">
+<h:outputLink value="http://mmo.org.tr" title="Ana Sayfa">
+<p:graphicImage url="./images/home.gif" style="width:20px;height:20px;"/>
+</h:outputLink>
+			<h:panelGrid columns="2" cellpadding="2" style="float:right">
+        	 <p:themeSwitcher   effect="fade" id="statefulSwitcher" value="#{themeSwitcherBean.theme}"  style="float:right;width:200px" rendered="false"> 
+        	  <f:selectItems value="#{themeSwitcherBean.themes}" />
+            <p:ajax listener="#{themeSwitcherBean.saveTheme}" />  
+        </p:themeSwitcher>  
+       
+        
+         <p:commandButton  icon="ui-icon-power" style="margin-top:0px;" title="Güvenli Çıkış" process="@this" update="@form" action="#{loginBean.logout}" rendered="#{loginBean.loggedIn}"/>
+     
+       
+        </h:panelGrid>
+      </h:panelGrid>  	
+     
+     
+     
+        	
+</div>
+<!-- 
+<p:dialog widgetVar="login" width="auto" height="auto" modal="true" id="login" visible="false" header="#{label.kullaniciGirisi}">
+<ui:include src="/resources/templates/login_.xhtml"></ui:include>
+</p:dialog>
+ -->
+
+</h:form>  
+
+ </ui:composition>

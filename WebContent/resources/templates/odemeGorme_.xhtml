@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		</f:facet>
+		<title>#{label.kontrolTest}</title>
+
+		<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+
+		<LINK
+			href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+			
+			<LINK
+			href="${facesContext.externalContext.requestContextPath}/resources/css/style.css"
+			rel="stylesheet" type="text/css" />
+		<style type="text/css">
+.ui-inputfield,.ui-widget-content .ui-inputfield,.ui-widget-header .ui-inputfield
+	{
+	color: #6986c9;
+	height: 20px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 1px solid #999fd9;
+	webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+.ui-datatable-even, .ui-widget-content .ui-datatable-even{
+	color: #6986c9;
+}
+</style>
+	</h:head>
+	<h:form id="formodeme">
+		<br />
+		<p:growl id="warn" autoUpdate="true" />
+		<p:dialog widgetVar="gi" visible="false" modal="true" closable="false"
+			style="border:none;">
+			<p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+		</p:dialog>
+		
+
+
+
+			<ui:include src="binaaraodeme.xhtml"/>
+		
+
+		<p:panel id="panelodeme" widgetVar="panelodeme"
+			header="BİNA ADI : #{odemeBean.headerText}"
+			visible="#{binaBean.sessionBina.binaId gt 0}">
+			<p:dataTable id="odemeliste" value="#{odemeBean.odemeDataModel}" style="text-align:center"
+				var="odemelist" paginator="true" paginatorPosition="bottom" emptyMessage="#{label.emptyList}"
+				filteredValue="#{odemeBean.filteredVal}">
+				<p:column headerText="#{label.odemeTarihi}" sortBy="odemeTarihi"
+					filterBy="odemeTarihi" filterMatchMode="contains">
+					<h:outputText value="#{odemelist.odemeTarihi}">
+						<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{label.basvuruId}" sortBy="basvuruId">
+					#{odemelist.basvuruId}
+				</p:column>
+				<p:column headerText="#{label.kontrolTutari}" sortBy="toplamTutar">
+					<h:outputText value="#{odemelist.toplamTutar}" styleClass="currency">
+					  <f:convertNumber pattern="###,###,##0.00"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="#{label.odemeTutari}" sortBy="odemeTutari" >
+					<h:outputText value="#{odemelist.odemeTutari}" styleClass="currency">
+					  <f:convertNumber pattern="###,###,##0.00"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="#{label.kontroltarihi}" sortBy="kontrolTarihi"
+					filterBy="kontrolTarihi" filterMatchMode="contains">
+					<h:outputText value="#{odemelist.kontrolTarihi}">
+						<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="#{label.odemeSekli}" sortBy="#{odemelist.odemeSekli==1?'Sanal POS':(odemelist.odemeSekli==2?'Kredi Kartı':(odemelist.odemeSekli==3?'Havale':(odemelist.odemeSekli==4?'Dekont(elden)':'')))}" 
+				filterBy="#{odemelist.odemeSekli==1?'Sanal POS':(odemelist.odemeSekli==2?'Kredi Kartı':(odemelist.odemeSekli==3?'Havale':(odemelist.odemeSekli==4?'Dekont(elden)':'')))}" >
+					<h:outputText value="#{odemelist.odemeSekli==1?'Sanal POS':(odemelist.odemeSekli==2?'Kredi Kartı':(odemelist.odemeSekli==3?'Havale':(odemelist.odemeSekli==4?'Dekont(elden)':'')))}" >
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{label.belgeNo}" sortBy="odemeBelgeNo">
+					<h:outputText value="#{odemelist.odemeBelgeNo}" >
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{label.odemekontroldealinsin}" sortBy="odemeKontroldeAlinsin" filterBy="odemeKontroldeAlinsin" filterMatchMode="startsWith">
+					#{odemelist.odemeKontroldeAlinsin?'Evet':'Hayır'}
+				</p:column>
+				<p:column headerText="#{label.aciklama}">
+					#{odemelist.aciklama}
+				</p:column>
+				<p:column width="2%">
+				<p:commandButton title="Ödeme Detay" action="#{odemeBean.odemeDetay(odemelist)}" icon="ui-icon-search" ajax="false"
+				
+				style="opacity:0.9">
+				
+				</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+		</p:panel>
+
+
+
+
+
+
+
+	</h:form>
+
+</ui:composition>

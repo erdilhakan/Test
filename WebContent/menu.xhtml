@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>#{label.kullaniciGirisi}</title>
+<h:outputStylesheet library="css" name="afterwork.css"></h:outputStylesheet>
+<h:outputStylesheet library="css" name="style.css" />
+<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+
+<f:loadBundle var="msg" basename="resources.label"></f:loadBundle>
+
+</h:head>
+<body>
+<h:form>
+<p:growl id="growl" showDetail="true" />
+<div id="wrapper">
+	<div id="header">
+    	<h1 id="logo" title="TMMOB Makina Mühendisleri Odası">Makina Mühendisleri Odası</h1>
+    	<!-- end topMenu -->
+    </div>
+    <!-- end header -->
+    
+	<div id="subPageContent">
+    	<div id="mainNavContainer">
+        	<ul id="navigation" class="horizontalMenu">
+
+            	<li><a href="#" title="" class="mainNavLink">Ana Sayfa</a></li>
+        	</ul>
+</div>
+        <!-- end mainNavContainer -->
+        <div id="subPageHeader"></div>
+   	  <div class="contentContainer">
+   	  <div class="contentLeft">
+   	  
+					<p:menu  model="#{menuBean.model}"/>
+	
+				
+   	  </div>
+   	  <div class="contentRight">
+
+
+<!-- burada sayfanın asıl işi ve içeriği var -->
+
+<h1>Hoşgeldiniz: #{sessionScope.kullanici.kullaniciAdi}</h1>
+
+
+<!-- burada sayfanın asıl işi ve içeriği var -->
+		
+	
+  	  </div>
+   	    <!-- end contentRight -->
+      </div>
+        <!-- end subPageContentContainer -->
+        
+    </div>
+    <!-- end subPageContent -->
+    
+    
+  <div id="footer">
+  		<div class="left">TMMOB Makina Mühendisleri Odası © 2013</div>
+  		<div class="right">
+        	<ul class="horizontal">
+                <li><a href="http://www.mmo.org.tr/genel/iletisim_bilgileri.php" title="İletişim">İletişim</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- end footer -->
+</div>
+<!-- end wrapper -->
+</h:form>
+</body>
+</html>
+

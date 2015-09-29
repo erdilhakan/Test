@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+<f:facet name="first">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1.0, maximum-scale=1.0,height:device-height,densitydpi=device-dpi"/>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+</f:facet>
+
+
+
+<ui:insert name="ttitle"></ui:insert>
+<link rel="shortcut icon"  href="${facesContext.externalContext.requestContextPath}/resources/image/favicon.jpg"/>
+
+<h:outputScript library="scripts" name="myscrpt.js"></h:outputScript>
+<h:outputScript library="scripts" name="primefaces_locales.js"/>
+<h:outputScript library="scripts" name="primefacess.js"/>
+<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/resources/scripts/googleAnalytics.js"></script>
+
+
+ <link href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css" />
+  <link href="${facesContext.externalContext.requestContextPath}/resources/css/style.css" rel="stylesheet" type="text/css" />
+      
+        
+
+    <h:outputStylesheet name="main/css/showcase.css" />
+    <h:outputStylesheet name="main/css/sh.css" />
+    <h:outputScript name="jquery/jquery-1.11.1.js" library="scripts"/>
+    <h:outputScript name="jquery/jquery-plugins.js" library="scripts"/>
+    <h:outputScript name="main/js/perfect-scrollbar.js"/>
+    <h:outputScript name="main/js/showcase.js"/>
+ 
+
+ 
+</h:head>
+
+
+	
+  
+
+
+<h:body>
+
+<div id="wrapper">
+<div id="header" >
+	
+    	<!-- end topMenu -->
+    </div>
+    <!-- end header -->
+    
+	<div id="subPageContent">
+	
+	<ui:insert name="toppanel">
+    	<ui:include src="toppanelbelediye.xhtml"></ui:include>
+    
+    </ui:insert>
+        <!-- end mainNavContainer -->
+        <div id="subPageHeader"></div>
+       
+   	  <div class="contentContainer" style="width:100%">
+   	  <!-- <ui:include src="megamenu_.xhtml"></ui:include> -->
+   	  
+   	
+   	 
+   	  <div class="contentRight" id="rightContent" style="width:96%;margin-top:1%;margin-left:2%;margin-right:2%">
+   	 
+   	  <ui:include src="sessionTimeout.xhtml"></ui:include>
+   	  <ui:insert name="content">
+		 <p:dialog id="errordialog" widgetVar="errordialog" closable="false" resizable="false" modal="true" visible="false" style="margin:auto" width="300px" height="100px" styleClass="background-color:#000">
+				<center>
+				<h1 style="color:#fff;font-weight: bold;font-size:20px">Yeniden Oturum Açınız</h1>
+				<br/>
+				<br/>
+				<p:commandButton icon=" ui-icon-refresh" action="index.jsf?faces-redirect=true"/>
+				</center>
+		</p:dialog>
+   	 		
+   	  </ui:insert>
+   	  </div>
+   	 
+      </div>
+        <!-- end subPageContentContainer -->
+        
+    </div>
+    <!-- end subPageContent -->
+    
+  
+  <div id="footer">
+  		<div class="left" style="color:#6986c9;">TMMOB Makina Mühendisleri Odası © 2013</div>
+  		<div class="right">
+        	<ul class="horizontal">
+                <li><a href="http://www.mmo.org.tr/genel/iletisim_bilgileri.php" title="İletişim" style="color:#6986c9">İletişim</a></li>
+            </ul>
+        </div>
+    </div>
+       <!-- end footer -->
+ 
+</div>
+<!-- end wrapper -->
+ 
+
+
+
+
+<p:dialog
+        widgetVar="paroladialog"
+        id="paroladialog"
+        visible="#{loginBean.parolaDegistir}"
+        showEffect="explode"
+        hideEffect="explode"
+        header="Lütfen parolanızı değiştiriniz"
+        modal="false"
+        closable="false">
+        
+        <p:commandButton value="İptal" process="@this" update="@this"  icon="ui-icon-cancel" actionListener="#{loginBean.parolaDegistirListener}" action="index.jsf?faces-redirect=true"/>
+        <p:commandButton value="Tamam"  process="@this" update="@this" icon="ui-icon-check" actionListener="#{loginBean.parolaDegistirListener}" action="sifredegistir.jsf?faces-redirect=true"/> 
+  </p:dialog>
+ <ui:insert name="highlight">
+        <script language="javascript" src="#{request.contextPath}/resources/main/js/sh.js"></script>
+        <script language="javascript">
+            SyntaxHighlighter.all();
+        </script>
+    </ui:insert>
+</h:body>
+</html>

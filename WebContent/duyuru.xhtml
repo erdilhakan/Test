@@ -1,0 +1,39 @@
+<ui:composition template="resources/templates/template.xhtml"  
+xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+     <h:head></h:head>
+     <ui:define name="content">
+<ui:insert>
+
+<h:body onload="detayGoster()">
+ 
+
+<h:panelGrid columns="2" style="width:100%">
+<h1 style="float:left;width: 84%">
+#{loginBean.duyuru.konu}</h1>
+<h3 style="float:right;margin-right:3%;width: 12%">#{loginBean.duyuru.tarih}</h3>
+</h:panelGrid>
+
+
+
+<br/>
+
+<div id="detay" style="width:100%;height: auto;margin-top:2%"></div>
+<script>
+function detayGoster(){
+	
+	
+	document.getElementById('detay').innerHTML=document.getElementById('demo').value;
+}
+</script>
+<h:inputHidden value="#{loginBean.duyuru.detay}" id="demo"></h:inputHidden>
+</h:body>
+</ui:insert>
+
+</ui:define>
+
+</ui:composition>
+

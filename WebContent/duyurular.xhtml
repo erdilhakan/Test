@@ -1,0 +1,36 @@
+<ui:composition template="resources/templates/template.xhtml"  
+xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+
+</h:head>
+<ui:define name="content">
+<ui:insert>
+<h:form>
+
+<p:dataTable value="#{loginBean.duyurular}" var="duyuru" emptyMessage="#{label.emptyList}" style="width:98%;margin-top:0.5%"
+selection="#{loginBean.duyuru}" id="tduyuru" selectionMode="single">
+<p:ajax event="rowSelect" update="@form" process="tduyuru" listener="#{loginBean.showDuyuru}"></p:ajax>
+<f:facet name="header"><h:outputText value="#{label.duyurular}" style="text-align:left"/></f:facet>
+<p:column headerText="#{label.tarih}" style="width:10%" sortBy="#{duyuru.tarih}" >
+#{duyuru.tarih}
+</p:column>
+<p:column headerText="#{label.konu}" style="width:90%;text-align:left" sortBy="#{duyuru.konu}">
+#{duyuru.konu}
+</p:column>
+<p:column width="2%">
+<p:commandButton icon="ui-icon-pencil" title="Değiştir" actionListener="#{loginBean.duyuruGuncelle(duyuru)}"></p:commandButton>
+</p:column>
+</p:dataTable>
+
+
+</h:form>
+</ui:insert>
+</ui:define>
+</ui:composition>
+

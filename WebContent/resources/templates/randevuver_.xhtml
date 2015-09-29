@@ -1,0 +1,421 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title>#{label.randevu}</title>
+	
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+
+
+<h:outputScript>
+ $(function(){
+ $('.cmdlnkasansor').click(function(event){
+ 
+    	/*var offset=$(this).offset();*/
+    	/*event.stopPropagation();
+    	document.getElementById("form1:asansorinfo").offset({left:offset.left-100,top:offset.top});*/
+   
+    	$('.ui-growl').offset({left:$(this).offset().left-250,top:$(this).offset().top});
+        event.stopPropagation();
+    });
+   
+ });
+
+
+
+
+</h:outputScript>
+
+
+
+<style type="text/css">
+.ui-panel label{
+color: #000;	
+	font-weight:bold;
+	font-size: 0.4em;
+}
+.ui-widget label{
+color: #000;	
+	font-weight:bold;
+	font-size: 0.4em;
+}
+ .hlp:HOVER{
+color:#000;
+font-size:1.4em;
+}
+
+  .ui-dialog {  padding: .2em; width: 100%; overflow: visible; border: 0 none; -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.75); -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.75); box-shadow: 0 1px 4px rgba(0,0,0,0.75); }
+.ui-dialog .ui-dialog-titlebar {  background: transparent !important; padding: 0 0 8px 0; margin: 20px 20px 5px 20px; border: solid #e5e5e5; border-width: 0 0 1px 0; -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; }
+.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .1em 0; color: #353536; font-size: 20px !important; } 
+.ui-dialog .ui-dialog-titlebar-close { right: -16px !important; top: -16px !important; margin: 0; width: 30px; height: 30px; background: url("#{resource['primefaces-delta:images/modalClose.png']}") 0 0 no-repeat; border: 0 !important; z-index: 10000; padding: 0px !important;}
+.ui-dialog .ui-dialog-titlebar-close span { display: none !important; }
+.ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
+.ui-dialog .ui-dialog-content {  border: 0; padding: 15px 20px 20px 20px; background: none; overflow: auto; zoom: 1; }
+.ui-dialog .ui-dialog-buttonpane { text-align: left; border: solid #e5e5e5; border-width: 1px 0 0 0; background: transparent; margin: 20px 20px 10px 20px; padding: 10px 0 0 0; }
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
+.ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
+.ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.ui-draggable .ui-dialog-titlebar { cursor: move; }
+.ui-picklist,.ui-widget .ui-picklist{
+height: 80px;
+
+}
+.ui-widget-content .ui-picklist-list {
+height: 80px;
+
+
+}
+
+</style>
+</h:head>
+	
+	<h:form id="form1">
+		<p:growl id="growl" showDetail="false" sticky="false" widgetVar="grwl"/>
+		
+		<p:growl id="asansorinfo" showDetail="false" sticky="false" widgetVar="grwl1"/>
+		
+		
+		
+	<p:dataTable var="varbasvuru" value="#{randevuBean.basvuruListeModel}"  id="basvuruTable"
+        paginator="true"  emptyMessage="#{label.emptyList}" style="width:100%" rows="3" filteredValue="#{randevuBean.filterBasvuru}"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+        rowsPerPageTemplate="3,6,9,12,15" paginatorPosition="bottom">  
+        
+  		<p:column headerText="#{label.basvuruTarihi}" sortBy="#{varbasvuru.basvuruTarihi}" style="width:10%">
+  		 <p:commandLink action="#{basvuruBean.linkBasvuru(varbasvuru)}">
+        <h:outputText value="#{varbasvuru.basvuruTarihi}" style="color: #6986c9;text-decoration:underline" title="Başvuru Gör/Değiştir">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText>
+        </p:commandLink>
+  		
+  		</p:column>
+        <p:column headerText="#{label.adi} #{label.soyadi}" sortBy="#{varbasvuru.adiSoyadi}" filterBy="#{varbasvuru.adiSoyadi}" filterMatchMode="startsWith"
+        style="width:25%">
+         <p:commandLink action="#{basvuruBean.linkBasvuru(varbasvuru)}">
+        <h:outputText value="#{varbasvuru.adiSoyadi}" style="color: #6986c9;text-decoration:underline" title="Başvuru Gör/Değiştir" />
+        </p:commandLink>
+        </p:column>
+        <p:column headerText="#{label.telno}" style="width:8%">#{varbasvuru.telefonNo} #{varbasvuru.telefonNoDahili gt 0?'/'.concat(varbasvuru.telefonNoDahili):''}</p:column>
+        <p:column headerText="#{label.mahalle}" sortBy="#{varbasvuru.mahalle}" filterBy="#{varbasvuru.mahalle}" 
+        style="width:25%" filterMatchMode="startsWith">#{varbasvuru.mahalle}</p:column>
+        <p:column headerText="#{label.caddesokak}" sortBy="#{varbasvuru.caddeSokak}" 
+        style="width:20%"
+        filterBy="#{varbasvuru.caddeSokak}" filterMatchMode="startsWith">#{varbasvuru.caddeSokak}</p:column>
+        <p:column headerText="#{label.binaNo}" style="width:8%">#{varbasvuru.binaNo}</p:column>
+         
+        <p:column headerText="#{label.ilce}" sortBy="#{varbasvuru.ilce}" 
+        style="width:15%"
+        filterBy="#{varbasvuru.ilce}" filterMatchMode="startsWith">#{varbasvuru.ilce}</p:column>
+        <p:column headerText="#{label.il}" sortBy="#{varbasvuru.il}" 
+        style="width:15%"
+        filterBy="#{varbasvuru.il}" filterMatchMode="startsWith">#{varbasvuru.il}</p:column>
+        <p:column style="width:3%">
+        <div>
+             
+				<p:commandLink id="randevu" update=":form2"  actionListener="#{randevuBean.openRandevuDialog(varbasvuru)}" 
+				 oncomplete="PF('randevuDialog').show()">  
+				
+				<p:graphicImage value="${pageContext.request.contextPath}/resources/image/telefon.jpg" width="35" height="32" title="Randevu ver" />   
+           		<f:setPropertyActionListener value="#{varbasvuru}"   
+                    target="#{randevuBean.randevu.basvuru}" />
+                    
+                
+        </p:commandLink>
+        </div>
+        <br/>
+        <div class="cmdlnkasansor" id="cmdlnkasansor">
+        <p:commandLink id="asansorler">
+        
+        <p:ajax event="click" listener="#{randevuBean.asansorListener(varbasvuru)}"  update=":form1:asansorinfo"></p:ajax>
+        <p:graphicImage value="${pageContext.request.contextPath}/resources/image/asansor.jpg" width="30" height="25" title="Kontrol Edilecek Asansörler"/>   
+        </p:commandLink>
+        </div>  
+        <br/>
+          <p:commandButton icon="ui-icon-trash" title="#{label.basvuruSil}" process="basvuruTable" update="@form" 
+        disabled="#{loginBean.silebilir()?false:true}" actionListener="#{basvuruBean.basvuruSilListener(varbasvuru)}"></p:commandButton>
+        
+    
+        </p:column>
+        	    
+               
+    </p:dataTable>  
+    
+    <p:dataTable id="basvurularTable" rendered="false" var="varbasvurulist" value="#{randevuBean.basvuruList}">
+    
+    <p:column>
+    <f:facet name="header">
+    <h:outputText value="#{label.basvuruTarihi}"/>
+    
+    </f:facet>
+    
+    <h:outputText value="#{varbasvurulist.basvuruTarihi}">
+    <f:convertDateTime pattern="dd.MM.yyyy"/>
+    </h:outputText>
+    
+    </p:column>
+    <p:column>
+     <f:facet name="header">
+     <h:outputText value="#{label.adi} #{label.soyadi}"/>
+     </f:facet>
+      <h:outputText value=" #{varbasvurulist.adiSoyadi}"/>
+  
+    </p:column>
+    <p:column>
+     <f:facet name="header">
+      <h:outputText value="#{label.tckimlikno}"/>
+     </f:facet>
+      <h:outputText value="#{varbasvurulist.tcKimlikNo}"/>
+    </p:column>
+    <p:column>
+     <f:facet name="header">
+     <h:outputText value="#{label.telno}"/>
+     </f:facet>
+     <h:outputText value="#{varbasvurulist.telefonNo}"/>
+     
+    </p:column>
+    
+     <p:column>
+      <f:facet name="header">
+      <h:outputText value="#{label.mahalle}"/>
+      </f:facet>
+      <h:outputText value="#{varbasvurulist.mahalle}"/>
+  
+    </p:column>
+     <p:column>
+      <f:facet name="header">
+      <h:outputText value="#{label.caddesokak}"/>
+      </f:facet>
+      <h:outputText value="#{varbasvurulist.caddeSokak}"/>
+   
+    </p:column>
+     <p:column>
+      <f:facet name="header">
+      <h:outputText value="#{label.binaNo}"/>
+      </f:facet>
+      <h:outputText value="#{varbasvurulist.binaNo}"/>
+    
+    </p:column>
+    <p:column>
+     <f:facet name="header">
+     <h:outputText value="#{label.ilce}/#{label.il}"/>
+     </f:facet>
+     <h:outputText value="#{varbasvurulist.ilce}/#{varbasvurulist.il}"/>
+   
+    </p:column>
+    </p:dataTable>
+    <h:panelGrid style="float:right" columns="5" cellpadding="7">
+	 <h:commandLink title="EXCEL">  
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/xls.jpg" width="25" height="25"/>  
+            <p:dataExporter type="xls" target="basvurularTable" fileName="basvurular" />  
+        </h:commandLink>  
+  
+        <h:commandLink title="PDF">  
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/pdf.png" width="25" height="25"/>  
+            <p:dataExporter type="pdf" target="basvurularTable" fileName="basvurular"/>  
+        </h:commandLink>  
+          
+        <h:commandLink title="CSV">  
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/csv.jpg" width="25" height="25"/>  
+            <p:dataExporter type="csv" target="basvurularTable" fileName="basvurular" />  
+        </h:commandLink>  
+          
+        <h:commandLink title="XML">  
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/xml.jpg" width="25" height="25"/>  
+            <p:dataExporter type="xml" target="basvurularTable" fileName="basvurular" />  
+        </h:commandLink>  
+	</h:panelGrid>
+	
+	
+	</h:form>
+	
+	
+	<h:form id="form2">
+	 <p:dialog widgetVar="randevuDialog" header="#{label.randevu}" id="randevuDlg" showEffect="clip" hideEffect="clip">
+		
+		<p:ajax event="close" resetValues="true" listener="#{randevuBean.handleClose}"></p:ajax>
+		
+        <p:outputPanel id="randevuDetail">
+        <p:messages showDetail="false" autoUpdate="true" id="msg"/>
+        <h:panelGrid columns="1">
+           <h:panelGrid columns="4" cellpadding="2" cellspacing="11" style="width:auto">
+           <p:outputLabel value="#{label.binaNo}:" styleClass="label"/>
+        		<h:outputText value="#{randevuBean.randevu.basvuru.binaNo}"/>
+        		<p:outputLabel value="#{label.binaAdi}:" styleClass="label"/>
+        		<h:outputText value="#{randevuBean.randevu.basvuru.binaAdi}"/>
+        		<p:outputLabel value="#{label.basvuruYapan}:" styleClass="label"/>
+                <h:outputText value="#{randevuBean.randevu.basvuru.adiSoyadi}"/>  
+                <p:outputLabel value="#{label.telno}:" styleClass="label"/>
+                <h:outputText value="#{randevuBean.randevu.basvuru.telefonNo}  #{randevuBean.randevu.basvuru.telefonNoDahili gt 0?'/'.concat(randevuBean.randevu.basvuru.telefonNoDahili):''}"/>
+           		<p:outputLabel value="#{label.tckimlikno}:" styleClass="label"/>
+                <h:outputText value="#{randevuBean.randevu.basvuru.tcKimlikNo}"/>  
+                <p:outputLabel value="#{label.ilce}/#{label.il}:" styleClass="label"/>
+        		<h:outputText value="#{randevuBean.randevu.basvuru.ilce}/#{randevuBean.randevu.basvuru.il}"/>
+        		<p:outputLabel value="#{label.mahalle}:" styleClass="label"/>
+                 <h:outputText value="#{randevuBean.randevu.basvuru.mahalle}"/>
+                 <p:outputLabel value="#{label.caddesokak}:" styleClass="label"/>
+        		<h:outputText value="#{randevuBean.randevu.basvuru.caddeSokak}"/>
+           </h:panelGrid>
+                <h:panelGrid columns="2" cellpadding="3">	
+                <p:outputLabel value="#{label.bakimcifirmalar}" styleClass="label" />
+           		<ui:repeat var="firma"  value="#{randevuBean.randevu.basvuru.bakimciFirma}">
+           		
+           		<dir>
+           		<li><h:outputText value="#{firma.unvan}"></h:outputText></li>
+           		</dir>
+           		</ui:repeat>
+                
+             
+              
+                	<p:outputLabel value="#{label.randevuTarihi}/#{label.randevuSaati}:" styleClass="label" for="tarih"/>
+        		
+        		<p:calendar id="tarih" locale="tr" navigator="true" pattern="dd.MM.yyyy HH:mm a" value="#{randevuBean.randevu.randevuTarih}"
+        			required="#{randevuBean.randevuReq}" requiredMessage="#{label.randevuTarihi} #{label.giriniz}"
+        		style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        
+        		border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+        		<f:validator validatorId="validators.randevu"/>
+        		
+        		 <p:ajax event="dateSelect" update="@this randevuDetail" process="@this" listener="#{randevuBean.randevuTarihSelectListener}"></p:ajax>
+        		</p:calendar>
+        		
+        		   
+                <p:outputLabel value="#{label.muhendis} 1" styleClass="label" for="muhendis1"/>
+                <p:selectOneMenu id="muhendis1" required="#{randevuBean.randevuReq}" filter="true" filterMatchMode="contains" 
+                	requiredMessage="1. #{label.muhendis} #{label.seciniz}" value="#{randevuBean.gorevliMuhendis1}"
+                style="color: #6986c9;	width: 400px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        
+                border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"
+							valueChangeListener="#{randevuBean.muhendisComboChange}">
+				
+				<p:ajax event="change" update="@this randevuDetail" process="@this"/>
+				
+                 <f:selectItem itemLabel="#{label.seciniz}" itemValue="" />
+                <f:selectItems value="#{randevuBean.randevu.muhendisler}" var="muhendisler1" itemLabel="#{muhendisler1.adi} #{muhendisler1.soyadi}" itemValue="#{muhendisler1.sicilNo}"/>
+                </p:selectOneMenu>
+                
+        		<p:outputLabel value="Görevli Diğer Mühendisler" styleClass="label"/>
+        		
+ 				<p:pickList id="pickList" value="#{randevuBean.muhendisModel}" var="ym"  style="height:50px"
+                itemValue="#{ym}" itemLabel="#{ym.adi} #{ym.soyadi}" showSourceControls="true" showTargetControls="true" showCheckbox="true"
+                removeAllLabel="Hepsini Sil" removeLabel="Sil" addAllLabel="Hepsini Ekle" addLabel="Ekle" moveBottomLabel="Alta taşı" moveDownLabel="Aşağı taşı"
+                moveTopLabel="Yukarı taşı" moveUpLabel="Üste taşı" converter="kullanicilar"
+                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+ 
+        <f:facet name="sourceCaption">Mevcut</f:facet>
+        <f:facet name="targetCaption">Seçilen</f:facet>
+ 			<p:column>
+ 			#{ym.adi} #{ym.soyadi}
+ 			</p:column>
+ 			<p:ajax event="transfer" update="@this randevuDetail" listener="#{randevuBean.onTransfer}"/>
+        
+    </p:pickList>
+    
+    			<p:outputLabel value="Oryantasyon Mühendisleri" styleClass="label"/>
+        		
+ 				<p:pickList id="pickListOM" value="#{randevuBean.oryantasyonMuhendisModel}" var="oym" style="height:50px"
+                itemValue="#{oym}" itemLabel="#{oym.adi} #{oym.soyadi}" showSourceControls="true" showTargetControls="true" showCheckbox="true"
+                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="kullanicilar">
+ 
+        <f:facet name="sourceCaption">Mevcut</f:facet>
+        <f:facet name="targetCaption">Seçilen</f:facet>
+ 
+ 			<p:column>
+ 			#{oym.adi} #{oym.soyadi}
+ 			</p:column>
+        <p:ajax event="transfer" update="@this randevuDetail" listener="#{randevuBean.onTransferOryantasyon}"/>
+    </p:pickList>
+   				
+        	
+        		
+               	</h:panelGrid>  
+               	
+        		   <f:facet name="footer">
+        		               <p:commandButton id="randevuver" value="#{label.randevuver}" process=":form2:randevuDetail"
+        		 update=":form1:basvuruTable :form2:randevuDetail :form1:growl" icon="ui-icon-contact"
+        		 style="float:right" actionListener="#{randevuBean.randevuEkle}">
+               	</p:commandButton>
+        		   </f:facet>
+           </h:panelGrid>
+            
+    	</p:outputPanel>  
+    	
+    	
+
+               	
+              	
+      
+    </p:dialog>  
+   
+   
+   	
+   	 
+     <p:blockUI trigger="randevuver" block="@form">
+    <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+    </p:blockUI>
+     <p:dialog closable="false" width="auto" height="auto" id="confirmbilgi" widgetVar="confirmbilgi" modal="true">
+   	 <h:panelGrid columns="2" cellpadding="3" cellspacing="3">
+   	 <p:graphicImage value="${pageContext.request.contextPath}/resources/image/warning.jpg" width="30px" height="30px"/>
+   	 <h:outputText style="font-family:comic sans MS;font-size :13px" value="Randevu ile ilgili bilgi vermek ister misiniz ?"/>
+   	 </h:panelGrid>
+   	 <br/>
+   	 <center>
+   	 <h:panelGrid cellpadding="5" cellspacing="5" columns="2">
+   	 
+   	 <p:commandButton value="Evet" onclick="PF('confirmbilgi').hide();" 
+   	 oncomplete="PF('bilgi').show()" icon="ui-icon-close" update="@form(bilgi) @form(bilgitable)"/>
+   	 <p:commandButton value="Hayır" onclick="PF('confirmbilgi').hide()" icon="ui-icon-close"/>
+   	 
+   	 </h:panelGrid>
+   	 </center>
+   	 </p:dialog>
+   	 
+
+
+   	 <p:dialog id="bilgi" widgetVar="bilgi" width="500" height="400" closable="true" header="Randevu Bilgi Listesi">
+   	 <p:growl id="msgBilgi" autoUpdate="true" showDetail="false"></p:growl>
+   	  <p:dataTable value="#{randevuBean.randevuBilgiModel}" var="b" id="bilgitable" emptyMessage="#{label.emptyList}">
+    	<p:column headerText="#{label.adi} #{label.soyadi}">
+    	#{b.adiSoyadi}
+    	</p:column>
+    	<p:column headerText="#{label.rolAdi}">
+    	#{b.rol}
+    	</p:column>
+    	<p:column headerText="#{label.eposta}">
+    	#{b.ePosta}
+    	</p:column>
+    	<p:column headerText="#{label.telno}">
+    	#{b.telefonNo}
+    	</p:column>
+    	<p:column>
+    	<p:commandButton icon="ui-icon-mail-closed" process=":form2:bilgitable" update=":form2:bilgitable :form2:msgBilgi" 
+    	title="E-posta gönder" 
+    	id="rEPosta" actionListener="#{randevuBean.ePostaGonder(b)}"
+    	style="width:15px;height:10px" oncomplete="PF('bilgi').show()">
+    	
+    	</p:commandButton>
+    	</p:column>
+    	</p:dataTable>
+    	<p:blockUI blocked="bilgi" trigger="@form(rEPosta)">
+    	<p:graphicImage url="${facesContext.externalContext.requestContextPath}/resources/image/sending.gif"/>
+    	</p:blockUI>
+   	 </p:dialog>
+   	
+    </h:form>
+   
+    
+    
+    
+    </ui:composition>
+	
+	
+	
+	
+	
+	
+	
+    

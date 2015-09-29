@@ -1,0 +1,190 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+	<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+	
+
+<f:metadata>
+<f:viewParam name="fontweight" value="#{menuStateBean.fontWeight}"/>
+<f:viewParam name="color" value="#{menuStateBean.color}"/>
+</f:metadata>
+</h:head>
+   
+<h:form id="menu">
+<h:panelGrid columns="1">
+<h:panelGroup rendered="#{!loginBean.loggedIn}">
+ <div style="width:50%;height: 100%;display:inline-block;top:0px;bottom:0px;">
+ 
+   </div>
+  </h:panelGroup>
+  <h:panelGroup rendered="#{loginBean.loggedIn}"  >
+     <h:panelGrid columns="3" style="background:url(./images/resim_03_05.jpg) left repeat;width:100%;font-weight:bold">
+  <p:button disabled="true"  icon="ui-icon-person"/> <p:outputLabel styleClass="label" rendered="#{loginBean.loggedIn}" value= "#{loginBean.kullanici.adi} #{loginBean.kullanici.soyadi}" style="color:#FFD700;"/>
+  <p:button disabled="true"  icon="ui-icon-unlocked"/>
+  </h:panelGrid>
+       
+   
+    <p:accordionPanel id="menu1" style="width:100%;font-size:1.0em;border:none"  rendered="#{loginBean.loggedIn}"
+        event="mouseover" autoHeight="false" activeIndex="#{menuStateBean.openTabIndex}" dynamic="false">
+       <p:ajax event="tabChange" listener="#{menuStateBean.onTabChange}"  update="@this"></p:ajax>
+       <p:tab id="tab0" title="#{label.basvuru}">
+       <p:menu style="border:none;padding-left:0;">
+        <p:menuitem value="#{label.basvuru}"    icon="ui-icon-person" id="basvuru" actionListener="#{menuStateBean.listener}" update="menu1" 
+        style="#{menuStateBean.style[0]}"/>
+          
+      	<p:menuitem value="#{label.basvuruOdemeli}" id="basvuruListesi" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" 
+      	update="menu1" style="#{menuStateBean.style[1]}"/>
+		<p:menuitem  value="#{label.basvuruOdemesiz}" id="odemesizBasvuruListesi" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" 
+		update="menu1" style="#{menuStateBean.style[2]}"/>
+		<p:menuitem  value="#{label.kontrolTarihiYaklasanlar}" id="kontrolhaberliste" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" 
+		update="menu1" style="#{menuStateBean.style[29]}"/>
+       </p:menu>
+       
+       </p:tab>
+       <p:tab id="tab8" title="#{label.tarama}">
+       <p:menu style="border:none;padding-left:0;">
+         <p:menuitem value="#{label.tarama}"    icon="ui-icon-search" id="tarama" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[21]}"/>
+        <p:menuitem value="#{label.taramaYapilmayanBinalar}"    icon="ui-icon-document" id="taranmayanBinaListesi" 
+        actionListener="#{menuStateBean.listener}" update="menu1" style="#{menuStateBean.style[24]}"/>
+       </p:menu>
+       
+       </p:tab>
+      
+        
+       <p:tab id="tab1" title="#{label.randevu}">
+       <p:menu style="border:none;padding-left:0">
+          <p:menuitem value="#{label.randevuver}" 
+         
+          id="randevuver" icon="ui-icon-circle-plus" actionListener="#{menuStateBean.listener}" 
+          update="menu1" style="#{menuStateBean.style[3]}"/>
+          <p:menuitem value="#{label.randevuListesi}" id="randevuListesi" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" 
+          update="menu1" style="#{menuStateBean.style[4]}"/>
+          <p:menuitem value="#{label.randevuListesi}(#{loginBean.kullanici.adi} #{loginBean.kullanici.soyadi})"  id="muhendisIcinRandevuListesi"
+          icon="ui-icon-document"  actionListener="#{menuStateBean.listener}"
+          update="menu1" style="#{menuStateBean.style[25]}"/>
+        </p:menu>  
+        </p:tab>  
+        
+          <p:tab id="tab2" title="#{label.asansor}">
+         <p:menu style="border:none;padding-left:0">
+	        <p:menuitem value="#{label.kontrol}" id="kontrol" icon="ui-icon-check" actionListener="#{menuStateBean.listener}" 
+	        update="menu1" style="#{menuStateBean.style[5]}"/> 
+	        <p:menuitem value="#{label.kayit}" id="asansor" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" 
+	        update="menu1" style="#{menuStateBean.style[6]}"/>
+        </p:menu>
+        </p:tab>
+          
+             <p:tab id="tab3" title="#{label.bina}">
+           <p:menu style="border:none;padding-left:0">       
+                   <p:menuitem value="#{label.binabilgileri}" id="bina" icon="ui-icon-home" actionListener="#{menuStateBean.listener}" 
+                   update="menu1" style="#{menuStateBean.style[7]}"/>
+                   <p:menuitem value="#{label.kayit}" id="binakayit" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" 
+                   update="menu1" style="#{menuStateBean.style[8]}"/>  
+               </p:menu>
+                </p:tab>  
+             
+             <p:tab id="tab4" title="#{label.raporlar}">
+                   <p:menu style="border:none;padding-left:0">
+                  <p:menuitem value="#{label.raporal}" id="kontrolListesi" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" 
+                  update="menu1" style="#{menuStateBean.style[9]}"/>
+                   <p:menuitem value="#{label.raporlar}" id="raporlar" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" 
+                   update="menu1" style="#{menuStateBean.style[10]}"/>
+                   <p:menuitem value="#{label.raporteslim}" id="raporteslim" icon="ui-icon-comment" actionListener="#{menuStateBean.listener}" 
+                   update="menu1" style="#{menuStateBean.style[22]}"/>
+              </p:menu>
+               </p:tab>  
+               
+                <p:tab id="tab9" title="#{label.odeme}">
+                   <p:menu style="border:none;padding-left:0">
+                  <p:menuitem value="#{label.odemegiris}" id="odemeGiris" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" 
+                  update="menu1" style="#{menuStateBean.style[27]}"/>
+                   <p:menuitem value="#{label.odemegorme}" id="odemeGorme" icon="ui-icon-search" actionListener="#{menuStateBean.listener}" 
+                   update="menu1" style="#{menuStateBean.style[28]}"/>
+               </p:menu>
+               </p:tab>  
+          
+             <p:tab id="tab5" title="#{label.digerislemler}">
+          	 <p:menu style="border:none;padding-left:0">    
+                    <p:menuitem value="#{label.belediyeliste}" id="belediyeListe" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" 
+                    update="menu1" style="#{menuStateBean.style[11]}"/>  
+                      <p:menuitem value="#{label.belediyekayit}" id="belediyekayit" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" 
+                      update="menu1" style="#{menuStateBean.style[12]}"/>   
+                      <p:menuitem value="#{label.firmaListesi}" id="bakimciFirmaListe" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" 
+                      update="menu1" style="#{menuStateBean.style[13]}"/>  
+                      <p:menuitem value="#{label.bakimcifirmakayit}" id="bakimcifirmakayit" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" 
+                      update="menu1" style="#{menuStateBean.style[14]}"/>  
+                       <p:menuitem value="#{label.muhendisListesi}" id="muhendisListe" icon="ui-icon-folder-open" actionListener="#{menuStateBean.listener}" 
+                       update="menu1" style="#{menuStateBean.style[15]}" />
+                         <p:menuitem value="#{label.duyurugiris}" id="duyurugiris" icon="ui-icon-pencil" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[39]}"/>
+              </p:menu>
+              </p:tab>
+         
+          <p:tab id="tab6" title="#{label.yoneticiislemleri}">
+         
+          <p:menu style="border:none;padding-left:0">
+          <p:menuitem value="#{label.islemler}" id="istatistik" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" 
+         update="menu1" style="#{menuStateBean.style[31]}"/>
+         <p:menuitem value="#{label.kullaniciListesi}" id="kullaniciListe" icon="ui-icon-key" actionListener="#{menuStateBean.listener}" 
+         update="menu1" style="#{menuStateBean.style[17]}"/>
+         <p:menuitem value="#{label.kullanicikayit}" id="kullanicikayit" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[18]}"/>
+         <p:menuitem value="#{label.sorugirisduzeltme}" id="testsorulari" icon="ui-icon-disk" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[23]}"/>
+         <p:menuitem value="#{label.randevuListesi}" id="randevuListe" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[26]}"/>
+         <p:menuitem value="#{label.rollervegorevler}" id="rolyetki" icon="ui-icon-gear" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[30]}"/>
+        
+        	</p:menu>
+         </p:tab>
+         
+          <p:tab id="tab10" title="#{label.kontrolraporlari}">
+         
+          <p:menu style="border:none;padding-left:0">
+          <p:menuitem value="#{label.belediyeleregorekontroldagilim}" id="belediyeleregorekontrolsayisidagilimi" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[32]}"/>
+           <p:menuitem value="#{label.denetcileregorekontroldagilim}" id="denetcileregorekontrolsayisidagilimi" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[33]}"/>
+           <p:menuitem value="#{label.etiketveyapitiplerinegorekontroldagilim}" id="etiketveyapitiplerinegorekontrolsayisidagilimi" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[34]}"/>
+          <p:menuitem value="#{label.kontrolveodemelerlistesi}" id="kontrolveodemelerlistesi" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[35]}"/>
+          <p:menuitem value="#{label.belediyebilgi}" id="belediyebilgi" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[36]}"/>
+         <p:menuitem value="#{label.kontrolugelenbinalar}" id="kontrolugelenbinalar" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[37]}"/>
+         <p:menuitem value="#{label.odemeKontrol}" id="odemekontrol" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[38]}"/>
+         <p:menuitem value="#{label.cihazOdemeKontrol}" id="cihazOdemeKontrol" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[40]}"/>
+         <p:menuitem value="#{label.bakanlikRaporlari}" id="bakanlikraporlari" icon="ui-icon-document" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[41]}"/>
+        	</p:menu>
+         </p:tab>
+      
+         
+        
+          <p:tab id="tab7" title="#{label.kullaniciislem}">
+         
+         <p:menu style="border:none;padding-left:0">  
+         <p:menuitem value="#{label.sifredegistir}" id="sifredegistir" icon="ui-icon-refresh" actionListener="#{menuStateBean.listener}"  
+         update="menu1" style="#{menuStateBean.style[19]}"/>
+         <p:menuitem value="#{label.anasayfa}" id="index" icon="ui-icon-home" actionListener="#{menuStateBean.listener}" update="menu1" 
+         style="#{menuStateBean.style[20]}"/>
+        </p:menu>
+         </p:tab>
+    </p:accordionPanel>
+    
+   </h:panelGroup> 
+</h:panelGrid>  
+</h:form>  
+ 
+
+ </ui:composition>

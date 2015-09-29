@@ -1,0 +1,14 @@
+ <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<p:panelGrid columns="3">
+<p:outputLabel for="roller" value="#{label.roller}" />
+<p:selectOneMenu id="roller" value="#{rolBean.secilenRol}" >
+	<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+	<f:selectItems value="#{rolBean.rolListesi}" var="rol" itemLabel="#{rol.rolAdi}" itemValue="#{rol.rolId}"/>
+</p:selectOneMenu>
+<p:commandButton value="Yetki Ver" action="#{loginBean.yetkiVer(loginBean.kullanici,rolBean.secilenRol)}"/>
+</p:panelGrid>
+</ui:composition>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+    version="2.1">
+    
+    <render-kit>
+<renderer>
+  <component-family>org.primefaces.component</component-family> 
+  <renderer-type>org.primefaces.component.PickListRenderer</renderer-type> 
+  <renderer-class>tr.org.mmo.asansor.util.PickListBugfixRenderer</renderer-class> 
+  </renderer>
+  </render-kit>
+  
+<application>
+    
+    
+  
+<resource-bundle>
+<base-name>resources.label</base-name>
+<var>label</var>
+</resource-bundle>
+  
+</application>
+ <managed-bean>
+    <managed-bean-name>currentDate</managed-bean-name>
+    <managed-bean-class>java.util.Date</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+<navigation-rule>
+   <from-view-id>*</from-view-id>
+   <navigation-case>
+       <from-outcome>asansor</from-outcome>
+       <to-view-id>/asansor.xhtml?faces-redirect=true</to-view-id>
+   </navigation-case>
+</navigation-rule>
+<navigation-rule>
+   <from-view-id>*</from-view-id>
+   <navigation-case>
+       <from-outcome>belediyekayit</from-outcome>
+       <to-view-id>/belediyekayit.xhtml?faces-redirect=true</to-view-id>
+   </navigation-case>
+</navigation-rule>
+<navigation-rule>
+   <from-view-id>*</from-view-id>
+   <navigation-case>
+       <from-outcome>binakisikayit</from-outcome>
+       <to-view-id>/binakisikayit.xhtml?faces-redirect=true</to-view-id>
+   </navigation-case>
+</navigation-rule>
+<navigation-rule>
+   <from-view-id>*</from-view-id>
+   <navigation-case>
+       <from-outcome>kullanicikayit</from-outcome>
+       <to-view-id>/kullanicikayit.xhtml?faces-redirect=true</to-view-id>
+   </navigation-case>
+</navigation-rule>
+<navigation-rule>
+   <from-view-id>*</from-view-id>
+   <navigation-case>
+       <from-outcome>error</from-outcome>
+       <to-view-id>/error.xhtml?faces-redirect=true</to-view-id>
+   </navigation-case>
+</navigation-rule>
+<navigation-rule>
+   <from-view-id>*</from-view-id>
+   <navigation-case>
+       <from-outcome>kontrol</from-outcome>
+       <to-view-id>/kontrol.xhtml?faces-redirect=true</to-view-id>
+   </navigation-case>
+</navigation-rule>
+<!-- 
+<lifecycle>
+	<phase-listener>tr.org.mmo.asansor.util.SessionTimeoutPhaseListener</phase-listener>
+</lifecycle>
+ -->
+<factory>
+<exception-handler-factory>tr.org.mmo.asansor.util.ViewExpiredExceptionHandlerFactory</exception-handler-factory>
+</factory>
+</faces-config>

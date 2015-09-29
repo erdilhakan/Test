@@ -1,0 +1,371 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	
+	<ui:insert name="title"><title></title></ui:insert>
+	
+<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+
+</h:head>
+
+	<h:form id="form1">
+	<p:growl id="growl" showDetail="false" autoUpdate="true" sticky="false" />
+	<ui:insert name="uibinaara"></ui:insert>
+<p:panel id="pnlBina" header="#{binaBean.binaDTO.binaAdi}" toggleable="true" 
+					closable="false" toggleSpeed="500" closeSpeed="500" 
+					widgetVar="panel2" visible="#{binaBean.binaDTO.binaId gt 0 or binaBean.yeniBina}" rendered="#{binaBean.binaDTO.binaId gt 0 or  binaBean.yeniBina}">
+					
+					
+					<p:ajax event="close" listener="#{panelBean.handleClose}" update="growl" />
+					<p:ajax event="toggle" listener="#{panelBean.handleToggle}"
+						update="growl" />
+				
+					<h:panelGrid styleClass="panelGrid" id="pnl02" rowClasses="rowClass1,rowClass2" columns="6" cellpadding="7">
+					
+						<p:outputLabel value="#{label.il}" styleClass="label" for="il"/>
+						
+						<p:selectOneMenu id="il"   required="true" height="100"  value="#{binaBean.binaDTO.il}"
+						requiredMessage="#{label.il} #{label.seciniz}" title="#{label.binauyari}" filter="true" filterMatchMode="startsWith"
+						style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+						<f:validator validatorId="validators.mustGreatThanZero"></f:validator>
+						<f:selectItem itemLabel="İl Seçiniz" itemValue=""></f:selectItem>
+						<f:selectItems value="#{loginBean.kullanici.iller}"/>
+						<p:ajax update="growl txtilce txtbelediye ddmahalle ddcaddesokak grduavt txtbucakkoy"  listener="#{binaBean.ilChange}" process="@this"/>
+						</p:selectOneMenu>
+						
+						<h:outputText/>	
+							
+							<p:outputLabel value="#{label.ilce}" styleClass="label" for="txtilce"/>
+							<p:selectOneMenu id="txtilce"   required="true" height="100" value="#{binaBean.binaDTO.ilce}" 
+						requiredMessage="#{label.ilce} #{label.seciniz}" title="#{label.binauyari}" filter="true" filterMatchMode="startsWith"  
+						style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+						 <f:validator validatorId="validators.mustGreatThanZero"></f:validator> 
+						
+						<f:selectItem itemLabel="İlçe Seçiniz" itemValue=""></f:selectItem>
+						<f:selectItems value="#{binaBean.ilceler}"/>
+						<p:ajax listener="#{binaBean.ilceChange}" process="@this" update="ddmahalle @this ddcaddesokak grduavt txtbucakkoy"></p:ajax>
+						</p:selectOneMenu>
+							<h:outputText/>
+							<p:outputLabel value="#{label.bucakkoy}" styleClass="label" for="txtbucakkoy"/>
+							<p:selectOneMenu id="txtbucakkoy"   required="true" height="100" value="#{binaBean.binaDTO.bucakKoyKod}" 
+						requiredMessage="#{label.bucakkoy} #{label.seciniz}"  filter="true" filterMatchMode="contains"  
+						style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+						 <f:validator validatorId="validators.mustGreatThanZero"></f:validator> 
+						
+						<f:selectItem itemLabel="#{label.seciniz}" itemValue=""></f:selectItem>
+						<f:selectItems value="#{binaBean.bucakKoyList}"/>
+						<p:ajax listener="#{binaBean.bucakKoyChange}" process="@this" update="ddmahalle @this ddcaddesokak grduavt"></p:ajax>
+						</p:selectOneMenu>
+							<h:outputText/>
+							<h:outputText/>
+							<h:outputText/>
+							<h:outputText/>
+							
+							<p:outputLabel value="#{label.mahalle}" styleClass="label" for="ddmahalle"/>
+								<h:panelGrid columns="2" id="gridmahalle">
+								<p:selectOneMenu id="ddmahalle"  value="#{binaBean.binaDTO.mahalle}"
+							required="true" height="100"
+							requiredMessage="#{label.mahalle} #{label.seciniz}"  filter="true" filterMatchMode="startsWith"
+							style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							<p:ajax listener="#{binaBean.mahalleChange}" update="gridcaddesokak ddcaddesokak @this grduavt" process="@this"/>
+							<f:selectItem itemLabel="#{label.mahalle} #{label.seciniz}" itemValue=""/>
+							<f:selectItems value="#{binaBean.mahalleList}" var="mahalle" itemLabel="#{mahalle.ad}" itemValue="#{mahalle.ad}"></f:selectItems>
+							</p:selectOneMenu>
+							<p:commandButton icon="ui-icon-help" title="#{label.mahalleListedeYok}" style="width:12px;" id="btnuavtmahalle"
+           					 actionListener="#{binaBean.ilceyeBagliMahalleSorgulama}"
+           				 process="@this txtilce"  update=":form1:growl gridmahalle"></p:commandButton>
+           				  <p:blockUI trigger="btnuavtmahalle" block="gridmahalle">
+           			 <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+          			  </p:blockUI>
+           				 </h:panelGrid>
+           		   
+								
+								
+								<h:outputText/>	
+							<p:outputLabel value="#{label.caddesokak}" styleClass="label" for="ddcaddesokak"/>
+							<h:panelGrid columns="4" id="gridcaddesokak">
+							<p:selectOneMenu id="ddcaddesokak"  value="#{binaBean.binaDTO.caddeSokak}"
+							required="true" height="100"  filter="true" filterMatchMode="startsWith"
+							requiredMessage="#{label.caddesokak} #{label.seciniz}"  
+							style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							<p:ajax listener="#{binaBean.caddeSokakChange}" update=":form1:uavtkod :formuavt:uavtBinaTable grduavt" process="@this" event="change" oncomplete="uavtBinaTable.filter();PF('uavtBina').show()"/>
+							<f:selectItem itemLabel="#{label.caddesokak} #{label.seciniz}" itemValue=""/>
+							<f:selectItems value="#{binaBean.caddeSokakList}" var="cs" itemLabel="#{cs.ad}" itemValue="#{cs.ad}"></f:selectItems>
+							</p:selectOneMenu>
+							<p:commandButton icon="ui-icon-help" title="#{label.caddeSokakListedeYok}" style="width:12px;"  id="btnuavtcaddesokak"
+           					 actionListener="#{binaBean.mahalleyeBagliCsbmSorgulama}"
+           				 process="@this gridmahalle"  update="gridcaddesokak :form1:growl">
+           				 <p:confirm header="Cadde Sokak Güncelle" message="Mahalleye bağlı cadde sokak bilgileri Ulusal Adres Veri Tabanından güncellenecek. Devam etmek istiyor musunuz ?" icon="ui-icon-alert"></p:confirm>
+           				 </p:commandButton>
+           				 <p:commandButton icon="ui-icon-refresh" title="#{label.caddedekibinalariguncelle}" style="width:12px;"  id="btnuavtcaddesokakbina"
+           					 actionListener="#{binaBean.csbmBagliBinalar}"
+           				 process="@this gridcaddesokak"  update=":form1:growl">
+           				 <p:confirm header="Cadde Sokak Güncelle" message="Cadde/sokak taki bina bilgileri Ulusal Adres Veri Tabanından güncellenecek. Devam etmek istiyor musunuz ?" icon="ui-icon-alert"></p:confirm>
+           				 </p:commandButton>
+           				  <p:blockUI trigger="btnuavtcaddesokak" block="gridcaddesokak">
+           			 		<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+          			 		 </p:blockUI>
+          			 		 <p:blockUI trigger="btnuavtcaddesokakbina" block="btnuavtcaddesokakbina">
+           			 		<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+          			 		 </p:blockUI>
+          			 		 <p:blockUI trigger="ddcaddesokak" block="gridcaddesokak">
+								<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+								</p:blockUI>
+								    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                <p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>      
+           				 </h:panelGrid>
+           		   			
+								
+								<h:outputText/>	
+								
+								
+									
+							
+							<p:outputLabel for="uavtkod" value="#{label.uavtKod}" />
+       			  <h:panelGrid columns="2" id="grduavt">
+           		  <p:inputText id="uavtkod" required="true" requiredMessage="UAVT kodu boş olamaz!"
+           		  style="width:100px" value="#{binaBean.binaDTO.uavtKod}"  onkeydown="alert('Butonu kullanınız')" 
+           		  onclick="alert('Butonu kullanınız')" onkeypress="alert('Butonu kullanınız')" 
+           		  title="Site Adı:#{binaBean.uavtBina.siteAdi} Blok Adı:#{binaBean.uavtBina.blokAdi} Dış Kapı No:#{binaBean.uavtBina.diskapiNo1}">
+           		  <f:validator validatorId="validators.mustGreatThanZero"/>
+           		 </p:inputText>
+           		 		<p:commandButton icon="ui-icon-search" title="Cadde/Sokak a ait binaları getir" style="width:12px;" id="btnuavtkod"
+           					 actionListener="#{binaBean.csbmBagliBinaSorgulama}"
+           				 process="@this gridcaddesokak" update=":formuavt:uavtBinaTable gridcaddesokak"  ></p:commandButton>
+           				 </h:panelGrid>
+           		    <p:blockUI trigger="btnuavtkod" block="grduavt">
+           			 <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+          			  </p:blockUI>
+							
+						<h:outputText/>
+						
+						<h:outputText/>
+						
+						<h:outputText/>
+							<p:outputLabel value="#{label.binaNo}" styleClass="label" for="txtbinano"/>
+							<p:inputText id="txtbinano"  value="#{binaBean.binaDTO.binaNo}"
+							required="true" requiredMessage="#{label.binaNo} #{label.giriniz}"
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"/>
+								<p:watermark value="#{label.binaNo}" for="txtbinano"></p:watermark>
+							<p:outputLabel value="#{label.binaAdi}" styleClass="label"/>
+							<p:inputText id="txtbinaadi"  value="#{binaBean.binaDTO.binaAdi}"
+							required="true" requiredMessage="#{label.binaAdi} #{label.giriniz}"
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+								<p:watermark value="#{label.binaAdi}" for="txtbinaadi"></p:watermark>
+						
+						
+							
+							
+							
+							<p:outputLabel value="#{label.yapikonusu}" styleClass="label" for="txtyapikonusu"/>
+							<p:selectOneMenu id="txtyapikonusu"  value="#{binaBean.binaDTO.yapiTip}" 
+							required="true" requiredMessage="#{label.yapikonusu} #{label.giriniz}"
+							style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							<f:selectItem itemLabel="#{label.seciniz}" itemValue="0"/>
+							<f:selectItems value="#{binaBean.yapiTipler}" var="yapitipler" itemLabel="#{yapitipler.tip}" itemValue="#{yapitipler.id}"/>
+							</p:selectOneMenu>
+							
+							<h:outputText/>
+							<p:outputLabel value="#{label.binaTipi}" styleClass="label" for="txtbinatipi"/>
+							<p:selectOneMenu id="txtbinatipi"  value="#{binaBean.binaDTO.sozlesmeBinaTipId}"
+							required="true" requiredMessage="#{label.binaTipi} #{label.seciniz}"
+							style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							<p:ajax listener="#{binaBean.sozlesmeBinaTipListener}" update="@this txtbelediye growl" process="@this il"></p:ajax>
+							<f:validator validatorId="validators.mustGreatThanZero"></f:validator>
+							<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+							<f:selectItems value="#{applicationBean.sozlesmeBinaTipList}" var="binatip" itemLabel="#{binatip.aciklama}" itemValue="#{binatip.id}"/>
+							</p:selectOneMenu>
+							
+							<h:outputText/>
+							<p:outputLabel value="#{label.belediyeliste}" styleClass="label" for="txtbelediye"/>
+							<p:selectOneMenu id="txtbelediye"  value="#{binaBean.binaDTO.belediye}" filter="true" filterMatchMode="startsWith"
+							requiredMessage="#{label.belediye} #{label.seciniz}" title="#{label.binauyari}"  required="true"
+							style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							<f:validator validatorId="validators.belediye"></f:validator>
+							<f:selectItem itemLabel="#{binaBean.belediyelerSize eq '0'?(binaBean.binaDTO.sozlesmeBinaTipId gt '0'?'Sözleşmeli Belediye Bulunamadı':'Önce Bina Tipini Seçiniz'):'Belediye Seçiniz'}" itemValue=""/>
+							<f:selectItems value="#{binaBean.belediyeler}"/>
+							</p:selectOneMenu>
+							<h:outputText/>
+							 <h:outputText/>
+							 <h:outputText/>
+							 <h:outputText/>						
+							<p:outputLabel value="#{label.ada}" styleClass="label" for="txtada"/>
+							<p:inputText id="txtada"  value="#{binaBean.binaDTO.ada}"
+							
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+								<p:watermark value="#{label.ada}" for="txtada"></p:watermark>
+							<p:outputLabel value="#{label.parsel}" styleClass="label" for="txtparsel"/>
+							<p:inputText id="txtparsel"  value="#{binaBean.binaDTO.parsel}"
+							
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+								<p:watermark value="#{label.parsel}" for="txtparsel"></p:watermark>
+						
+							<p:outputLabel value="#{label.pafta}" styleClass="label" for="txtpafta"/>
+							<p:inputText id="txtpafta"  value="#{binaBean.binaDTO.pafta}"
+							
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+								<p:watermark value="#{label.pafta}" for="txtpafta"></p:watermark>
+							<h:outputText/>
+							<h:outputText/>
+							<h:outputText/>	
+								
+								<p:outputLabel value="#{label.vergiDairesi}" styleClass="label" for="txtvergidairesi"/>
+							<p:inputText id="txtvergidairesi"  value="#{binaBean.binaDTO.vergiDairesi}"
+							
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+								<p:watermark value="#{label.vergiDairesi}" for="txtvergidairesi"></p:watermark>
+							<p:outputLabel value="#{label.vergiNo}" styleClass="label" for="txtvergino"/>
+							<p:inputText id="txtvergino"  value="#{binaBean.binaDTO.vergiNo}"
+							
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+								<p:watermark value="#{label.vergiNo}" for="txtvergino"></p:watermark>
+								
+							
+					</h:panelGrid>
+					
+					<f:facet name="footer">
+					
+				
+<p:commandButton value="Ödeme Alınmaz" style="float:left" icon="ui-icon-comment" process="@this"
+ rendered="#{binaBean.binaDTO.binaId gt '0'}" 
+onclick="PF('dialog').show()">
+</p:commandButton>
+
+					
+					<h:panelGrid columns="4" style="float:right" cellpadding="3" cellspacing="20">
+					
+					<ui:insert name="binaara">
+					</ui:insert>
+					<ui:insert name="bakimcifirmalar"/>
+					<ui:insert name="binakisiler"></ui:insert>
+					<ui:insert name="binakaydet"></ui:insert>
+					</h:panelGrid>
+					</f:facet>
+				</p:panel>
+			
+				
+				<ui:insert name="binacihazlar"></ui:insert>
+					</h:form>
+				<ui:insert name="binaaradialog"></ui:insert>
+				<p:dialog widgetVar="dialog" id="dialog" visible="false" modal="true" width="auto">
+				<h:form>
+				<p:panel id="panelodemealinmaz">
+				<p:messages id="msg" autoUpdate="false" showDetail="false"/>
+				<p:dataTable value="#{binaBean.odemeAlinmazList}" var="l" id="dti" emptyMessage="#{label.emptyList}">
+				<f:facet name="header">
+				 
+				</f:facet>
+				<p:column headerText="#{label.binaId}">
+				#{l.binaId}
+				</p:column>
+				<p:column headerText="#{label.islemTarihi}" sortBy="#{l.islemTarihi}">
+				<h:outputText value="#{l.islemTarihi}">
+				<f:convertDateTime pattern="dd-MM-yyyy"/>
+				 </h:outputText>
+				</p:column>
+				<p:column headerText="#{label.islemYapanKullanici}" sortBy="#{l.islemYapanKullanici}">
+				#{l.islemYapanKullanici}
+				</p:column>
+				
+				<p:column headerText="#{label.aciklama}">
+				
+               #{l.aciklama}
+                 
+                
+				
+				</p:column>
+				<p:column headerText="#{label.iptalTarihi}" sortBy="iptalTarihi">
+				<h:outputText value="#{l.iptalTarihi}">
+				<f:convertDateTime pattern="dd-MM-yyyy"/>
+				 </h:outputText>
+				</p:column>
+				<p:column headerText="#{label.iptalEdenKullanici}" sortBy="#{l.iptalEdenKullanici}">
+				#{l.iptalEdenKullanici}
+				</p:column>
+				<p:column>
+				
+				<p:commandButton process="@this" icon="ui-icon-cancel" value="#{label.iptal}" 
+				action="#{binaBean.odemeAlinmamaDurumIptal(l)}" update="dti"></p:commandButton>
+				</p:column>
+				<f:facet name="footer">
+				<p:commandButton icon="ui-icon-search" value="Ödeme Alınmama Durumları Listele" style="float:right" 
+				action="#{binaBean.getOdemeAlinmamaDurumlari}"
+				 update="dti" process="@this"></p:commandButton>
+				</f:facet>
+				</p:dataTable>
+				<br/>
+				<br/>
+				<h:panelGrid columns="2" id="grdodemealinmaz">
+				<p:outputLabel value="#{label.aciklama}" styleClass="label"/>
+				<p:inputTextarea id="aciklama"  required="true" requiredMessage="#{label.aciklama}  #{label.giriniz}" 
+				style="width:500px;height:100px;" 
+           		 cols="400" rows="6" value="#{binaBean.oabDTO.aciklama}" >
+           		 
+           		 </p:inputTextarea>
+           		 <h:outputText/>
+           		 
+           	<p:commandButton icon="ui-icon-disk" style="float:right" value="#{label.kaydet}" 
+           	action="#{binaBean.odemeAlinmamaDurumuEkle}"  update="dti" process="@form">
+           
+           	</p:commandButton>
+           	
+				</h:panelGrid>
+				</p:panel>
+				</h:form>
+				</p:dialog>
+				<h:form id="formuavt"> 
+				<p:dialog id="uavtBina" widgetVar="uavtBina"  modal="true" width="auto" header="UAVT Binalar">
+				<p:ajax event="close" process="@this" update=":form1:pnlBina"></p:ajax>
+				<p:dataTable id="uavtBinaTable" widgetVar="uavtBinaTable" value="#{binaBean.uavtBinaList}" var="uavtBina" paginator="true"  paginatorPosition="top"
+				filteredValue="#{binaBean.uavtBinaFilter}" selection="#{binaBean.uavtBina}"
+				rows="10"
+				emptyMessage="#{label.emptyList}">
+				<p:ajax event="rowSelectRadio" listener="#{binaBean.onUavtRowSelect}" update=":form1:grduavt :form1:txtbinano :form1:txtbinaadi :form1:txtada :form1:txtpafta :form1:txtparsel" oncomplete="PF('uavtBina').hide()"/>
+			
+				  <p:column selectionMode="single" style="width:16px;text-align:center"/>
+			
+				<p:column id="siteAdi" headerText="#{label.siteAdi}" sortBy="#{uavtBina.siteAdi}" filterBy="#{uavtBina.siteAdi}">
+				#{uavtBina.siteAdi}
+				</p:column>
+				<p:column id="blokAdi" headerText="#{label.blokAdi}" sortBy="#{uavtBina.blokAdi}" filterBy="#{uavtBina.blokAdi}">
+				#{uavtBina.blokAdi}
+				</p:column>
+				<p:column  id="uavtDisKapi" headerText="#{label.diskapino}" sortBy="#{uavtBina.disKapiNo}" filterBy="#{uavtBina.disKapiNo}">
+				#{uavtBina.disKapiNo}
+				</p:column>
+				<p:column headerText="#{label.ada}">
+				#{uavtBina.ada}
+				</p:column>
+				<p:column headerText="#{label.pafta}">
+				#{uavtBina.pafta}
+				</p:column>
+				<p:column headerText="#{label.parsel}">
+				#{uavtBina.parsel}
+				</p:column>
+				<f:facet name="footer">Aradığınız Binayı listede bulamadı iseniz Cadde/Sokak ismi yanında bulunan güncelleme butonunu kullanarak binaları güncelleyebilirsiniz!</f:facet>
+				</p:dataTable>
+				</p:dialog>
+				</h:form>
+				</ui:composition>

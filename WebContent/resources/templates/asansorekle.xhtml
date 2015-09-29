@@ -1,0 +1,146 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<table>
+	<tr>
+	<td>
+<p:outputLabel value="#{label.asansorTipi}" styleClass="label" for="txtAsansorTip" style="vertical-align:middle;line-height:10px"/>
+</td>
+<td>
+
+<p:selectOneMenu id="txtAsansorTip"  value="#{cihazBean.cihaz.tip}" required="true" requiredMessage="#{label.asansorTipi} #{label.seciniz}" disabled="#{cihazBean.cihazUpdate}"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<f:selectItem itemLabel="#{label.asansorTipi} #{label.seciniz}" itemValue=""></f:selectItem>
+<f:selectItem itemLabel="ELEKTRİKLİ"  itemValue="66" />
+<f:selectItem itemLabel="HİDROLİK"  itemValue="68" />
+<p:ajax  listener="#{cihazBean.asansorEkleListener}" update=":formbasvuru:panelasansorteknik" process="@this"></p:ajax>
+</p:selectOneMenu>
+</td>
+</tr>
+</table>
+
+<br/>
+<p:panel id="panelasansorteknik" widgetVar="panelasansorteknik">
+
+<p:dataGrid var="cihaz" value="#{cihazBean.cihazTeknik}" paginator="false"  columns="2" rendered="#{cihazBean.visible}" id="dtgrid">
+
+<f:facet name="header">
+<h:outputLabel value="#{cihazBean.header}" styleClass="label"/>
+
+
+</f:facet> 
+<table>
+<tr style="width: 100%">
+<td style="width: 150px">
+
+<p:outputLabel value="#{cihaz.baslik}" styleClass="label" rendered="#{!cihaz.zorunluAlan and cihaz.baslik ne 'KAPASİTE(KİŞİ)'}"/>
+
+<p:outputLabel id="kapasitelabel1" 
+value="#{cihaz.baslik}" styleClass="label" rendered="#{!cihaz.zorunluAlan and cihaz.baslik eq 'KAPASİTE(KİŞİ)' and !cihazBean.kapasiteKisi}"/>
+<p:outputLabel 
+id="kapasitelabel2"
+value="#{cihaz.baslik} *" styleClass="label" rendered="#{!cihaz.zorunluAlan and cihaz.baslik eq 'KAPASİTE(KİŞİ)' and cihazBean.kapasiteKisi}" style="color:#FF0033"/>
+<p:outputLabel value="#{cihaz.baslik} *" styleClass="label" rendered="#{cihaz.zorunluAlan}" style="color:#FF0033"/>
+</td>
+<td/>
+<td style="width: 210px">
+
+<p:inputText  rendered="#{cihaz.tipi eq 'metin' and !cihaz.zorunluAlan and cihaz.baslik ne 'HIZ(M/S)' and cihaz.baslik ne 'HIZI(M/S)' and  cihaz.baslik ne 'KAPASİTE(KİŞİ)' and cihaz.baslik ne 'ÖZEL ASANSÖR ŞARTLAR'}" value="#{cihaz.cevap}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;"/>
+<p:inputText type="number" rendered="#{cihaz.tipi eq 'sayi' and !cihaz.zorunluAlan and cihaz.baslik ne 'RUHSAT/TESCİL TARİHİ' and cihaz.baslik ne 'HIZ(M/S)' and cihaz.baslik ne 'HIZI(M/S)' and  cihaz.baslik ne 'KAPASİTE(KİŞİ)' and cihaz.baslik ne 'ÖZEL ASANSÖR ŞARTLAR'}" value="#{cihaz.cevap}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<p:ajax listener="#{cihazBean.numberListener}" process="@this" update="@this"></p:ajax>
+</p:inputText>
+<p:selectOneMenu   rendered="#{cihaz.tipi eq 'coklu' and !cihaz.zorunluAlan and cihaz.baslik ne 'HIZ(M/S)' and cihaz.baslik ne 'HIZI(M/S)' and  cihaz.baslik ne 'KAPASİTE(KİŞİ)' and cihaz.baslik ne 'ÖZEL ASANSÖR ŞARTLAR'}" value="#{cihaz.cevap}" id="data"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<f:selectItem itemLabel="Seçiniz" itemValue=""/>
+<f:selectItems value="#{cihaz.item}"/>
+
+</p:selectOneMenu> 
+<p:inputMask mask="99.99.9999"  rendered="#{cihaz.tipi eq 'sayi' and !cihaz.zorunluAlan and cihaz.baslik eq 'RUHSAT/TESCİL TARİHİ'}" value="#{cihaz.cevap}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;
+-moz-box-shadow: none;box-shadow: none;"  id="ruhsattesciltarihi"/>
+<p:inputText  rendered="#{cihaz.tipi eq 'metin' and !cihaz.zorunluAlan and (cihaz.baslik eq 'HIZ(M/S)' or cihaz.baslik eq 'HIZI(M/S)')}" value="#{cihaz.cevap}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;"/>
+<p:inputText type="number"  rendered="#{cihaz.tipi eq 'sayi' and !cihaz.zorunluAlan and (cihaz.baslik eq 'HIZ(M/S)' or cihaz.baslik eq 'HIZI(M/S)')}" value="#{cihaz.cevap}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<p:ajax listener="#{cihazBean.numberListener}" process="@this" update="@this"></p:ajax>
+</p:inputText>
+<h:panelGrid columns="2">
+<p:selectOneMenu    rendered="#{cihaz.tipi eq 'coklu' and !cihaz.zorunluAlan and (cihaz.baslik eq 'HIZ(M/S)' or cihaz.baslik eq 'HIZI(M/S)')}"  value="#{cihaz.cevap}" id="hiz"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<f:selectItem itemLabel="Seçiniz" itemValue=""/>
+<f:selectItems value="#{cihaz.item}"/>
+<p:ajax listener="#{cihazBean.hizListener}" process="@this" update="@this diger"></p:ajax>
+</p:selectOneMenu>
+<h:panelGrid columns="1" id="diger" rendered="#{cihaz.baslik eq 'HIZ(M/S)' or cihaz.baslik eq 'HIZI(M/S)'}">
+<p:inputText type="number" rendered="#{cihazBean.hizDiger}" value="#{cihaz.cevap}" style="width:3em">
+<p:ajax listener="#{cihazBean.numberListener}" process="@this" update="@this"></p:ajax>
+</p:inputText> 
+</h:panelGrid>
+</h:panelGrid>
+<p:selectOneMenu    rendered="#{cihaz.tipi eq 'coklu' and !cihaz.zorunluAlan and (cihaz.baslik eq 'KAPASİTE(KİŞİ)')}"  value="#{cihaz.cevap}" id="kapasitekisi"
+required="#{cihazBean.kapasiteKisi}" requiredMessage="#{cihaz.baslik} #{label.giriniz}"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<f:selectItem itemLabel="Seçiniz" itemValue=""/>
+<f:selectItems value="#{cihaz.item}"/>
+<p:ajax  process="@this" update="@this"></p:ajax>
+</p:selectOneMenu>
+<p:selectOneMenu   rendered="#{cihaz.tipi eq 'coklu' and cihaz.zorunluAlan and (cihaz.baslik eq 'ASANSÖRÜN CİNSİ')}" value="#{cihaz.cevap}" id="asansorcinsi"  required="true" requiredMessage="#{cihaz.baslik} #{label.giriniz}"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<f:selectItem itemLabel="Seçiniz" itemValue=""/>
+<f:selectItems value="#{cihaz.item}"/>
+<p:ajax process="@this" update="dtgrid" listener="#{cihazBean.asansorCinsiListener}"></p:ajax>
+</p:selectOneMenu> 
+
+<p:inputText  rendered="#{cihaz.tipi eq 'metin' and cihaz.zorunluAlan}" value="#{cihaz.cevap}"  required="true" requiredMessage="#{cihaz.baslik} #{label.giriniz}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;"/>
+<p:inputText type="number"  rendered="#{cihaz.tipi eq 'sayi' and cihaz.zorunluAlan}" value="#{cihaz.cevap}"  required="true" requiredMessage="#{cihaz.baslik} #{label.giriniz}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<p:ajax listener="#{cihazBean.numberListener}" process="@this" update="@this"></p:ajax>
+</p:inputText>
+<p:selectOneMenu   rendered="#{cihaz.tipi eq 'coklu' and cihaz.zorunluAlan and (cihaz.baslik ne 'ASANSÖRÜN CİNSİ')}" value="#{cihaz.cevap}" id="dataz"  required="true" requiredMessage="#{cihaz.baslik} #{label.giriniz}"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<f:selectItem itemLabel="Seçiniz" itemValue=""/>
+<f:selectItems value="#{cihaz.item}"/>
+
+</p:selectOneMenu> 
+<p:selectManyMenu   rendered="#{cihaz.tipi eq 'coklu' and cihaz.baslik eq 'ÖZEL ASANSÖR ŞARTLAR'}" value="#{cihaz.ozelAsansorSartlar}" id="ozelasansorsartlar"  
+showCheckbox="true"
+style="color: #6986c9;width: 350px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+
+<f:selectItems value="#{cihaz.item}"/>
+
+</p:selectManyMenu>
+
+</td>
+</tr>
+</table>
+
+</p:dataGrid>
+
+
+
+<p:commandButton id="kaydet" value="#{label.kaydet}" icon="ui-icon-disk" styleClass="ui-button-mod" 
+action="#{cihazBean.asansorKaydetBasvurudan}"   style="float:right" rendered="#{cihazBean.visible}" update=":formbasvuru:pnlCihaz :formbasvuru:panelasansorekle :formbasvuru:growl"
+oncomplete="$('html, body').animate({ scrollTop: 50 }, 'slow')" process="panelasansorteknik">
+<p:confirm header="Yeni Cihaz Kaydet" message="Cihaz bilgileri kaydedilsin mi?" icon="ui-icon-check" />  
+</p:commandButton>
+
+
+
+
+
+ <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">  
+        <p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="$('html, body').animate({ scrollTop: 50 }, 'slow')"/>  
+        <p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+    </p:confirmDialog>
+    
+    <p:blockUI trigger="kaydet" block="panelasansorteknik">
+    <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+    </p:blockUI>
+
+</p:panel>
+</ui:composition>

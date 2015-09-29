@@ -1,0 +1,214 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+	<style type="text/css">
+	.ui-autocomplete-input{
+	height: 18px;}
+	
+	</style>
+	
+	</h:head>
+		
+		<p:panel id="binaara" widgetVar="binaara" style="border:none;width:98%" toggleable="true" toggleOrientation="horizontal" header="" toggleTitle="Bina Bul" visible="#{binaBean.sessionBina.binaId eq 0}">
+		
+		 <p:tabView id="accordionSearch" activeIndex="#{binaBean.tabIndex}" style="width:100%">
+		 <p:ajax event="tabChange" listener="#{binaBean.tabChangeListener}" update="@this" process="@this"></p:ajax>
+		 	<p:tab title="Bina Adı ile Ara" id="tabBina">
+		
+		<h:panelGrid columns="3">
+			<p:panel style="width:600">
+			<p:autoComplete value="#{binaBean.binalar}" var="bina" 
+						 	size="60" panelStyle="width:600px;"
+							converter="binalar" id="binacomplete" 
+							cache="true" cacheTimeout="3000" scrollHeight="600"
+							completeMethod="#{binaBean.searchBina}" forceSelection="true"
+							minQueryLength="3" queryDelay="300" itemValue="#{bina}"
+							placeholder="Bina Adının ilk üç harfini girerek arama yapabilirsiniz"
+							itemLabel="#{bina.binaAdi}">
+					<p:ajax event="itemSelect" listener="#{binaBean.itemSelectListener}" update="@form"></p:ajax>
+					<p:column headerText="#{label.adi}">
+						#{bina.binaAdi}
+					</p:column>
+					<p:column headerText="#{label.binaId}">
+						#{bina.binaId}
+					</p:column>
+				   <p:column headerText="#{label.tescilNo}">
+						#{bina.tescilNo}
+					</p:column>
+					<p:column headerText="#{label.binaNo}">
+						#{bina.binaNo}
+					</p:column>
+					<p:column headerText="#{label.mahalle}">
+						#{bina.mahalle}
+					</p:column>
+					<p:column headerText="#{label.caddesokak}">
+						#{bina.caddeSokak}
+					</p:column>
+					<p:column headerText="#{label.il}/#{label.ilce}">
+						#{bina.ilAdi}/#{bina.ilceAdi}
+					</p:column>
+					<p:column headerText="#{label.adres}">
+						#{bina.acikAdres}
+					</p:column>
+
+				</p:autoComplete>
+				
+			</p:panel>
+	
+			
+					<p:commandButton icon="ui-icon-search"  
+						id="binacompletesearch"
+						style="z-index:1;width:20px;height:20px;border-radius:5px;
+						-moz-border-radius:5px;-webkit-border-radius:5px;" 
+						actionListener="#{binaBean.listener}"
+						process="@this binacomplete" update="@form">
+					</p:commandButton>
+			
+			
+				
+					<p:selectBooleanCheckbox value="#{binaBean.searchType}">
+					<p:ajax event="change" listener="#{binaBean.searchTypeListener}" process="@this" update="binacomplete"/>
+					</p:selectBooleanCheckbox>
+			
+				</h:panelGrid>
+		
+		 <p:blockUI trigger="binacompletesearch" block="@form">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+
+		</p:tab>
+		
+		
+		<p:tab title="TC Kimlik No ile Ara" id="tabtckimlik">
+		
+	
+<h:panelGrid columns="3"  id="grdtc">
+
+<p:outputLabel for="txtkimlik" value="#{label.tckimlikno}"></p:outputLabel>
+	 <p:inputMask id="txtkimlik" mask="99999999999" style="margin-top:0px;width:130px" value="#{binaBean.tcKimlikNo}"
+							 placeholder="#{label.tckimlikno}">
+							<f:validator validatorId="validators.tcKimlikValidator"></f:validator>
+							<p:ajax event="change" listener="#{binaBean.changeListener}" update="@form"></p:ajax>
+							<p:ajax event="blur" listener="#{binaBean.keyDownListener}" update="@form"></p:ajax>
+							</p:inputMask>
+							<p:commandButton icon="ui-icon-search" value="#{label.sorgula}" style="width:100px" id="btntc"
+							update="@form" process="grdtc"  action="#{binaBean.binaBulByTcKimlik}">
+							</p:commandButton>
+							
+							
+							
+							
+	 </h:panelGrid>
+	 <p:blockUI trigger="btntc" block="grdtc">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+  
+	
+								
+
+  		
+		
+ <h:panelGroup id="pnlbinalist">
+   <p:dataTable id="tblx0102" var="varbinalist" value="#{binaBean.binaListSmall}" emptyMessage="" rendered="#{not empty binaBean.binaList}"  
+  	selection="#{binaBean.secilen}" selectionMode="single">
+  	
+<p:ajax event="rowSelect" listener="#{binaBean.onRowSelect}" update="@form" 
+onstart="PF('yukleniyor').show()" onerror="PF('yukleniyor').hide" onsuccess="PF('yukleniyor').hide()"
+oncomplete="$('html, body').scrollTop( $(document).height()/2 );PF('yukleniyor').hide()"/>
+<p:ajax event="rowUnselect" listener="#{binaBean.onRowUnselect}"/>
+
+        
+        <p:column headerText="#{label.il}">
+       	    #{varbinalist.ilAdi}  
+         
+        </p:column>  
+  
+        <p:column headerText="#{label.ilce}"> 
+        
+            #{varbinalist.ilceAdi}  
+        </p:column>  
+  
+        <p:column headerText="#{label.mahalle}" >  
+            #{varbinalist.mahalle}    
+        </p:column>  
+  
+        <p:column headerText="#{label.caddesokak}">  
+            #{varbinalist.caddeSokak}   
+        </p:column>  
+        
+        <p:column headerText="#{label.binaNo}">  
+            #{varbinalist.binaNo}  
+        </p:column>  
+          <p:column headerText="#{label.binaAdi}">  
+            #{varbinalist.binaAdi}  
+        </p:column>  
+     
+      
+            
+       
+          
+  
+    </p:dataTable>  
+    
+    </h:panelGroup>  
+    <p:blockUI trigger="binacompletesearch" block="@form">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+    
+		</p:tab>
+		
+		<p:tab title="Bina ID ile Ara">
+		
+			<h:panelGrid columns="3" id="gridid">
+			<p:outputLabel for="binaid" value="#{label.binaId}"></p:outputLabel>
+				<p:inputText id="binaid" value="#{binaBean.binaId}" required="true"
+					requiredMessage="#{label.binaId} #{label.giriniz}" placeholder="#{label.binaId}" >
+					  <p:ajax event="change" process="@this" listener="#{binaBean.changeListener}" update=":form1:pnlBina"></p:ajax>
+					</p:inputText>
+				<p:commandButton icon="ui-icon-search" value="#{label.sorgula}" id="btnid"
+					action="#{binaBean.binaBulById}" update="@form" process="@this binaid">
+
+				</p:commandButton>
+			</h:panelGrid>
+		
+	<p:blockUI trigger="btnid" block="@form">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+		</p:tab>
+		
+		<p:tab title="OBYS Bina ID ile Ara">
+		
+			<h:panelGrid columns="3" id="gridtescilno">
+			<p:outputLabel for="binatescilno" value="#{label.tescilNo}"></p:outputLabel>
+				<p:inputText id="binatescilno" value="#{binaBean.tescilno}" required="true"
+					requiredMessage="#{label.obysbinakod} #{label.giriniz}" placeholder="#{label.obysbinakod}" >
+					  <p:ajax event="change" process="@this" listener="#{binaBean.changeListener}" update=":form1:pnlBina"></p:ajax>
+					</p:inputText>
+				<p:commandButton icon="ui-icon-search" value="#{label.sorgula}" id="btntescilno"
+					action="#{binaBean.binaBulByTescilno}" update="@form" process="@this binatescilno">
+
+				</p:commandButton>
+			</h:panelGrid>
+		
+	<p:blockUI trigger="btntescilno" block="@form">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+		</p:tab>
+     <p:tab title="Genel Arama" id="tabGenel">
+     <ui:include src="binagenelara_.xhtml"></ui:include>
+     </p:tab>
+    </p:tabView>
+		
+		
+			<p:dialog closable="false" widgetVar="yukleniyor" visible="false" modal="true">
+			<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+			</p:dialog>		
+	
+	</p:panel>
+		<p:dialog id="yukleniyor" widgetVar="yukleniyor" visible="false" closable="false" modal="true">
+	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/yukleniyor.gif"/>
+	</p:dialog>
+		</ui:composition>

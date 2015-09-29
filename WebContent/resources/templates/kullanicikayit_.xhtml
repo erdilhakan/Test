@@ -1,0 +1,194 @@
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+	<title></title>
+		<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+     
+
+
+</h:head>
+<h:form id="formb">  
+ <p:growl id="growl" sticky="false" showDetail="false" autoUpdate="true"/>
+ 
+ <p:panel id="kullanicipanel">
+  <h:panelGrid styleClass="panelGrid" id="pnl01" rowClasses="rowClass1,rowClass2" columns="2" cellpadding="2" cellspacing="2" style="width:100%">
+  					
+  					 <p:outputLabel value="#{label.kullaniciTuru}" styleClass="label" for="sltKullaniciTuru"/>
+		 <p:selectOneMenu id="sltKullaniciTuru" filter="true" filterMatchMode="startsWith" value="#{kullaniciBean.slctKullanici.kullaniciTuru}" 
+		 required="true" requiredMessage="#{label.kullaniciTuru} #{label.seciniz}"  style="color: #6986c9;	width: 205px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" >
+		 <f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+		 <f:selectItems itemLabel="#{kullanicitur.tur}" itemValue="#{kullanicitur.id}" var="kullanicitur" value="#{sessionBean.kullaniciTurleri}"></f:selectItems>
+		 <p:ajax listener="#{kullaniciBean.kullaniciTuruChangeListener}"  process="@this" update="@this pnl01"></p:ajax>
+		 </p:selectOneMenu>
+		 <p:outputLabel value="#{label.sicilNo}" styleClass="label" for="txtSicilNo" style="text-align:right"/>
+					<h:panelGrid columns="2">
+					<p:inputText  id="txtSicilNo"  value="#{kullaniciBean.slctKullanici.sicilNo}"  
+					readonly="#{kullaniciBean.slctKullanici.kullaniciTuru eq '99'}"
+					title="#{kullaniciBean.slctKullanici.kullaniciTuru eq '99'?'Yandaki butonu kullanınız':''}"
+					required="#{kullaniciBean.slctKullanici.kullaniciTuru eq '1' or kullaniciBean.slctKullanici.kullaniciTuru eq '5' or kullaniciBean.slctKullanici.kullaniciTuru eq '99' }" requiredMessage="#{label.sicilNo} #{label.giriniz}"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.sicilNo}">
+					<p:ajax process="@this" update="@this"/>
+					</p:inputText>
+					<p:commandButton icon="ui-icon-search" title="Belediye Seçiniz" 
+					id="btnbelediyesec" process="@this" type="button"
+					rendered="#{kullaniciBean.slctKullanici.kullaniciTuru eq '99'}"></p:commandButton>
+				 	</h:panelGrid>
+					<p:outputLabel value="#{label.adi}" styleClass="label" for="txtAdi"/>
+					<p:inputText id="txtAdi"  value="#{kullaniciBean.slctKullanici.adi}"
+					readonly="#{kullaniciBean.slctKullanici.kullaniciTuru eq '99'}"
+					required="true" requiredMessage="#{label.adi} #{label.giriniz}"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.adi}">
+					<p:ajax process="@this" update="@this"/>
+					</p:inputText>
+					
+					<p:outputLabel value="#{label.soyadi}" styleClass="label" for="txtSoyadi"/>
+					<p:inputText id="txtSoyadi" value="#{kullaniciBean.slctKullanici.soyadi}" disabled="#{kullaniciBean.slctKullanici.kullaniciTuru eq '99'}"
+					requiredMessage="#{label.soyadi} #{label.giriniz}" required="#{kullaniciBean.slctKullanici.kullaniciTuru ne '99'}"  
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.soyadi}">
+					<p:ajax process="@this" update="@this"/>
+					</p:inputText>
+					
+					
+					<p:outputLabel value="#{label.kullaniciAdi}" styleClass="label" for="txtKullaniciAdi"/>
+					
+					<p:inputText id="txtKullaniciAdi" value="#{kullaniciBean.slctKullanici.kullaniciAdi}"
+					requiredMessage="#{label.kullaniciAdi} #{label.giriniz}" required="true"  
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.kullaniciAdi}">
+					<p:ajax process="@this" update="@this"/>
+					</p:inputText>
+					
+					
+					<p:outputLabel value="#{label.eposta}" styleClass="label" for="txteposta" />
+							<p:inputText id="txteposta" value="#{kullaniciBean.slctKullanici.ePosta}"
+							
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.eposta}">
+							<f:validator validatorId="validators.EMailValidator" />
+							<f:ajax render="growl" event="blur"/>
+							</p:inputText>
+					<p:outputLabel for="onayyetkisi" value="#{label.onayYetkisi}" styleClass="label"/>
+					<p:selectOneMenu id="onayyetkisi" required="#{kullaniciBean.slctKullanici.kullaniciTuru ne '99'}" requiredMessage="#{label.onayYetkisi} #{label.seciniz}" 
+					value="#{kullaniciBean.slctKullanici.onayYetkisi}" disabled="#{kullaniciBean.slctKullanici.kullaniciTuru eq '99'}"
+					style="color: #6986c9;	width: 100px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+					<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+					<f:selectItem itemLabel="VAR" itemValue="E"/>
+					<f:selectItem itemLabel="YOK" itemValue="H"/>
+					<p:ajax listener="#{kullaniciBean.onayAkreditasyonListener}" process="@this" update="pnl01"></p:ajax>
+					</p:selectOneMenu>			
+					<p:outputLabel for="akreditasyon" value="#{label.akreditasyon}" styleClass="label"/>
+					<p:selectOneMenu id="akreditasyon" required="#{kullaniciBean.slctKullanici.kullaniciTuru ne '99'}" requiredMessage="#{label.akreditasyon} #{label.seciniz}" 
+					value="#{kullaniciBean.slctKullanici.akreditasyonDeger}" disabled="#{kullaniciBean.slctKullanici.kullaniciTuru eq '99'}"
+					style="color: #6986c9;	width: 100px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+					<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+					<f:selectItem itemLabel="VAR" itemValue="E"/>
+					<f:selectItem itemLabel="YOK" itemValue="H"/>
+					<p:ajax listener="#{kullaniciBean.onayAkreditasyonListener}" process="@this" update="pnl01"></p:ajax>
+					</p:selectOneMenu>		
+					<p:outputLabel for="durum" value="#{label.durum}" styleClass="label"/>
+					<p:selectOneMenu id="durum" required="true" requiredMessage="#{label.durum} #{label.seciniz}" 
+					value="#{kullaniciBean.slctKullanici.durum}"
+					style="color: #6986c9;	width: 205px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+					<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+					<f:selectItem itemLabel="AKTİF" itemValue="A"/>
+					<f:selectItem itemLabel="PASİF" itemValue="P"/>
+					<p:ajax process="@this" update="@this"/>
+					</p:selectOneMenu>
+						<p:outputLabel value="#{label.il}" styleClass="label" for="il"/>
+						
+						<p:selectOneMenu id="il"    height="100"  value="#{kullaniciBean.slctKullanici.il}"
+						 filter="true" filterMatchMode="startsWith"
+						style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+						<f:validator validatorId="validators.mustGreatThanZero"></f:validator>
+						<f:selectItem itemLabel="İl Seçiniz" itemValue=""></f:selectItem>
+						<f:selectItems value="#{applicationBean.iller}"/>
+						<p:ajax process="@this" update="@this"/>
+						</p:selectOneMenu>
+					
+					<p:outputLabel value="#{label.telno}" styleClass="label" for="iletisimtel"/>
+					<p:inputMask mask="(999)9999999"  id="iletisimtel" 
+							 value="#{kullaniciBean.slctKullanici.telefonNoStr}"
+							 style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							 <f:validator validatorId="validators.TelefonValidator"/>
+							 <f:ajax event="blur"/>
+							</p:inputMask>
+				
+					<p:outputLabel value="#{label.telefonNoGSM}" styleClass="label" for="iletisimtelgsm"/>
+					<p:inputMask mask="(999)9999999"  id="iletisimtelgsm" 
+					
+							 value="#{kullaniciBean.slctKullanici.gsmTelefonNoStr}"
+							 style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							 <f:validator validatorId="validators.TelefonValidator"/>
+							 <f:ajax event="blur"/>
+							</p:inputMask>
+							
+							<p:outputLabel value="#{label.belediyeIp}" styleClass="label" for="belediyeip" rendered="#{kullaniciBean.slctKullanici.kullaniciTuru eq '99'}"/>
+					
+					<p:inputText   id="belediyeip" 
+							rendered="#{kullaniciBean.slctKullanici.kullaniciTuru eq '99'}"
+							 value="#{kullaniciBean.slctKullanici.belediyeIp}"
+							 style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+					 <f:validator validatorId="validators.ip"/>
+							 <f:ajax event="blur"/>
+							</p:inputText>
+							
+					<h:outputText/>
+					<p:commandButton value="#{label.kaydet}" actionListener="#{kullaniciBean.kullaniciKaydet}"  icon="ui-icon-disk"
+					update="growl" id="kaydet" 
+					style="color: #6986c9;	width: 205px;	height: 35px;	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;"/>
+					</h:panelGrid>
+		
+		
+					
+
+</p:panel>
+
+<p:overlayPanel for="btnbelediyesec" my="left bottom" style="width:400px;height:450px" widgetVar="opbelediye" id="opbelediye">
+
+<p:dataTable widgetVar="belediyelist" id="belediyelist" var="belediyeler" value="#{belediyeListeBean.belediyeListModel}"
+ style="width:100%;height:100%" selection="#{belediyeListeBean.slctBelediye}" filterEvent="keyup" 
+  filteredValue="#{belediyeListeBean.filteredList}" paginator="true" paginatorAlwaysVisible="true" 
+emptyMessage="#{label.emptyList}" paginatorPosition="bottom" rows="8">
+<p:ajax event="rowSelectRadio" process="belediyelist" update=":formb:kullanicipanel" listener="#{kullaniciBean.belediyeSelectListener}"></p:ajax>
+      
+<f:facet name="header">
+#{label.belediyeler}
+</f:facet>
+<p:column selectionMode="single" width="2%"></p:column>
+<p:column headerText="#{label.adi}" filterBy="#{belediyeler.adi}" sortBy="#{belediyeler.adi}">
+
+#{belediyeler.adi}
+</p:column>
+<p:column headerText="#{label.il}" filterBy="#{belediyeler.ilStr}" sortBy="#{belediyeler.ilStr}">
+#{belediyeler.ilStr}
+</p:column>
+</p:dataTable>
+
+</p:overlayPanel>
+<p:blockUI block="kullanicipanel" trigger="kaydet">
+<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+</p:blockUI>
+</h:form>  
+</ui:composition>
+
+		
+

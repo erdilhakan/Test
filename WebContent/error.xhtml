@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<f:facet name="first">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</f:facet>
+	<title></title>
+	
+		
+	<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+
+
+</h:head>
+
+<h:body onload="PF('errordialog').show()">
+<h:form>
+<p:dialog id="errordialog" widgetVar="errordialog" closable="false" resizable="false" modal="true" visible="false" style="margin:auto" height="100px">
+<center>
+<h1 style="font-weight: bold;font-size:20px">Yeniden Oturum Açınız</h1>
+<br/>
+<br/>
+<p:commandButton icon=" ui-icon-refresh" action="#{loginBean.logout}"/>
+</center>
+</p:dialog>
+</h:form>
+</h:body>
+</ui:composition>
+

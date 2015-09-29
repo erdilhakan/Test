@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<p:panel id="apanel">
+<table style="vertical-align:text-top;">
+<tr>
+<td style="vertical-align: text-top;">
+<p:panel style="background-color:currentcolor;" id="ipanel">
+<f:facet name="header"><p:outputLabel for="iltable" styleClass="label" value="İller" style="float:left"></p:outputLabel></f:facet>
+  <p:selectOneMenu id="iltable" filter="true" style="width:200px" panelStyle="width:200px" value="#{information.selectedIl}">
+  <f:selectItem itemLabel="#{label.seciniz}" itemValue=""></f:selectItem>
+ <f:selectItems value="#{loginBean.kullanici.iller}"></f:selectItems>
+ <p:ajax  process="@this" update="@this :formraporara:spanel :formraporara:panelbutton :formraporara:tarpanel :formraporara:panelistatistik" listener="#{information.IlSelectListener}"></p:ajax>
+ </p:selectOneMenu>
+ 
+ 
+
+</p:panel>
+</td>
+<td style="vertical-align: text-top;">
+ <p:panel style="background-color:currentcolor;" id="spanel" visible="#{information.selectedIl gt '0'}">
+ <f:facet name="header"><p:outputLabel for="belediyetable" styleClass="label" value="Belediyeler" style="float:left"></p:outputLabel></f:facet>
+
+<p:selectManyMenu id="belediyetable" widgetVar="belediyetable" style="width:300px;height:160px;overflow-x:scroll" filter="true"
+value="#{information.selectedBelediye}" valueChangeListener="#{information.belediyeChangeEvent}" showCheckbox="true">
+<f:selectItems value="#{information.belediyeList}" var="belediyeler" itemLabel="#{belediyeler.adi}" itemValue="#{belediyeler.kod}"></f:selectItems>
+<p:ajax process="@this" update=":formraporara:tarpanel :formraporara:panelistatistik :formraporara:panelbutton"/>
+
+</p:selectManyMenu>
+	 
+ <p:selectBooleanCheckbox itemLabel="Hepsini Seç" value="#{information.belediyeHepsiniSec}">
+ <p:ajax process="@this" update="@form" listener="#{information.boolBelediyeListener}"></p:ajax>
+ </p:selectBooleanCheckbox>
+</p:panel>
+ </td>
+
+<td style="vertical-align: text-top;margin-left:10px">
+<p:panel id="tarpanel" visible="#{!empty information.selectedBelediye}">
+<f:facet name="header">
+<p:outputLabel for="tarihtable" styleClass="label" value="Tarihler"></p:outputLabel>
+</f:facet>
+<h:panelGrid columns="3" id="tarihtable">
+<p:calendar id="tarih1" pattern="dd.MM.yyyy" locale="tr" navigator="true"  
+                style="width:50px"
+             value="#{information.tarih1}">
+            
+             <p:ajax event="dateSelect" listener="#{information.dateBlurListener}" update=":formraporara:panelistatistik :formraporara:growl"></p:ajax>
+            
+             </p:calendar>
+       <p:separator></p:separator>
+<p:calendar id="tarih2" pattern="dd.MM.yyyy" locale="tr" navigator="true"  
+                style="width:50px"
+             value="#{information.tarih2}">
+              
+             <p:ajax event="dateSelect" listener="#{information.dateBlurListener}" process=":formraporara:tarih1 :formraporara:tarih2" update=":formraporara:panelistatistik :formraporara:growl"></p:ajax>
+             
+           </p:calendar>  
+</h:panelGrid> 
+ </p:panel>	
+</td>
+</tr>
+
+</table>    
+
+	 
+</p:panel>   
+</ui:composition>

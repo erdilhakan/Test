@@ -1,0 +1,342 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+		<title>#{label.islemler}</title>
+	
+	
+	<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+	<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+<style>
+.ui-datatable-tablewrapper .ui-filter-column{
+width:20px;
+}
+</style>
+</h:head>
+<h:form id="formrapor">
+<p:growl id="warn" autoUpdate="true" showDetail="false"/>
+
+<p:accordionPanel dynamic="true" activeIndex="0" style="margin-left:2%;height:auto;overflow:visible" 
+
+rendered="#{not empty istatistikBean.selectMenu}" id="accordion">
+<p:tab title="#{istatistikBean.accordionHeader}">
+<table style="width:100%;border:none"> 
+<tr>
+<td style="float: left;vertical-align: text-top;">
+<h1>Başlangıç Tarihi Seçiniz !</h1>
+<br/>
+<p:calendar mode="inline" style="float:left;text-align" locale="tr" pattern="dd.MM.yyyy" navigator="true" value="#{istatistikBean.tarih}">
+<p:ajax event="dateSelect" listener="#{istatistikBean.getIstatistikRapor}" process="@this" update="@form"
+onstart="PF('yukleniyor').show()" oncomplete="PF('yukleniyor').hide()" onerror="PF('yukleniyor').hide()" onsuccess="PF('yukleniyor').hide()"
+></p:ajax>
+</p:calendar>
+ </td>
+ <td style="float:right;vertical-align: text-top">
+ 
+ <p:pieChart style="width:400px;height:300px;float:right" id="piechart" legendPosition="r" value="#{istatistikBean.pieModel}" 
+ showDataLabels="true" rendered="#{not empty istatistikBean.istatistikRaporList and istatistikBean.selectMenu ne 'C'}" title="Raporlar(#{istatistikBean.raporTarih})"/>
+ <br/>
+ <p:outputLabel value="08.12.2014 tarihi sonrası için hesaplama yapılmaktadır." style="font-size:0.6em;float:right"
+ rendered="#{not empty istatistikBean.istatistikRaporList}"/>
+</td>
+</tr>
+</table>
+</p:tab>
+</p:accordionPanel>
+<h:panelGrid columns="3" style="width:100%;margin-left:2%" rendered="#{not empty istatistikBean.istatistikRaporList and istatistikBean.selectMenu eq 'C'}">
+ <p:pieChart style="width:300px;height:170px;" id="piechart1" legendPosition="r" value="#{istatistikBean.pieModel1}" showDataLabels="true"/>
+ <p:pieChart style="width:300px;height:170px;" id="piechart2" legendPosition="r" value="#{istatistikBean.pieModel2}" showDataLabels="true"/>
+ <p:pieChart style="width:300px;height:170px;" id="piechart3" legendPosition="r" value="#{istatistikBean.pieModel3}" showDataLabels="true" title="Başvurudaki Cihaz Kontrol Türleri"/>
+ 
+  
+</h:panelGrid>
+
+  <p:fieldset legend="#{istatistikBean.istatistikListeHeader}" toggleable="true" style="width:97%;" id="fieldistatistik" rendered="false">
+  <p:dataTable id="tblx010x" var="raporlar" value="#{istatistikBean.istatistikRaporModel}" emptyMessage="#{label.emptyList}" 
+  style="width:100%;font-size:0.7em;overflow:scroll-y"
+  selection="#{istatistikBean.selected}" filteredValue="#{istatistikBean.slctRaporlar}" 
+  rendered="#{istatistikBean.selectMenu ne 'C'}"
+    paginator="true" rows="10"  paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,25,30">
+
+  	  <p:column selectionMode="multiple" style="width:2%;text-align:center"   rendered="#{istatistikBean.selectMenu ne 'Y'}"/>
+        <p:column headerText="#{label.binaAdi}" sortBy="binaAdi" filterBy="binaAdi" style="width:15%">
+         #{raporlar.binaAdi}
+        </p:column>
+  	    
+          <p:column headerText="#{label.asansorunyeri}/Kimlik No" filterBy="asansorunYeri" sortBy="asansorunYeri" style="width:14%">
+          #{raporlar.asansorunYeri}
+          <br/>
+          #{raporlar.asansorKimlikNo}
+        </p:column>	 
+          
+        	 
+         <p:column headerText="#{label.basvuruId}" style="text-align:left;width:8%" sortBy="basvuruId" rendered="#{istatistikBean.selectMenu eq 'Y'}">
+          #{raporlar.basvuruId}
+         </p:column>
+        	 
+         <p:column headerText="#{label.basvuruTarihi}" style="text-align:left;width:8%" sortBy="basvuruTarihi" rendered="#{istatistikBean.selectMenu eq 'Y'}">
+        <h:outputText value="#{raporlar.basvuruTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText> 
+        </p:column>
+        	 
+         <p:column headerText="#{label.randevuId}" style="text-align:left;width:8%" sortBy="randevuId" rendered="#{istatistikBean.selectMenu eq 'Y'}">
+          #{raporlar.randevuId}
+         </p:column>
+        	 
+         <p:column headerText="#{label.randevuTarihi}" style="text-align:left;width:8%" sortBy="randevuTarihi" rendered="#{istatistikBean.selectMenu eq 'Y'}">
+        <h:outputText value="#{raporlar.randevuTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText> 
+        </p:column>
+        	      
+        <p:column headerText="#{label.adi}" style="text-align:left;width:11%" sortBy="dosyaAdi" filterBy="dosyaAdi" 
+        rendered="#{istatistikBean.selectMenu eq 'O' or istatistikBean.selectMenu eq 'D'}">
+       	    #{raporlar.dosyaAdi}  
+        </p:column>
+        <p:column headerText="#{label.raportarih}" style="text-align:left;width:8%" sortBy="raporTarihi" rendered="#{istatistikBean.selectMenu eq 'O' or istatistikBean.selectMenu eq 'D'}">
+        <h:outputText value="#{raporlar.raporTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText> 
+        </p:column>
+        <p:column headerText="#{label.onaytarih}" style="text-align:left;width:8%" sortBy="onayTarihi" rendered="#{istatistikBean.selectMenu eq 'O'}">
+        <h:outputText value="#{raporlar.onayTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText> 
+        </p:column>
+        <p:column headerText="#{label.etiket}" style="text-align:left;width:8%" sortBy="etiket" filterBy="etiket"> 
+          <p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketsari.png"  rendered="#{raporlar.etiket eq 'S'}">
+	<h:outputText value="#{raporlar.etiket}" rendered="false"></h:outputText>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"  rendered="#{raporlar.etiket eq 'Y'}">
+	<h:outputText value="#{raporlar.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"  rendered="#{raporlar.etiket eq 'M'}" >
+	<h:outputText value="#{raporlar.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"  rendered="#{raporlar.etiket eq 'K'}" >
+	<h:outputText value="#{raporlar.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	  
+        </p:column>
+        <p:column headerText="#{label.kontrolBitisTarihi}" style="width:10%">
+        <h:outputText value="#{raporlar.kontrolTarihi}">
+        <f:convertDateTime locale="tr" pattern="dd.MM.yyyy"></f:convertDateTime>
+        </h:outputText>
+        <br/>
+        <h:outputText value="#{raporlar.kontrolSaati}">
+        <f:convertDateTime locale="tr" pattern="HH:mm"></f:convertDateTime>
+        </h:outputText>
+        </p:column>
+        
+       
+        <p:column headerText="#{label.muhendis}" filterBy="muhendis" sortBy="muhendis" style="width:10%"  rendered="#{istatistikBean.selectMenu eq 'D' or istatistikBean.selectMenu eq 'Y'}">
+        #{raporlar.muhendis}
+        </p:column>
+        <p:column headerText="#{label.onaylayan}" rendered="#{istatistikBean.selectMenu eq 'O'}" sortBy="onaylayan" filterBy="onaylayan" style="width:10%">
+        #{raporlar.onaylayan}
+        </p:column>
+        
+        <p:column style="width:2%"   rendered="#{istatistikBean.selectMenu ne 'Y'}">
+        <p:commandButton icon="ui-icon-folder-open" title="#{label.ac}" actionListener="#{istatistikBean.raporAc(raporlar)}" process="@this"  update="@form" />
+       
+           </p:column>
+          <p:column style="width:2%"   rendered="#{istatistikBean.selectMenu eq 'Y'}">
+        <p:commandButton icon="ui-icon-folder-open" title="#{label.ac}" actionListener="#{istatistikBean.raporAc(raporlar)}" ajax="false"
+        onstart="PF('yukleniyor').show()" oncomplete="PF('yukleniyor').hide()" onerror="PF('yukleniyor').hide()" onsuccess="PF('yukleniyor').hide()"/>
+        </p:column>
+        <f:facet name="footer">
+       <p:commandButton icon="ui-icon-folder-open" id="ta2" value="Seçilenleri Aç" title="Seçilenleri Aç" actionListener="#{istatistikBean.openSelected}" 
+       rendered="#{istatistikBean.selectMenu ne 'Y'}"
+       style="float:right" 
+        process="tblx010x" update=":formrapor:warn tblx010x">
+       	
+        </p:commandButton>
+       </f:facet>
+    </p:dataTable>
+    <p:dataTable id="tblx010x2" var="raporlar" value="#{istatistikBean.istatistikRaporModel}" emptyMessage="#{label.emptyList}" 
+    style="width:100%;font-size:0.7em;overflow:scroll-y" 
+   filteredValue="#{istatistikBean.slctRaporlar}" selection="#{istatistikBean.selectedBina}"
+    rendered="#{istatistikBean.selectMenu eq 'C'}" selectionMode="single" 
+    paginator="true" rows="10"  paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,25,30">
+         
+        
+         
+  	    <p:column headerText="#{label.binaId}" sortBy="binaId"  style="width:5%">
+  	    <p:commandLink value="#{raporlar.binaId}" actionListener="#{istatistikBean.binaListener(raporlar)}" oncomplete="window.open('bina.jsf')"
+  	    style="color:#800080;font-weight:bold;font-size:1.0em"
+  	    title="Bina bilgisi gör"/>
+        </p:column>
+  	    <p:column headerText="#{label.binaAdi}" sortBy="binaAdi" filterBy="binaAdi" style="width:20%" filterMatchMode="contains">
+        <p:commandLink value="#{raporlar.binaAdi}" actionListener="#{istatistikBean.binaListener(raporlar)}" oncomplete="window.open('bina.jsf')"
+        style="color:#800080;font-weight:bold;font-size:1.0em"
+  	    title="Bina bilgisi gör"/>
+        </p:column>
+  	    <p:column headerText="#{label.mahalle}/#{label.caddesokak}" sortBy="#{raporlar.mahalle}" filterBy="#{raporlar.mahalle}#{raporlar.caddeSokak}" style="width:30%" filterMatchMode="contains">
+         #{raporlar.mahalle}
+         <br/>
+         #{raporlar.caddeSokak}
+        </p:column>
+          <p:column headerText="#{label.ilce}/#{label.il}" sortBy="#{raporlar.ilce}" filterBy="#{raporlar.ilce}#{raporlar.il}" style="width:25%" filterMatchMode="contains">
+         #{raporlar.ilce}
+         <br/>
+         #{raporlar.il}
+        </p:column>
+         <p:column headerText="#{label.belediye}" sortBy="#{raporlar.belediyeAdi}" filterBy="#{raporlar.belediyeAdi}" style="width:20%">
+         #{raporlar.belediyeAdi}
+        </p:column>
+        <p:column style="width:1%">
+        <p:commandButton icon="ui-icon-search" actionListener="#{istatistikBean.rowSelect(raporlar)}" 
+        oncomplete="$('html, body').scrollTop( $(document).height() );"
+        update=":formrapor:cihazPanel  :formrapor:kontrolPanel :formrapor:warn" process="tblx010x2"></p:commandButton>
+        </p:column>
+    </p:dataTable>
+   
+    <p:panel widgetVar="cihazPanel" id="cihazPanel" style=" width:100%" toggleable="true" closable="true" header="#{istatistikBean.selectedBina.binaAdi}" 
+    visible="#{istatistikBean.selectedBina.binaId gt '0'}">
+      <p:dataTable id="tblx010x3" var="raporlar" value="#{istatistikBean.istatistikBasvuruModel}" emptyMessage="#{label.emptyList}" 
+    style="width:100%;font-size:0.7em;" selection="#{istatistikBean.selectedCihaz}"
+   filteredValue="#{istatistikBean.slctRaporlar}" 
+    rendered="#{istatistikBean.selectMenu eq 'C'}" selectionMode="single" 
+    paginator="true" rows="10"  paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,25,30">
+    
+     <p:column headerText="#{label.basvuruId}" sortBy="basvuruId">
+     #{raporlar.basvuruId}
+     </p:column>
+     <p:column headerText="#{label.basvuruTarihi}" sortBy="basvuruTarihi" filterBy="basvuruTarihi">
+     <h:outputText value="#{raporlar.basvuruTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText> 
+     </p:column>
+     <p:column headerText="#{label.asansorTipi}" sortBy="#{raporlar.cihazTipAciklama}"
+     filterBy="#{raporlar.cihazTipAciklama}" filterMatchMode="contains">
+     #{raporlar.cihazTipAciklama}
+    
+     </p:column>
+      <p:column headerText="#{label.asansorkimlikno}" sortBy="#{raporlar.asansorKimlikNo}"
+     filterBy="#{raporlar.asansorKimlikNo}" filterMatchMode="contains">
+    
+     #{raporlar.asansorKimlikNo}
+     </p:column>
+     <p:column headerText="#{label.kontrolturu}" sortBy="#{raporlar.kontrolTuru}" filterBy="kontrolTuru" filterMatchMode="contains">
+     #{raporlar.kontrolTuru eq 'E'?'Eksiklik Kontrolü':'Normal Kontrol'}
+     
+     
+     </p:column>
+      <p:column headerText="#{label.kontrolTutari}" sortBy="#{raporlar.kontrolTutari}">
+     <h:outputText value="#{raporlar.kontrolTutari}">
+     <f:convertNumber pattern="###,###,##0.00"></f:convertNumber>
+     </h:outputText>
+     
+     </p:column>
+     <p:column style="width:1%">
+      <p:commandButton actionListener="#{istatistikBean.onRowSelect(raporlar)}" icon="ui-icon-search" 
+      update=":formrapor:kontrolPanel :formrapor:warn" process="tblx010x3"
+     oncomplete="$('html, body').scrollTop( $(document).height() );"/>
+     </p:column>
+    </p:dataTable>
+    </p:panel>
+     <p:panel widgetVar="kontrolPanel" id="kontrolPanel" style=" width:100%" toggleable="true" closable="true" header="#{istatistikBean.selectedCihaz.asansorKimlikNo}" 
+    visible="#{istatistikBean.selectedCihaz.cihazId>0}">
+      <p:dataTable id="tblx010x4" var="raporlar" value="#{istatistikBean.istatistikKontrolModel}" emptyMessage="#{label.emptyList}" 
+    style="width:100%;font-size:0.7em;" 
+   
+    rendered="#{istatistikBean.selectMenu eq 'C'}" selectionMode="single" >
+     
+     <p:column headerText="#{label.randevuId}">
+     #{raporlar.randevuId}
+     </p:column>
+     <p:column headerText="#{label.randevuTarihi}/#{label.kontroltarihi}">
+     <h:outputText value="#{raporlar.randevuTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText> 
+        <br/>
+        <h:outputText value="#{raporlar.kontrolTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText> 
+     </p:column>
+     
+     <p:column headerText="#{label.raportarih}/#{label.onaytarih}" style="text-align:left;">
+        <h:outputText value="#{raporlar.raporTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText> 
+        <br/>
+        <h:outputText value="#{raporlar.onayTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText>
+        </p:column>
+        
+        <p:column headerText="#{label.etiket}" style="text-align:left;width:8%"> 
+          <p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketsari.png"  rendered="#{raporlar.etiket eq 'S'}">
+	<h:outputText value="#{raporlar.etiket}" rendered="false"></h:outputText>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"  rendered="#{raporlar.etiket eq 'Y'}">
+	<h:outputText value="#{raporlar.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"  rendered="#{raporlar.etiket eq 'M'}" >
+	<h:outputText value="#{raporlar.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"  rendered="#{raporlar.etiket eq 'K'}" >
+	<h:outputText value="#{raporlar.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	  
+        </p:column>
+       
+        
+        <p:column headerText="#{label.muhendis}/#{label.onaylayan}">
+        #{raporlar.muhendis}
+        <br/>
+        #{raporlar.onaylayan}
+        </p:column>
+       	
+        <p:column headerText="#{label.durum}">
+        #{raporlar.aciklamalar}
+        </p:column>
+        <p:column style="width:2%" rendered="#{istatistikBean.raporAcRender}">
+        <p:commandButton icon="ui-icon-folder-open" title="#{label.ac}" actionListener="#{istatistikBean.raporAc(raporlar)}" process="@this"  update="@form"
+        >
+        
+        </p:commandButton>
+        </p:column>
+     </p:dataTable>
+    </p:panel>
+  
+    </p:fieldset>
+    
+         
+	
+	<p:dialog id="yukleniyor" widgetVar="yukleniyor" visible="false" closable="false" modal="true">
+	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/yukleniyor.gif"/>
+	</p:dialog>
+   <p:dialog visible="false" showEffect="clip" hideEffect="clip" width="80%" height="50%" widgetVar="onaydialograpor" id="onaydialograpor">
+   
+  Tarayıcınız pdf görüntüleyemiyor ise,Dosyayı Açmak için <h:commandLink  style="color:#5882FA;" action="#{raporBean.raporAc}" value="Tıklayınız"/>
+ <p:media  value="#{raporBean.mediaPdf}" width="100%" height="300px" >  </p:media>
+  
+   </p:dialog>
+    
+    
+ 
+ 	
+ 
+	<p:blockUI trigger=":formrapor:tblx010x:ta2" blocked=":formrapor">
+
+<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+</p:blockUI>
+ 
+        
+</h:form>
+
+
+
+</ui:composition>

@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+   <h:head>
+    <f:facet name="first">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+       
+    </f:facet>
+
+   <h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+   
+	<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+    <h:outputStylesheet name="main/css/showcase.css" />
+    <h:outputStylesheet name="main/css/perfect-scrollbar.css" />
+    <h:outputStylesheet name="main/css/sh.css" />
+    <h:outputScript name="jquery/jquery.js" library="scripts" />
+    <h:outputScript name="jquery/jquery-plugins.js" library="scripts" />
+    <h:outputScript name="main/js/perfect-scrollbar.js" />
+    <h:outputScript name="main/js/showcase.js" />
+
+</h:head>
+   
+<h:form>  
+<div id="mainNavContainer">
+<p:overlayPanel for="grpmenu" showEffect="fade" hideEffect="clip" style="width:auto">
+<p:menu style="width:95%;font-size:10px;border:none;">
+
+<p:menuitem value="Binalar" icon="ui-icon-home" outcome="belediyebina"/>
+<p:separator></p:separator>
+<p:menuitem value="Asansör Kontrolleri" outcome="belediyekontroller" icon="ui-icon-gear"/>
+<p:separator></p:separator>
+<p:menuitem value="Çıkış"  icon="ui-icon-power" action="#{loginBean.logout}" />
+</p:menu>
+</p:overlayPanel>
+
+<h:panelGrid columns="2" style="width:100%">
+<h:panelGrid columns="2" style="float:left">
+<p:graphicImage name="main/images/menu.png" style="width:3.0em;height:3.0em;cursor:pointer" id="grpmenu"/>
+<h1 style="text-transform: uppercase;font-size:1.5em">#{loginBean.kullanici.adi}</h1>
+</h:panelGrid>
+<h:outputLink value="http://mmo.org.tr" title="Makina Mühendisleri Odası">
+<p:graphicImage url="./images/home.gif" style="width:20px;height:20px;float:right"/>
+</h:outputLink>
+
+
+			
+	
+       
+      </h:panelGrid>  	
+     
+     
+     
+        	
+</div>
+<!-- 
+<p:dialog widgetVar="login" width="auto" height="auto" modal="true" id="login" visible="false" header="#{label.kullaniciGirisi}">
+<ui:include src="/resources/templates/login_.xhtml"></ui:include>
+</p:dialog>
+ -->
+
+</h:form>  
+
+ </ui:composition>

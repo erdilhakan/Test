@@ -1,0 +1,145 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+		<h:head>
+
+	<title>#{label.binalar}</title>
+	
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+	<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/style.css"	rel="stylesheet" type="text/css" />
+	<style type="text/css">
+	
+	.ui-dialog {  padding: .2em; width: 100%; overflow: visible; border: 0 none; -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.75); -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.75); box-shadow: 0 1px 4px rgba(0,0,0,0.75); }
+.ui-dialog .ui-dialog-titlebar {  background: transparent !important; padding: 0 0 8px 0; margin: 20px 20px 5px 20px; border: solid #e5e5e5; border-width: 0 0 1px 0; -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; }
+.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .1em 0; color: #353536; font-size: 20px !important; } 
+.ui-dialog .ui-dialog-titlebar-close { right: -16px !important; top: -16px !important; margin: 0; width: 30px; height: 30px; background: url("#{resource['primefaces-delta:images/modalClose.png']}") 0 0 no-repeat; border: 0 !important; z-index: 10000; padding: 0px !important;}
+.ui-dialog .ui-dialog-titlebar-close span { display: none !important; }
+.ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
+.ui-dialog .ui-dialog-content {  border: 0; padding: 15px 20px 20px 20px; background: none; overflow: auto; zoom: 1; }
+.ui-dialog .ui-dialog-buttonpane { text-align: left; border: solid #e5e5e5; border-width: 1px 0 0 0; background: transparent; margin: 20px 20px 10px 20px; padding: 10px 0 0 0; }
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
+.ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
+.ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.ui-draggable .ui-dialog-titlebar { cursor: move; }
+	.ui-column-filter{
+	width:17px;
+	height: 11px;
+	}
+	.ui-datatable .ui-column-filter{
+	width: 100px;
+	height: 11px;
+	}
+	.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield {
+	color: #6986c9;
+	
+	height: 20px;
+	border-radius: 5px;	
+	-webkit-border-radius: 5px;	
+	-moz-border-radius: 5px;        
+	border: 1px solid #999fd9;
+	webkit-box-shadow: none;        
+	-moz-box-shadow: none;        
+	box-shadow: none;
+	}
+	.ui-pnl ,.ui-widget .ui-pnl{
+	font-size:10px;
+	}
+	.ui-widget .ui-datatable,.ui-datatable,.ui-widget .ui-datatable-data{
+		font-size: 8.5px;	
+		opacity:0.6px;}
+	.ui-widget .ui-datatable:HOVER,.ui-datatable:HOVER,.ui-widget .ui-datatable-data:HOVER{
+		
+		opacity:1.0px;}
+	</style>
+	</h:head>
+<h:form id="form">
+
+<p:outputLabel for="tarih" value="#{label.sonKontrolTarihi}"></p:outputLabel>
+
+<p:calendar locale="tr" pattern="dd.MM.yyyy" label="#{label.sonKontrolTarihi}" navigator="true" id="tarih"
+showOtherMonths="true" value="#{kontrolHaberBean.kontrolTarihi}" required="true">
+
+</p:calendar>
+
+
+<p:commandButton value="#{label.getir}" id="sonkontroltarihi" actionListener="#{kontrolHaberBean.kontrolListener}" 
+ update=":form" style="margin-left:0.5%;height:30px" ></p:commandButton>
+
+<p:blockUI trigger="sonkontroltarihi" block="sonkontroltarihi">
+<img src="${facesContext.externalContext.requestContextPath}/resources/image/ajax-loader.gif"/>
+</p:blockUI>
+<p:fieldset legend="#{label.binalar}" id="fset" style="width:96%" toggleable="true" rendered="false">
+
+<p:dataTable widgetVar="binaliste" id="binalist" var="binalar" value="#{kontrolHaberBean.kontrolDataModel}"
+filterDelay="600" filterEvent="keydown"  filteredValue="#{kontrolHaberBean.filteredVal}" selectionMode="single"
+  style="width:100%;font-size:10px;" paginator="true" emptyMessage="#{label.emptyList}" paginatorPosition="bottom" 
+  rows="10" rendered="true" rowsPerPageTemplate="5,10,15,20,25,30">
+
+<f:facet name="header">
+#{label.binalar}
+</f:facet>
+<p:column headerText="#{label.binaId}" filterBy="binaId" sortBy="binaId">
+#{binalar.binaId}
+</p:column>
+<p:column headerText="#{label.il}" sortBy="il">
+#{binalar.ilStr}
+</p:column> 
+<p:column headerText="#{label.ilce}" sortBy="ilceStr">
+#{binalar.ilceStr}
+</p:column>
+<p:column headerText="#{label.mahalle}" sortBy="mahalle" filterBy="mahalle">
+#{binalar.mahalle}
+</p:column>
+<p:column headerText="#{label.caddesokak}" sortBy="caddeSokak" filterBy="caddeSokak">
+#{binalar.caddeSokak}
+</p:column>
+<p:column headerText="#{label.binaAdi}" sortBy="binaAdi" filterBy="binaAdi">
+#{binalar.binaAdi}
+</p:column>
+<p:column headerText="#{label.binaKisi}" sortBy="binaKisi">
+#{binalar.binaKisi}
+</p:column>
+<p:column headerText="#{label.telefonNoStr}" sortBy="telefonNoStr">
+#{binalar.telefonNoStr}
+</p:column>
+<p:column headerText="#{label.telefonNoGsmStr}" sortBy="telefonNoGsmStr">
+#{binalar.telefonNoGsmStr}
+</p:column>
+<p:column>
+	<p:commandButton actionListener="#{kontrolHaberBean.onRowSelect(binalar)}" icon="ui-icon-search"  process="binalist" 
+	update=":form:cihazDetay" oncomplete="PF('cihazlar').show();">
+	</p:commandButton>
+</p:column>
+</p:dataTable>
+
+</p:fieldset>
+<p:dialog widgetVar="cihazlar" id="cihazDialog" showEffect="fade" hideEffect="clip" header="Kontrol Edilecek Cihazlar">
+<p:dataTable widgetVar="binadetaylist" id="cihazDetay" var="cihaz" value="#{kontrolHaberBean.cihazList}" 
+ style="width:100%;font-size:10px;" paginator="true" paginatorAlwaysVisible="true" emptyMessage="#{label.emptyList}" paginatorPosition="bottom" rows="10" >
+
+<f:facet name="header">
+#{label.binalar}
+</f:facet>
+<p:column headerText="#{label.sonKontrolTarihi}"  sortBy="kontrolTarihi">
+<h:outputText value="#{cihaz.kontrolTarihi}">
+<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+</h:outputText>
+
+</p:column>
+<p:column headerText="#{label.cihazId}">
+#{cihaz.cihazId}
+</p:column> 
+<p:column headerText="#{label.cihazKimlik}">
+#{cihaz.kimlikNo}
+</p:column>
+<p:column headerText="#{label.etiket}">
+#{cihaz.sonKontrolEtiketi}
+</p:column>
+</p:dataTable>
+</p:dialog>
+
+</h:form>
+</ui:composition>

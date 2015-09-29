@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+<style>
+#announcement {
+  height: 248px;
+  width: 292px;
+}
+#flashNews, #announcement {
+  margin-bottom: 10px;
+}
+.box {
+  background: #ADD8E6 url(./resources/image/beyaz.gif) left top repeat-x;
+  border-radius: 5px;
+  padding: 4px;
+  float:right;
+  margin-top:2%;
+  -webkit-box-shadow: -1px 3px 2px 0px rgba(231,166,26,1);
+-moz-box-shadow: -1px 3px 2px 0px rgba(231,166,26,1);
+box-shadow: -1px 3px 2px 0px rgba(231,166,26,1);
+background-image: -ms-radial-gradient(center top, ellipse farthest-corner, #FFFFFF 15%, #ADD8E6 85%);
+
+/* Mozilla Firefox */ 
+background-image: -moz-radial-gradient(center top, ellipse farthest-corner, #FFFFFF 15%, #ADD8E6 85%);
+
+/* Opera */ 
+background-image: -o-radial-gradient(center top, ellipse farthest-corner, #FFFFFF 15%, #ADD8E6 85%);
+
+/* Webkit (Safari/Chrome 10) */ 
+background-image: -webkit-gradient(radial, center top, 0, center top, 561, color-stop(0, #FFFFFF), color-stop(1, #ADD8E6));
+
+/* Webkit (Chrome 11+) */ 
+background-image: -webkit-radial-gradient(center top, ellipse farthest-corner, #FFFFFF 15%, #ADD8E6 85%);
+
+/* W3C Markup, IE10 Release Preview */ 
+background-image: radial-gradient(ellipse farthest-corner at center top, #FFFFFF 15%, #ADD8E6 85%);
+
+}
+.right{
+float:right;
+}
+</style>
+</h:head>
+
+<div id="announcement" class="box" style="#{loginBean.style}">
+    <h1>DUYURULAR</h1>
+    <br/>
+    <div class="announcementContent">
+          <marquee style="height: 187px; width: 282px;" direction="up" scrollamount="1" scrolldelay="1" 
+        onmouseover="javascript:this.setAttribute('scrollamount','0');stop();" onmouseout="javascript:this.setAttribute('scrollamount','1');start();"
+         width="282px" height="187px">
+      
+       <ui:repeat var="duyuru" value="#{loginBean.duyuruList}">
+      <h:outputText value="#{duyuru.tarih}">
+      <f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+      </h:outputText>
+      <p:graphicImage  value="./resources/image/images2.jpg" rendered="#{duyuru.yeniMi}"/>
+      <br/>
+      <p:commandLink value="#{duyuru.konu}" style="font-size:1.1em;" actionListener="#{loginBean.showDuyuru(duyuru)}"></p:commandLink>
+		<br/>
+		<br/>
+ 
+       </ui:repeat>
+       
+       
+
+</marquee>
+</div>
+   <a href="duyurular.jsf" class="right"><strong>Tüm Duyurular</strong></a>
+</div>
+
+</html>

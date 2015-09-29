@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:head>
+	
+	<link type="text/css" rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/resources/css/Black-Tie.css" />
+	</h:head>
+	<h:form id="form1">
+	<p:growl autoUpdate="true" id="gr"></p:growl>
+	<p:panel>
+	<h:panelGrid columns="2" cellpadding="5" cellspacing="5">
+	
+	<p:outputLabel value="KONTROL ID :" style="font-size:2em" styleClass="label" /> <p:inputText value="#{testBean.kontrolId}" title="Ağustos gönderimi cancel edildiği için konuldu normal gönderimde değer girmeyiniz !"></p:inputText>
+	
+	<p:outputLabel for="tarih1" value="TARİH 1:" style="font-size:2em" styleClass="label" /><p:calendar value="#{testBean.tarih1}" required="true" id="tarih1" requiredMessage="Tarih1 Giriniz">
+	<p:ajax  event="dateSelect" listener="#{testBean.tarihChange}" process="@form" update="@form"></p:ajax> 
+	</p:calendar>
+	
+	<p:outputLabel value="TARİH 2 :" style="font-size:2em" styleClass="label"  for="tarih2"/><p:calendar value="#{testBean.tarih2}" required="true" id="tarih2" requiredMessage="Tarih2 Giriniz">
+	<p:ajax  event="dateSelect" listener="#{testBean.tarihChange}" process="@form" update="@form"></p:ajax>
+	</p:calendar>
+	
+	</h:panelGrid>
+	<f:facet name="footer">
+	<p:commandButton value="GÖNDER" icon="ui-icon-gear" id="test" action="#{testBean.raporGonder}" process="@form" update="@form" style="margin:auto">
+	 
+	</p:commandButton>
+	<p:blockUI trigger="test" block="test" blocked="test">
+	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+	</p:blockUI>
+	</f:facet>
+	
+	</p:panel>
+	</h:form>
+	 <h:form>
+ <h:panelGrid columns="2" cellspacing="5" cellpadding="5" style="float:right">
+	     <h:commandLink title="Excel olarak dışa aktar" >  
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/xls.jpg" width="25" height="25"/>  
+          <p:dataExporter type="XLS" target="testSorulari" fileName="testSorulari" encoding="ISO-8859-9" 
+          />  
+       	</h:commandLink>
+       	 
+    </h:panelGrid>
+	<p:commandButton value="Referans Denetim Sorular" icon="ui-icon-search" iconPos="bottom" process="@this" update="p1 :form1:gr" id="refsoru"
+	actionListener="#{testBean.testSorulari}"></p:commandButton>
+	<p:blockUI trigger="refsoru" block="refsoru" blocked="refsoru">
+	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+	</p:blockUI>
+	<p:panel visible="#{!empty testBean.sorular}" id="p1" widgetVar="p1" header="Referans Denetim Sorular" closable="true">
+	<p:dataTable value="#{testBean.sorular}" var="sorular" id="testSorulari" widgetVar="testSorulari">
+	<p:column>
+	<f:facet name="header">
+	<h:outputText value="ASANSÖR TÜRÜ"></h:outputText>
+	</f:facet>
+	
+	<h:outputText value="#{sorular.asansorTuru}"/>
+	</p:column>
+	<p:column>
+	<f:facet name="header">
+	<h:outputText value="ID"></h:outputText>
+	</f:facet>
+	
+	<h:outputText value="#{sorular.id}"/>
+	</p:column>
+	<p:column>
+	<f:facet name="header">
+	<h:outputText value="SORU"></h:outputText>
+	</f:facet>
+	
+	<h:outputText value="#{sorular.soruAciklama}"/>
+	</p:column>
+	<p:column>
+	<f:facet name="header">
+	<h:outputText value="GRUBU"></h:outputText>
+	</f:facet>
+	
+	<h:outputText value="#{sorular.grubu}"/>
+	</p:column>
+		<p:column>
+		<f:facet name="header">
+	<h:outputText value="KRİTİK SEVİYE ID"></h:outputText>
+	</f:facet>
+	
+	<h:outputText value="#{sorular.kritikSeviyeId}"/>
+	</p:column>
+		<p:column>
+		<f:facet name="header">
+	<h:outputText value="GEÇERLİLİK TARİH"></h:outputText>
+	</f:facet>
+	
+	<h:outputText value="#{sorular.gecerlilikTarihi}">
+	
+	</h:outputText>
+	</p:column>
+	
+	</p:dataTable>
+	
+	</p:panel>
+	</h:form>
+	
+
+	</ui:composition>

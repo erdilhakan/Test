@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+<script> 
+function validate(evt) {
+	  var theEvent = evt || window.event;
+	  var key = theEvent.keyCode || theEvent.which;
+	  key = String.fromCharCode( key );
+	  var regex = /[0-9]|\./;
+	  if( !regex.test(key) ) {
+	    theEvent.returnValue = false;
+	    if(theEvent.preventDefault) theEvent.preventDefault();
+	  }
+	}
+</script>
+</h:head>
+<p:panel id="pnlKisi" header="Kişi Bilgileri" toggleable="true" 
+					closable="false" toggleSpeed="500" closeSpeed="500" 
+					widgetVar="panel1">
+
+					<p:ajax event="close" listener="#{panelBean.handleClose}" update="growl" />
+					<p:ajax event="toggle" listener="#{panelBean.handleToggle}"
+						update="growl" />
+						
+					<h:panelGrid styleClass="panelGrid" id="pnl01" rowClasses="rowClass1,rowClass2" columns="6" cellpadding="7">
+					<p:outputLabel value="#{label.tckimlikno}" styleClass="label" for="txtTCKimlikNo"/>
+					<h:panelGrid columns="2">
+					<p:inputMask mask="99999999999" id="txtTCKimlikNo"  value="#{basvuruBean.basvuru.basvuru.basvuruYapanTCKimlikNo}" required="#{!basvuruBean.kontrolSekli}" requiredMessage="#{label.tckimlikno} #{label.giriniz}" 
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"
+					immediate="true"
+					>
+					<f:validator validatorId="validators.tcKimlikValidator"></f:validator>
+					<f:ajax render="growl" event="blur"></f:ajax>
+					</p:inputMask>
+					<p:selectBooleanCheckbox id="tcata" value="#{basvuruBean.valueTCCheck}" rendered="#{loginBean.loggedIn}">
+					<p:ajax event="change" listener="#{basvuruBean.checkTC}" process="@this" update="txtTCKimlikNo"></p:ajax>
+					</p:selectBooleanCheckbox>
+					</h:panelGrid>
+				    <p:watermark value="#{label.tckimlikno}" for="txtTCKimlikNo"></p:watermark>
+					
+					
+					<p:outputLabel value="#{label.adi}" styleClass="label" for="txtAdi" />
+					<p:inputText id="txtAdi"  value="#{basvuruBean.basvuru.basvuru.basvuruYapanAdi}" 
+					required="true" requiredMessage="#{label.adi} #{label.giriniz}"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" immediate="false">
+					</p:inputText>
+					
+					<p:watermark value="#{label.adi}" for="txtAdi"></p:watermark>
+					
+					<p:outputLabel value="#{label.soyadi}" styleClass="label" for="txtSoyadi"/>
+					<p:inputText id="txtSoyadi" value="#{basvuruBean.basvuru.basvuru.basvuruYapanSoyadi}" immediate="false"
+					requiredMessage="#{label.soyadi} #{label.giriniz}" required="true"  
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+					<p:watermark value="#{label.soyadi}" for="txtSoyadi"></p:watermark>
+					<p:outputLabel value="#{label.telno}" styleClass="label" for="iletisimtel"/>
+					<h:panelGrid columns="2">
+					<p:inputMask mask="(999)9999999"  id="iletisimtel" immediate="false"
+					required="true" requiredMessage="#{label.telno} #{label.giriniz}"
+							 value="#{basvuruBean.basvuru.basvuru.telefonNoStr}"
+							 style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							 <f:validator validatorId="validators.TelefonValidator"/>
+							 <f:ajax event="blur"/>
+							</p:inputMask>
+							<p:inputText style="color: #6986c9;	width: 5em;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"  value="#{basvuruBean.basvuru.basvuru.telefonNoDahiliStr}" placeholder="#{label.dahili}"
+							onkeypress="validate(event)"
+							 maxlength="4">
+							
+							</p:inputText>
+					</h:panelGrid>	
+					<p:watermark value="#{label.telno}" for="iletisimtel"></p:watermark>
+					<p:outputLabel value="#{label.eposta}" styleClass="label" for="txteposta" />
+							<p:inputText id="txteposta" value="#{basvuruBean.basvuru.kisi.ePosta}" immediate="false"
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							<f:validator validatorId="validators.EMailValidator"/>
+							<f:ajax render="growl" event="keyup"/>
+							</p:inputText>
+								<p:watermark value="#{label.eposta}" for="txteposta"></p:watermark>
+					
+					 <p:outputLabel value="#{label.sorumlulukturu}" styleClass="label" for="sorumluluktur"/>
+						
+						<p:selectOneMenu id="sorumluluktur"   required="#{!basvuruBean.kontrolSekli}" height="100"  value="#{basvuruBean.binaKisi.sorumlulukTuru}"
+						requiredMessage="#{label.sorumlulukturu} #{label.seciniz}"  immediate="false"
+						style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+						<f:selectItem itemLabel="#{label.seciniz}" itemValue=""></f:selectItem>
+						<f:selectItems value="#{binaBean.sTurList}" var="s" itemLabel="#{s.aciklama}" itemValue="#{s.tip}"/>
+						</p:selectOneMenu>
+						
+						<h:outputText/>
+					
+					</h:panelGrid>
+					
+				<f:facet name="footer">
+				<!-- 
+				<p:selectBooleanButton offLabel="Başvuru Usulü" onLabel="Tarama Usulü" onIcon="ui-icon-check" offIcon="ui-icon-person"
+				value="#{basvuruBean.kontrolSekli}" rendered="#{loginBean.loggedIn}">
+				<p:ajax update="pnlKisi" process="@this"></p:ajax>
+				</p:selectBooleanButton>
+				 -->
+				</f:facet>
+				
+				</p:panel>
+				
+				<p:separator></p:separator>
+				 
+				<br/>
+				
+				</ui:composition>

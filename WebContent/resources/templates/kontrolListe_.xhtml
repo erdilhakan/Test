@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+
+	<title>#{label.kontrolListesi}</title>
+	
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+
+
+</h:head>
+
+	<h:form id="formkontrol">
+		<p:growl id="growl" showDetail="false" sticky="false" widgetVar="grwl"/>
+	
+    <p:dataTable id="kontroltable"  var="kontrollist" value="#{kontrolBean.kontrolList}" filteredValue="#{kontrolBean.filteredVal}"
+     emptyMessage="#{label.emptyList}" paginator="true" paginatorPosition="bottom" rows="10" rowsPerPageTemplate="5,10,15,20">
+    
+    <f:facet name="header">#{label.kontrolListesi}</f:facet>
+    <p:column headerText="#{label.binaAdi}" filterBy="bina.binaAdi" sortBy="bina.binaAdi" filterMatchMode="contains" >
+    #{kontrollist.bina.binaAdi}
+    </p:column>
+    <p:column headerText="#{label.asansorkimlikno}" filterBy="cihazId" filterMatchMode="startsWith" style="text-align:center;">
+    
+    <h:outputText value="#{kontrollist.kimlikNo}"/>
+    </p:column>
+    <p:column sortBy="kontrolBitisTarihi" filterBy="#{kontrollist.kontrolBitisTarihi}" filterMatchMode="contains" headerText="#{label.tarih}" style="text-align:center;">
+    <h:outputText value="#{kontrollist.kontrolBitisTarihi}">
+    <f:convertDateTime pattern="dd.MM.yyyy"/>
+    </h:outputText>
+    </p:column>
+    
+    <p:column sortBy="kontrolBitisSaati"  headerText="#{label.saat}" style="text-align:center;">
+    <h:outputText value="#{kontrollist.kontrolBitisSaati}">
+    <f:convertDateTime pattern="HH:mm"/>
+    </h:outputText>
+    </p:column>
+	<p:column sortBy="etiket" filterBy="etiket" filterMatchMode="startsWith" headerText="#{label.etiket}">
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketsari.png"  rendered="#{kontrollist.etiketInt==1}">
+	<h:outputText value="#{kontrollist.etiket}" rendered="false"></h:outputText>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"  rendered="#{kontrollist.etiketInt==4}">
+	<h:outputText value="#{kontrollist.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"  rendered="#{kontrollist.etiketInt==2}">
+	<h:outputText value="#{kontrollist.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"  rendered="#{kontrollist.etiketInt==3}">
+	<h:outputText value="#{kontrollist.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	
+    </p:column>
+    <p:column headerText="Rapor Şekli">
+   	#{kontrollist.revizyonRapor?'Revizyon':'Normal'}
+    </p:column>
+	<p:column width="2%">
+	<p:commandButton title="#{label.raporal}" icon="ui-icon-print" ajax="false" actionListener="#{kontrolBean.prepareRapor(kontrollist)}" id="raporal" disabled="#{kontrollist.raporYazildi}"/>
+	<br/>
+	<p:commandButton title="#{label.sil}" icon="ui-icon-trash" process="kontroltable" update="kontroltable :formkontrol:growl" 
+	actionListener="#{kontrolBean.kontrolSil(kontrollist)}" id="kontrolsil">
+	</p:commandButton>
+	<p:blockUI trigger="kontrolsil" block="kontrolsil">
+			<p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+		</p:blockUI>
+	<p:blockUI trigger="raporal" block="raporal">
+			<p:graphicImage
+				value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif" />
+		</p:blockUI>
+	
+	</p:column>
+
+
+    
+    </p:dataTable>
+    <p:blockUI trigger=":formkontrol:kontroltable:raporal :formkontrol:kontroltable:kontrolsil" block="kontroltable">
+    <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"></p:graphicImage>
+    </p:blockUI>
+	</h:form>
+	
+
+   
+    
+    
+    
+    </ui:composition>
+    

@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	
+<ui:insert name="title">
+	<title>#{label.basvuru}</title>
+	</ui:insert>
+	<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+	
+	
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/style.css" rel="stylesheet" type="text/css"/>
+
+</h:head>
+
+	<h:form id="formbasvuru">
+		<p:growl id="growl" showDetail="false" sticky="true"/>
+		<p:wizard showNavBar="true" backLabel="Geri" nextLabel="İleri" flowListener="#{basvuruBean.onFlowProcess}" id="basvuruvizard" widgetVar="wiz" >
+		
+        <p:tab id="basvuru" title="#{label.binaSorumlusu}">
+        <p:growl id="growlbasvuru" showDetail="false" sticky="true"/>
+           <ui:insert name="basvuru"></ui:insert>
+           
+        </p:tab>
+ 
+        <p:tab id="bina" title="#{label.binaKayit}">
+        <p:growl id="growlbina" showDetail="false" sticky="true"/>
+            <ui:insert name="bina"></ui:insert>
+        </p:tab>
+        
+        <p:tab id="asansor" title="#{label.asansorKayit}">
+        <p:growl id="growlasansor" showDetail="false" sticky="true"/>
+            <ui:insert name="asansor"></ui:insert>
+        </p:tab>
+       
+        </p:wizard>
+       
+      <p:dialog id="uavtBina" widgetVar="uavtBina" visible="false" modal="true" width="auto" header="UAVT Binalar">
+				<p:dataTable id="uavtBinaTable" widgetVar="uavtBinaTable" value="#{binaBean.uavtBinaList}" var="uavtBina" paginator="true"  paginatorPosition="top"
+				filteredValue="#{binaBean.uavtBinaFilter}" selection="#{binaBean.uavtBina}"
+				rows="10"
+				emptyMessage="#{label.emptyList}">
+				<p:ajax event="rowSelectRadio" listener="#{binaBean.onUavtRowSelect}" update=":formbasvuru" oncomplete="PF('uavtBina').hide()"/>
+			
+				  <p:column selectionMode="single" style="width:16px;text-align:center"/>
+				<p:column headerText="#{label.siteAdi}" sortBy="#{uavtBina.siteAdi}" filterBy="#{uavtBina.siteAdi}">
+				#{uavtBina.siteAdi}
+				</p:column>
+				<p:column headerText="#{label.blokAdi}" sortBy="#{uavtBina.blokAdi}" filterBy="#{uavtBina.blokAdi}">
+				#{uavtBina.blokAdi}
+				</p:column>
+				<p:column headerText="#{label.diskapino}" sortBy="#{uavtBina.disKapiNo}" filterBy="#{uavtBina.disKapiNo}">
+				#{uavtBina.disKapiNo}
+				</p:column>
+				<p:column headerText="#{label.ada}">
+				#{uavtBina.ada}
+				</p:column>
+				<p:column headerText="#{label.pafta}">
+				#{uavtBina.pafta}
+				</p:column>
+				<p:column headerText="#{label.parsel}">
+				#{uavtBina.parsel}
+				</p:column>
+				<f:facet name="footer">Aradığınız Binayı listede bulamadı iseniz Cadde/Sokak ismi yanında bulunan güncelleme butonunu kullanarak binaları güncelleyebilirsiniz!</f:facet>
+				</p:dataTable>
+				</p:dialog>
+        
+
+        			
+        </h:form>
+ 
+			
+			
+	
+	</ui:composition>

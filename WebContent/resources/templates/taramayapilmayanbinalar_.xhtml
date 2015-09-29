@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title>#{label.taramaYapilmayanBinalar}</title>
+	
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+</h:head>
+	
+	<h:form>
+		<p:growl id="growl" showDetail="false" sticky="false" widgetVar="grwl"/>
+		<p:fieldset legend="#{label.taramaYapilmayanBinalar}" >
+		<p:dataTable value="#{basvuruBean.taramaYapilmayanBinaListe}" var="list" id="dttarama" 
+		 filteredValue="#{basvuruBean.filteredTaramaVal}" style="width:100%;" 
+		rowStyleClass="rowClass1,rowClass2"
+		  emptyMessage="#{label.emptyList}" paginator="true"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+        rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
+         
+        
+        <p:column sortBy="taramaId" style="color: #6986c9;font-size:10px;">
+         <f:facet name="header">
+         <h:outputText value="#{label.id}"/>
+         </f:facet>
+             <h:outputText value="#{list.taramaId}"/>  
+             
+        </p:column>
+        <p:column sortBy="taramaTarih" style="color: #6986c9;font-size:10px;">
+        <f:facet name="header">
+         <h:outputText value="#{label.tarih}"/>
+         </f:facet>
+        <h:outputText value="#{list.taramaTarih}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText>
+        </p:column>
+          <p:column  sortBy="ilAdi" style="color: #6986c9;font-size:10px;" filterBy="ilAdi" filterMatchMode="startsWith">
+          <f:facet name="header">
+         <h:outputText value="#{label.il}"/>
+         </f:facet>
+         <h:outputText value="#{list.ilAdi}"/>
+        </p:column>
+          <p:column sortBy="ilceAdi" style="color: #6986c9;font-size:10px;" >
+          <f:facet name="header">
+         <h:outputText value="#{label.ilce}"/>
+         </f:facet>
+         <h:outputText value="#{list.ilceAdi}"/>
+        </p:column>
+          <p:column  sortBy="mahalle" style="color: #6986c9;font-size:10px;" >
+          <f:facet name="header">
+         <h:outputText value="#{label.mahalle}"/>
+         </f:facet>
+         <h:outputText value="#{list.mahalle}"/>
+        </p:column>
+          <p:column  sortBy="caddeSokak" style="color: #6986c9;font-size:10px;" >
+          <f:facet name="header">
+         <h:outputText value="#{label.caddesokak}"/>
+         </f:facet>
+         <h:outputText value="#{list.caddeSokak}"/>
+        </p:column>
+          <p:column style="color: #6986c9;font-size:10px;">
+          <f:facet name="header">
+         <h:outputText value="#{label.binaNo}"/>
+         </f:facet>
+         <h:outputText value="#{list.binaNo}"/>
+        </p:column>
+        
+           <p:column sortBy="binaAdi" style="color: #6986c9;font-size:10px;" >
+           <f:facet name="header">
+         <h:outputText value="#{label.binaAdi}"/>
+         </f:facet>
+         <h:outputText value="#{list.binaAdi}"/>
+        </p:column>
+    	<p:column sortBy="binaSorumlusuAdiSoyadi" style="color: #6986c9;font-size:10px;">
+    	<f:facet name="header">
+         <h:outputText value="#{label.binaSorumlusu}"/>
+         </f:facet>
+         <h:outputText value="#{list.binaSorumlusuAdiSoyadi}"/>
+        
+        </p:column>
+        <p:column  style="color: #6986c9;font-size:10px;">
+        <f:facet name="header">
+         <h:outputText value="#{label.telefonNo}"/>
+         </f:facet>
+         <h:outputText value="#{list.binaSorumlusuTelefonNo}"/>
+        </p:column>
+        <p:column sortBy="taramaYapilamamaNedeni" style="color: #6986c9;font-size:10px;" filterBy="taramaYapilamamaNedeni" filterMatchMode="startsWith">
+        <f:facet name="header">
+         <h:outputText value="#{label.neden}"/>
+         </f:facet>
+         <h:outputText value="#{list.taramaYapilamamaNedeni}"/>
+         
+        </p:column>
+        <f:facet name="header">
+        <h:commandLink style="float:right">
+        <p:graphicImage value="${pageContext.request.contextPath}/resources/image/excel.png" title="Excel'e aktar" style="width:15px"/>
+        <p:dataExporter type="xls" target="dttarama" fileName="Taranmayan Bina Listesi"/>
+    </h:commandLink>
+        </f:facet>
+        </p:dataTable>
+        
+        
+        
+		</p:fieldset>
+		
+    
+    
+    </h:form>
+   
+    
+    
+    
+    </ui:composition>
+    

@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:form>
+<p:dataTable widgetVar="belediyelist" id="belediyelist" var="belediyeler" value="#{belediyeListeBean.belediyeListModel}"
+ style="width:100%;color:#{belediyeler.uavtKod eq 0?red:black}" selection="#{belediyeListeBean.slctBelediye}" filterEvent="keyup" 
+selectionMode="single"  filteredValue="#{belediyeListeBean.filteredList}" paginator="true" paginatorAlwaysVisible="true" emptyMessage="#{label.emptyList}" paginatorPosition="bottom" rows="10">
+<p:ajax event="rowSelect" listener="#{belediyeListeBean.onRowSelect}" oncomplete="cdialog.show()"/>
+      
+<f:facet name="header">
+#{label.belediyeler}
+</f:facet>
+<p:column headerText="#{label.uavtKod}" sortBy="#{belediyeler.uavtKod}">
+#{belediyeler.uavtKod}
+</p:column>
+<p:column headerText="#{label.adi}" filterBy="#{belediyeler.adi}" sortBy="#{belediyeler.adi}">
+
+#{belediyeler.adi}
+</p:column>
+<p:column headerText="#{label.ilce}" filterBy="#{belediyeler.ilceStr}">
+#{belediyeler.ilceStr}
+</p:column>
+<p:column headerText="#{label.il}" filterBy="#{belediyeler.ilStr}" sortBy="#{belediyeler.ilStr}">
+#{belediyeler.ilStr}
+</p:column>
+
+</p:dataTable>
+<p:commandButton icon="ui-icon-plus" id="yenibelediye" value="#{label.yeniBelediye}" style="float:right" action="belediyekayit?faces-redirect=true"/>
+
+<p:confirmDialog id="cdialog" widgetVar="cdialog" hideEffect="explode" showEffect="explode" message="Belediye Detayı Görüntülensin mi?" closable="false">
+<p:commandButton value="#{label.tamam}" icon="ui-icon-newwin" action="belediyekayit?faces-redirect=true">
+
+</p:commandButton>
+<p:commandButton value="#{label.iptal}" onclick="cdialog.hide()" icon="ui-icon-cancel"/>
+</p:confirmDialog>
+<p:blockUI trigger="yenibelediye" block="belediyelist">
+<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"></p:graphicImage>
+</p:blockUI>
+</h:form>
+</ui:composition>

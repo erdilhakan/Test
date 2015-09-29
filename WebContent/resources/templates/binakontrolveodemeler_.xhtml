@@ -1,0 +1,143 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+
+	<title></title>
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+
+.ui-datatable table td{
+color:#4C538D;
+border-color: #4C538D;
+}
+.ui-datatable table{
+color:#4C538D;
+border-color: #4C538D;
+}
+#rowClass1{
+background-color: currentcolor;
+}
+#rowClass2{
+background-color: #fff;
+}
+</style>
+
+</h:head>
+<h:form id="formraporara">
+<h:body>
+<p:growl id="growl"  showDetail="false" autoUpdate="true"/>
+<ui:include src="/resources/templates/raporlararamawithbelediyekod_.xhtml"/>
+<p:panel id="panelbutton">
+<p:commandButton id="btngetir" value="#{label.getir}" icon="ui-icon-search" process="@this :formraporara:apanel" 
+actionListener="#{information.binaKontrolVeOdemeler}" 
+update="@form" style="float:right" rendered="#{!empty information.selectedBelediye}"></p:commandButton>
+<p:blockUI trigger="btngetir" block="btngetir">
+      <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+     </p:blockUI> 
+</p:panel>
+     
+
+<br/>
+<br/>
+<p:panel  toggleable="true" visible="#{!empty information.binaKontrolVeOdemeList}" id="panelistatistik" style="width:100%" > 
+<f:facet name="header">
+
+<h:outputText value="#{information.tarih1}" style="float:left">
+<f:convertDateTime pattern="dd.MM.yyyy"/>
+</h:outputText>
+<h:outputText value=" - " style="float:left"/>
+
+<h:outputText value="#{information.tarih2}" style="float:left">
+<f:convertDateTime pattern="dd.MM.yyyy"/>
+</h:outputText>
+<h:outputText value="   " style="float:left"/>
+<h:outputText value="  TARİHLERİ ARASINDA YAPILAN KONTROLLER" style="float:left"/>
+
+</f:facet>
+<p:commandButton icon="ui-icon-refresh" style="float:right" process="@form" title="Görünüm Değiştir" 
+update=":formraporara:panelistatistik" actionListener="#{information.changeTableViewListener}"></p:commandButton>
+<p:dataTable id="binakontrolodemetable" widgetVar=""  emptyMessage="#{label.emptyList}" paginator="true" paginatorPosition="bottom" rows="40"
+rowStyleClass="rowClass1;rowClass2"
+value="#{information.binaKontrolVeOdemeData}" var="list" filteredValue="#{information.filteredBinaKontrolVeOdeme}" selection="single" sortBy="#{list.randevuId}"
+style="overflow:scroll;font-size:0.8em;width:100%" rowIndexVar="rowindex" resizableColumns="true" liveResize="true" liveScroll="true">
+
+
+<p:column filterBy="#{list.binaKodu}" sortBy="#{list.binaKodu}" width="5%">
+<f:facet name="header"><h:outputText value="#{label.binaId}"/></f:facet>
+<h:outputText value="#{list.binaKodu}"/>
+</p:column>
+<p:column filterBy="#{list.binaAdi}" sortBy="#{list.binaAdi}" width="15%">
+<f:facet name="header"><h:outputText value="#{label.binaAdi}"/></f:facet>
+<h:outputText value="#{list.binaAdi}"/>
+</p:column>
+<p:column filterBy="#{list.belediyeAdi}" sortBy="#{list.belediyeAdi}" width="15%">
+<f:facet name="header"><h:outputText value="#{label.belediye} #{label.adi}"/></f:facet>
+<h:outputText value="#{list.belediyeAdi}"/>
+</p:column>
+<p:column filterBy="#{list.acikAdres}" sortBy="#{list.acikAdres}" width="20%">
+<f:facet name="header"><h:outputText value="#{label.bina} #{label.adres}"/></f:facet>
+<h:outputText value="#{list.acikAdres}"/>
+</p:column>         
+<p:column sortBy="#{list.kontrolTarihi}" width="7%">
+<f:facet name="header"><h:outputText value="#{label.kontroltarihi}"/></f:facet>
+<h:outputText value="#{list.kontrolTarihi}">
+<f:convertDateTime pattern="dd.MM.yyyy"/>
+</h:outputText>
+</p:column>     
+<p:column sortBy="#{list.yapiTipiAdi}" filterBy="#{list.yapiTipiAdi}" width="10%">
+<f:facet name="header"><h:outputText value="#{label.yapikonusu}"/></f:facet>
+<h:outputText value="#{list.yapiTipiAdi}"/>
+</p:column>  
+<p:column sortBy="#{list.yoneticiAdiSoyadi}" filterBy="#{list.yoneticiAdiSoyadi}" width="15%">
+<f:facet name="header"><h:outputText value="#{label.yoneticiAdiSoyadi}"/></f:facet>
+<h:outputText value="#{list.yoneticiAdiSoyadi}"/>
+</p:column> 
+<p:column width="8%">
+<f:facet name="header"><h:outputText value="#{label.yoneticiTelefon}"/></f:facet>
+<h:outputText value="#{list.yoneticiTelefon}"/>
+</p:column> 
+<p:column sortBy="#{list.basvuruAsansor.bakimciFirmaAdi}" filterBy="#{list.basvuruAsansor.bakimciFirmaAdi}" width="15%">
+<f:facet name="header" ><h:outputText value="#{label.bakimciFirma}"/></f:facet>
+<h:outputText value="#{list.basvuruAsansor.bakimciFirmaAdi}"/>
+
+</p:column>
+<p:column filterBy="#{list.cihazTipi}" sortBy="#{list.cihazTipi}" width="7%">
+<f:facet name="header"><h:outputText value="#{label.asansorTipi}"/></f:facet>
+<h:outputText value="#{list.cihazTipi}"/>
+</p:column>  
+<p:column width="5%">
+<f:facet name="header"><h:outputText value="#{label.kapasite}"/></f:facet>
+<h:outputText value="#{list.basvuruAsansor.agirlikKapasite}"/>
+</p:column>    
+<p:column width="5%">
+<f:facet name="header"><h:outputText value="#{label.duraksayisi}"/></f:facet>
+<h:outputText value="#{list.basvuruAsansor.durakKapasite}"/>
+</p:column>       
+<p:column sortBy="#{list.randevuId}" filterBy="#{list.randevuId}" width="5%">
+<f:facet name="header"><h:outputText value="#{label.randevuId}"/></f:facet>
+<h:outputText value="#{list.randevuId}"/>
+
+</p:column>     
+</p:dataTable>
+<h:panelGrid columns="2">
+<h:commandLink>
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/xls.jpg" width="25" height="25"/>  
+          
+
+        <p:dataExporter type="xls" target="binakontrolodemetable" fileName="yapilankontroller" pageOnly="false" encoding="ISO-8859-9" />
+    </h:commandLink>
+    
+    </h:panelGrid>
+</p:panel>
+ </h:body>
+    </h:form>      
+        
+           
+               </ui:composition>

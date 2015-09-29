@@ -1,0 +1,209 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+
+	<title></title>
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" 
+
+type="text/css"/>
+<style type="text/css">
+.ui-datatable table td{
+color:#4C538D;
+border-color: #4C538D;
+}
+.ui-datatable table{
+color:#4C538D;
+border-color: #4C538D;
+}
+</style>
+</h:head>
+<h:form id="formraporara">
+<p:growl id="growl"  showDetail="false" autoUpdate="true"/>
+<ui:include src="/resources/templates/raporlararama_.xhtml"/>
+<p:panel id="panelbutton">
+<p:commandButton id="btngetir" value="#{label.getir}" icon="ui-icon-search" process="@this :formraporara:apanel" 
+actionListener="#{information.cihazOdemeKontrol}" 
+update="@form" style="float:right" rendered="#{!empty information.selectedSube}">
+</p:commandButton>
+     <p:blockUI trigger="btngetir" block="btngetir">
+      <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+     </p:blockUI> 
+     </p:panel>
+
+<br/>
+<br/>
+
+<p:panel  toggleable="true"  id="panelistatistik" header="CİHAZ BAZLI ÖDEME KONTROL" visible="#{information.cihazOdemeKontrolData != null}">
+<p:dataTable id="cihazOdemekontroltable" widgetVar=""  emptyMessage="#{label.emptyList}" paginator="true" paginatorPosition="bottom" rows="40"
+rowStyleClass="rowClass1;rowClass2" value="#{information.cihazOdemeKontrolData}" var="list" filteredValue="#{information.filteredCihazOdemeKontrol}" 
+selection="single" style="overflow:scroll;font-size:0.8em;width:100%" rowIndexVar="rowindex" resizableColumns="true" liveResize="true" liveScroll="true">
+
+<p:column filterBy="#{list.basvuruId}" sortBy="#{list.basvuruId}">
+<f:facet name="header"><h:outputText value="#{label.basvuruId}"/></f:facet>
+<h:outputText value="#{list.basvuruId}"/>
+</p:column>
+
+<p:column filterBy="#{list.binaId}" sortBy="#{list.binaId}">
+<f:facet name="header"><h:outputText value="#{label.binaId}"/></f:facet>
+<h:outputText value="#{list.binaId}"/>
+</p:column>
+
+<p:column filterBy="#{list.binaAdi}" sortBy="#{list.binaAdi}">
+<f:facet name="header"><h:outputText value="#{label.binaAdi}"/></f:facet>
+<h:outputText value="#{list.binaAdi}"/>
+</p:column>
+
+<p:column filterBy="#{list.caddeSokak}" sortBy="#{list.caddeSokak}">
+<f:facet name="header"><h:outputText value="#{label.caddesokak}"/></f:facet>
+<h:outputText value="#{list.caddeSokak}"/>
+</p:column>
+
+<p:column filterBy="#{list.mahalle}" sortBy="#{list.mahalle}">
+<f:facet name="header"><h:outputText value="#{label.mahalle}"/></f:facet>
+<h:outputText value="#{list.mahalle}"/>
+</p:column>
+
+<p:column>
+<f:facet name="header"><h:outputText value="#{label.binaNo}"/></f:facet>
+<h:outputText value="#{list.binaNo}"/>
+</p:column>
+
+<p:column filterBy="#{list.acikAdres}" sortBy="#{list.acikAdres}">
+<f:facet name="header"><h:outputText value="#{label.adres}"/></f:facet>
+<h:outputText value="#{list.acikAdres}"/>
+</p:column>
+
+<p:column filterBy="#{list.yapiTip}" sortBy="#{list.yapiTip}">
+<f:facet name="header"><h:outputText value="#{label.yapikonusu}"/></f:facet>
+<h:outputText value="#{list.yapiTip}"/>
+</p:column>
+
+<p:column filterBy="#{list.yonetici}" sortBy="#{list.yonetici}">
+<f:facet name="header"><h:outputText value="#{label.yoneticiAdiSoyadi}"/></f:facet>
+<h:outputText value="#{list.yonetici}"/>
+</p:column>
+
+<p:column>
+<f:facet name="header"><h:outputText value="#{label.yoneticiTelefon}"/></f:facet>
+<h:outputText value="#{list.telefonNo}"/>
+</p:column>
+
+<p:column>
+<f:facet name="header"><h:outputText value="#{label.ada}"/></f:facet>
+<h:outputText value="#{list.ada}"/>
+</p:column>
+
+<p:column>
+<f:facet name="header"><h:outputText value="#{label.parsel}"/></f:facet>
+<h:outputText value="#{list.parsel}"/>
+</p:column>
+
+<p:column>
+<f:facet name="header"><h:outputText value="#{label.pafta}"/></f:facet>
+<h:outputText value="#{list.pafta}"/>
+</p:column>
+
+<p:column filterBy="#{list.belediyeAdi}" sortBy="#{list.belediyeAdi}">
+<f:facet name="header"><h:outputText value="#{label.belediye}"/></f:facet>
+<h:outputText value="#{list.belediyeAdi}"/>
+</p:column>
+
+<p:column sortBy="#{list.kontrolTarihi}">
+<f:facet name="header"><h:outputText value="#{label.kontroltarihi}"/></f:facet>
+<h:outputText value="#{list.kontrolTarihi}">
+<f:convertDateTime pattern="dd.MM.yyyy"/>
+</h:outputText>
+</p:column> 
+
+<p:column sortBy="#{list.etiket}">
+<f:facet name="header"><h:outputText value="#{label.etiket}"/></f:facet>
+<h:outputText value="#{list.etiket}"/>
+</p:column>	
+
+<p:column sortBy="#{list.kimlikNo}">
+<f:facet name="header"><h:outputText value="#{label.asansorkimlikno}"/></f:facet>
+<h:outputText value="#{list.kimlikNo}"/>
+</p:column>		
+	
+<p:column filterBy="#{list.bakimciFirmaAdi}" sortBy="#{list.bakimciFirmaAdi}">
+<f:facet name="header"><h:outputText value="#{label.bakimciFirma}"/></f:facet>
+<h:outputText value="#{list.bakimciFirmaAdi}"/>
+</p:column>	
+
+<p:column filterBy="#{list.tseBelgeNo}" sortBy="#{list.tseBelgeNo}">
+<f:facet name="header"><h:outputText value="#{label.tseBelgeNo}"/></f:facet>
+<h:outputText value="#{list.tseBelgeNo}"/>
+</p:column>
+
+<p:column filterBy="#{list.gecerlilikSuresi}" sortBy="#{list.gecerlilikSuresi}">
+<f:facet name="header"><h:outputText value="#{label.bakimcifirmahybgecerliliktarihi}"/></f:facet>
+<h:outputText value="#{list.gecerlilikSuresi}"/>
+</p:column>		
+		  
+<p:column sortBy="#{list.cihazTipi}">
+<f:facet name="header"><h:outputText value="#{label.asansorTipi}"/></f:facet>
+<h:outputText value="#{list.cihazTipi}"/>
+</p:column>	
+
+<p:column filterBy="#{list.durakSayisi}" sortBy="#{list.durakSayisi}">
+<f:facet name="header"><h:outputText value="#{label.duraksayisi}"/></f:facet>
+<h:outputText value="#{list.durakSayisi}"/>
+</p:column>	
+
+<p:column sortBy="#{list.kontrolTuru}">
+<f:facet name="header"><h:outputText value="#{label.kontrolturu}"/></f:facet>
+<h:outputText value="#{list.kontrolTuru}"/>
+</p:column>	
+
+<p:column sortBy="#{list.odemeTarihi}">
+<f:facet name="header"><h:outputText value="#{label.odemeTarihi}"/></f:facet>
+<h:outputText value="#{list.odemeTarihi}">
+<f:convertDateTime pattern="dd.MM.yyyy"/>
+</h:outputText>
+</p:column> 
+
+<p:column style="text-align:right" sortBy="#{list.kontrolTutari}">
+   <f:facet name="header"><h:outputText value="#{label.kontrolTutari}"/> </f:facet>
+   <h:outputText value="#{list.kontrolTutari}" style="text-align:right">
+   </h:outputText>
+</p:column>	
+
+<p:column style="text-align:right" sortBy="#{list.odendiMi}">
+   <f:facet name="header"><h:outputText value="#{label.odemeYapildiMi}"/> </f:facet>
+   <h:outputText value="#{list.odendiMi}" style="text-align:right">
+   </h:outputText>
+</p:column>			  
+		  
+</p:dataTable>
+<h:panelGrid columns="2">
+<h:commandLink>
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/xls.jpg" width="25" height="25"/>  
+          
+
+        <p:dataExporter type="xls" target="cihazOdemekontroltable" fileName="cihazOdemekontrolliste" pageOnly="false" 
+
+encoding="ISO-8859-9" />
+    </h:commandLink>
+    <h:commandLink>
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/pdf.png" width="25" height="25"/>  
+          
+
+        <p:dataExporter type="pdf" target="cihazOdemekontroltable" fileName="cihazOdemekontrolliste" pageOnly="false" 
+
+encoding="ISO-8859-9" />
+    </h:commandLink>
+    </h:panelGrid>
+ </p:panel>
+ <br/>
+ 
+  </h:form>      
+        
+           
+               </ui:composition>

@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<h:head>
+	
+		<title>#{label.basvuru}</title>
+
+		
+		<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+	
+	</h:head>
+
+	<h:form id="menu">
+		<p:accordionPanel var="menuListe1" value="#{menuBean.menuListSmall}">
+			<p:tab title="#{menuListe1.baslik} ">
+				<ui:repeat var="menuListe" value="#{menuListe1.altMenuler}">
+					<p:commandLink value="#{menuListe.baslik}"
+						action="#{menuBean.setInclude(menuListe.link)}" update=":sag"></p:commandLink>
+					<br />
+				</ui:repeat>
+			</p:tab>
+		</p:accordionPanel>
+	</h:form>
+	
+	
+</ui:composition>

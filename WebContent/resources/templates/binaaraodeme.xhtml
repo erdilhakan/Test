@@ -1,0 +1,369 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+
+	<h:outputStylesheet name="binagenelara.css" library="css"></h:outputStylesheet>
+<link type="text/css" rel="stylesheet" 
+   href="${facesContext.externalContext.requestContextPath}/resources/css/binagenelara.css" />
+	
+	</h:head>
+	<p:commandLink id="btnbinadegistir" update="@form"  rendered="#{binaBean.sessionBina.binaId gt 0}"  process="@this"
+	actionListener="#{binaBean.binaDegistir}" style="float:right;margin-top:0">
+	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/home.png" width="30" height="27" title="#{label.binaara}" style="cursor:pointer;float:right">
+      </p:graphicImage>
+	</p:commandLink>
+			
+		 <p:blockUI trigger="btnbinadegistir" block="btnbinadegistir">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+  	<br/>
+		<p:panel id="binaara" widgetVar="binaara" style="border:none;width:98%;margin-top:-3%;" toggleable="true" toggleOrientation="horizontal" header="" toggleTitle="Bina Bul" 
+		visible="#{binaBean.sessionBina.binaId eq 0}">
+		
+		 <p:tabView id="accordionSearch" activeIndex="#{binaBean.tabIndex}" style="width:100%">
+		 <p:ajax event="tabChange" listener="#{binaBean.tabChangeListener}" update="@this" process="@this"></p:ajax>
+		 	<p:tab title="Bina Adı ile Ara" id="tabBina">
+		
+<h:panelGrid columns="4">
+	<p:panel style="width:400px">
+	 <p:autoComplete value="#{binaBean.binalar}" var="bina" size="60" 
+						converter="binalar" id="binacomplete" cache="true" cacheTimeout="3000" 
+						completeMethod="#{binaBean.searchBina}" forceSelection="true"
+						minQueryLength="3" queryDelay="300" itemValue="#{bina}" 
+						groupBy="#{binaBean.getBinaGroup(bina)}" scrollHeight="600"
+						placeholder="Bina Adının ilk üç harfini girerek arama yapabilirsiniz"
+						itemLabel="#{bina.binaAdi}" panelStyle="width:600px;">
+	<p:ajax event="itemSelect" listener="#{binaBean.itemSelectListener}" update="@form"></p:ajax>
+	
+	<p:column headerText="#{label.adi}">
+	#{bina.binaAdi}
+	</p:column>
+	<p:column headerText="#{label.binaId}">
+	#{bina.binaId}
+	</p:column>
+	<p:column headerText="#{label.tescilNo}">
+	#{bina.tescilNo}
+	</p:column>
+	<p:column headerText="#{label.binaNo}">
+	#{bina.binaNo}
+	</p:column>
+	
+	<p:column headerText="#{label.mahalle}">
+	#{bina.mahalle}
+	</p:column>
+	
+	<p:column headerText="#{label.caddesokak}">
+	#{bina.caddeSokak}
+	</p:column>
+	<p:column headerText="#{label.il}/#{label.ilce}">
+	#{bina.ilAdi}/#{bina.ilceAdi}
+	</p:column>
+	<p:column headerText="#{label.adres}">
+	#{bina.acikAdres}
+	</p:column>
+	</p:autoComplete>
+	</p:panel>	
+		<p:watermark value="#{label.binacomplete}" for="binacomplete"/>
+				<p:commandButton icon="ui-icon-search"  
+						id="binacompletesearch" 
+						style="margin-left:1px;line-height:30px;z-index:1;width:20px;height:20px;border-radius:5px;
+						-moz-border-radius:5px;-webkit-border-radius:5px;" 
+						actionListener="#{binaBean.listener}"
+						process="@this binacomplete" update="@form">
+				</p:commandButton>
+
+				<p:selectBooleanCheckbox value="#{binaBean.searchType}" style="margin-left:0.5%">
+					<p:ajax event="change" listener="#{binaBean.searchTypeListener}" process="@this" update="binacomplete"/>
+				</p:selectBooleanCheckbox>
+</h:panelGrid>
+		 <p:blockUI trigger="binacompletesearch" block="@form">
+  			<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  		 </p:blockUI>
+  
+		</p:tab>
+		
+		
+		<p:tab title="TC Kimlik No ile Ara" id="tabtckimlik">
+		
+	
+<h:panelGrid columns="3"  id="grdtc">
+
+<p:outputLabel for="txtkimlik" value="#{label.tckimlikno}"></p:outputLabel>
+	 <p:inputMask id="txtkimlik" mask="99999999999" style="margin-top:0px;width:130px" value="#{binaBean.tcKimlikNo}"
+							 placeholder="#{label.tckimlikno}">
+							<f:validator validatorId="validators.tcKimlikValidator"></f:validator>
+							<p:ajax event="change" listener="#{binaBean.changeListener}" update="@form"></p:ajax>
+							<p:ajax event="blur" listener="#{binaBean.keyDownListener}" update="@form"></p:ajax>
+							</p:inputMask>
+							<p:commandButton icon="ui-icon-search" value="#{label.sorgula}" style="width:100px" id="btntc"
+							update="@form" process="grdtc"  action="#{binaBean.binaBulByTcKimlik}">
+							</p:commandButton>
+							
+							
+							
+							
+	 </h:panelGrid>
+	 <p:blockUI trigger="btntc" block="grdtc">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+  
+	
+								
+
+  		
+		
+ <h:panelGroup id="pnlbinalist">
+   <p:dataTable id="tblx0102" var="varbinalist" value="#{binaBean.binaListSmall}" emptyMessage="" rendered="#{not empty binaBean.binaList}"  
+  	selection="#{binaBean.secilen}" selectionMode="single">
+  	
+<p:ajax event="rowSelect" listener="#{binaBean.onRowSelect}" update="@form" 
+onstart="PF('yukleniyor').show()" onerror="PF('yukleniyor').hide" onsuccess="PF('yukleniyor').hide()"
+oncomplete="$('html, body').scrollTop( $(document).height()/2 );PF('yukleniyor').hide()"/>
+<p:ajax event="rowUnselect" listener="#{binaBean.onRowUnselect}"/>
+
+        
+        <p:column headerText="#{label.il}">
+       	    #{varbinalist.ilAdi}  
+         
+        </p:column>  
+  
+        <p:column headerText="#{label.ilce}"> 
+        
+            #{varbinalist.ilceAdi}  
+        </p:column>  
+  
+        <p:column headerText="#{label.mahalle}" >  
+            #{varbinalist.mahalle}    
+        </p:column>  
+  
+        <p:column headerText="#{label.caddesokak}">  
+            #{varbinalist.caddeSokak}   
+        </p:column>  
+        
+        <p:column headerText="#{label.binaNo}">  
+            #{varbinalist.binaNo}  
+        </p:column>  
+          <p:column headerText="#{label.binaAdi}">  
+            #{varbinalist.binaAdi}  
+        </p:column>  
+     
+      
+            
+       
+          
+  
+    </p:dataTable>  
+    
+    </h:panelGroup>  
+    <p:blockUI trigger="binacompletesearch" block="@form">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+    
+		</p:tab>
+		
+		<p:tab title="Bina ID ile Ara">
+		
+			<h:panelGrid columns="3" id="gridid">
+			<p:outputLabel for="binaid" value="#{label.binaId}"></p:outputLabel>
+				<p:inputText id="binaid" value="#{binaBean.binaId}" required="true"
+					requiredMessage="#{label.binaId} #{label.giriniz}" placeholder="#{label.binaId}" >
+					  <p:ajax event="change" process="@this" listener="#{binaBean.changeListener}" update=":formodeme"></p:ajax>
+					</p:inputText>
+				<p:commandButton icon="ui-icon-search" value="#{label.sorgula}" id="btnid"
+					action="#{binaBean.binaBulById}" update="@form" process="@this binaid">
+
+				</p:commandButton>
+			</h:panelGrid>
+		
+	<p:blockUI trigger="btnid" block="@form">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+		</p:tab>
+		
+		<p:tab title="OBYS Bina ID ile Ara">
+		
+			<h:panelGrid columns="3" id="gridtescilno">
+			<p:outputLabel for="binatescilno" value="#{label.tescilNo}"></p:outputLabel>
+				<p:inputText id="binatescilno" value="#{binaBean.tescilno}" required="true"
+					requiredMessage="#{label.obysbinakod} #{label.giriniz}" placeholder="#{label.obysbinakod}" >
+					  <p:ajax event="change" process="@this" listener="#{binaBean.changeListener}" update=":formodeme"></p:ajax>
+					</p:inputText>
+				<p:commandButton icon="ui-icon-search" value="#{label.sorgula}" id="btntescilno"
+					action="#{binaBean.binaBulByTescilno}" update="@form" process="@this binatescilno">
+
+				</p:commandButton>
+			</h:panelGrid>
+		
+	<p:blockUI trigger="btntescilno" block="@form">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+		</p:tab>
+     <p:tab title="Genel Arama" id="tabGenel">
+   <p:panel style="width:90%;border:none" id="panelgenel">
+<h:panelGrid columns="2" style="width:65%" cellpadding="2" cellspacing="2">
+<p:outputLabel value="#{label.binaAdi}" style="width:8em;float:right" for="gbinaadi"></p:outputLabel>
+<p:inputText id="gbinaadi" style="width:35em;" placeholder="#{label.binaAdi}"
+value="#{binaBean.genelAraBina.binaAdi}"
+>
+<p:ajax event="blur" listener="#{binaBean.genelAramaBlurListener}" update=":formodeme" process="@this"/>
+</p:inputText>
+
+<p:outputLabel value="#{label.il}" style="width:8em;float:right" for="gil"></p:outputLabel>
+<p:selectOneMenu style="width:20em" filter="true" filterMatchMode="startsWith" id="gil" value="#{binaBean.genelAraBina.il}">
+<f:selectItem itemLabel="İl Seçiniz" itemValue=""></f:selectItem>
+						<f:selectItems value="#{loginBean.kullanici.iller}"/>
+						<p:ajax update=":formodeme"  listener="#{binaBean.ilChange}" process="@this"/>
+</p:selectOneMenu>
+<p:outputLabel value="#{label.ilce}" style="width:8em;float:right" for="gilce"></p:outputLabel>
+<p:selectOneMenu style="width:20em" filter="true" filterMatchMode="startsWith" id="gilce" value="#{binaBean.genelAraBina.ilce}">
+<f:selectItem itemLabel="İlçe Seçiniz" itemValue=""></f:selectItem>
+						<f:selectItems value="#{binaBean.ilceler}"/>
+						<p:ajax listener="#{binaBean.ilceChange}" process="@this" update=":formodeme"></p:ajax>
+</p:selectOneMenu>
+<p:outputLabel value="#{label.bucakkoy}" style="width:8em;float:right" for="gbucak"></p:outputLabel>
+<p:selectOneMenu style="width:20em" filter="true" filterMatchMode="startsWith" id="gbucak" value="#{binaBean.genelAraBina.bucakKoyKod}">
+<f:selectItem itemLabel="Bucak-Köy Seçiniz" itemValue=""></f:selectItem>
+						<f:selectItems value="#{binaBean.bucakKoyList}"/>
+						<p:ajax listener="#{binaBean.bucakKoyChange}" process="@this" update=":formodeme"></p:ajax>
+</p:selectOneMenu>
+<p:outputLabel value="#{label.mahalle}" style="width:8em;float:right" for="gmahalle"></p:outputLabel>
+<p:selectOneMenu style="width:30em" filter="true" filterMatchMode="startsWith" id="gmahalle" value="#{binaBean.genelAraBina.mahalle}">
+<f:selectItem itemLabel="#{label.mahalle}"></f:selectItem>
+<p:ajax listener="#{binaBean.mahalleChange}" update=":formodeme" process="@this"/>
+							
+							<f:selectItems value="#{binaBean.mahalleList}" var="mahalle" itemLabel="#{mahalle.ad}" itemValue="#{mahalle.ad}"></f:selectItems>
+</p:selectOneMenu>
+<p:outputLabel value="#{label.caddesokak}" style="width:8em;float:right" for="gcaddesokak"></p:outputLabel>
+<p:selectOneMenu style="width:30em" filter="true" filterMatchMode="startsWith" id="gcaddesokak" value="#{binaBean.genelAraBina.caddeSokak}">
+<f:selectItem itemLabel="#{label.caddesokak}"></f:selectItem>
+<f:selectItems value="#{binaBean.caddeSokakList}" var="cs" itemLabel="#{cs.ad}" itemValue="#{cs.ad}"></f:selectItems>
+<p:ajax  listener="#{binaBean.genelAramaBlurListener}" update=":formodeme" process="@this"/>
+</p:selectOneMenu>
+<p:outputLabel value="#{label.binaTipi}" styleClass="label" for="gbinatipi"/>
+							<p:selectOneMenu id="gbinatipi" value="#{binaBean.genelAraBina.sozlesmeBinaTipId}" 
+							style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							<p:ajax listener="#{binaBean.sozlesmeBinaTipListener}" update=":formodeme" process="@this gil"></p:ajax>
+							
+							<f:selectItem itemLabel="#{label.binaTipi}" itemValue=""/>
+							<f:selectItems value="#{applicationBean.sozlesmeBinaTipList}" var="binatip" itemLabel="#{binatip.aciklama}" itemValue="#{binatip.id}"/>
+							</p:selectOneMenu>
+<p:outputLabel value="#{label.belediye}" style="width:8em;float:right" for="gbelediye"></p:outputLabel>
+<p:selectOneMenu style="width:30em" filter="true" filterMatchMode="startsWith" id="gbelediye" value="#{binaBean.genelAraBina.belediye}">
+<f:selectItem itemLabel="#{label.belediye}"></f:selectItem>
+<f:selectItems value="#{binaBean.belediyeler}"/>
+<p:ajax  listener="#{binaBean.genelAramaBlurListener}" update=":formodeme:accordionSearch:pbinalar" process="@this"/>
+</p:selectOneMenu>
+<p:outputLabel value="#{label.firma}" style="width:8em;float:right" for="gfirma"></p:outputLabel>
+<p:selectOneMenu style="width:35em" filter="true" filterMatchMode="startsWith" id="gfirma" value="#{binaBean.genelAraBina.firma}">
+<f:selectItem itemLabel="#{label.firma}"></f:selectItem>
+<f:selectItems value="#{binaBean.bakimciFirmalarArama}" var="firma" itemLabel="#{firma.unvan}" itemValue="#{firma.kod}"/>
+<p:ajax  listener="#{binaBean.genelAramaBlurListener}" update=":formodeme" process="@this"/>
+</p:selectOneMenu>
+<p:outputLabel value="#{label.ada}" style="width:8em;float:right" for="gada"></p:outputLabel>
+<p:inputText id="gada" style="width:10em"  placeholder="#{label.ada}" value="#{binaBean.genelAraBina.ada}">
+<p:ajax event="blur" listener="#{binaBean.genelAramaBlurListener}" update=":formodeme" process="@this"/>
+</p:inputText>
+<p:outputLabel value="#{label.pafta}" style="width:8em;float:right" for="gpafta"></p:outputLabel>
+<p:inputText id="gpafta" style="width:10em"  placeholder="#{label.pafta}" value="#{binaBean.genelAraBina.pafta}">
+<p:ajax event="blur" listener="#{binaBean.genelAramaBlurListener}" update=":formodeme" process="@this"/>
+</p:inputText>
+<p:outputLabel value="#{label.parsel}" style="width:8em;float:right" for="gparsel"></p:outputLabel>
+<p:inputText id="gparsel" style="width:10em"  placeholder="#{label.parsel}" value="#{binaBean.genelAraBina.parsel}">
+<p:ajax event="blur" listener="#{binaBean.genelAramaBlurListener}" update=":formodeme" process="@this"/>
+</p:inputText>
+</h:panelGrid>
+<f:facet name="footer">
+<p:commandButton icon="ui-icon-search" iconPos="top" 
+id="btngenel" actionListener="#{binaBean.genelAraListener}" action="#{binaBean.genelArama}"
+update=":formodeme" oncomplete="$('html, body').animate({ scrollTop: 500 }, 'slow')"
+value="#{label.sorgula}" style="position:absolute;margin-left:40%" process="panelgenel"></p:commandButton>
+<p:blockUI trigger="btngenel" block="btngenel">
+<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+</p:blockUI>
+</f:facet>
+</p:panel>
+
+<p:overlayPanel for="gbinaadi"  at="right top"> 
+Bina adının en az 3 karakterini giriniz !
+</p:overlayPanel>
+<p:overlayPanel for="gfirma"  at="right top"> 
+Sözleşmeli Bakımcı Firma Seçiniz !
+</p:overlayPanel>
+<p:overlayPanel for="gbelediye"  at="right top"> 
+İl ve bina tipi seçtiğinizde belediyeleri listeleyebilirsiniz !
+
+</p:overlayPanel>
+<p:overlayPanel for="gmahalle"  at="right top"> 
+Mahalle Seçiniz !
+</p:overlayPanel>
+<p:overlayPanel for="gcaddesokak"  at="right top"> 
+Cadde/Sokak Seçiniz !
+</p:overlayPanel>
+<p:overlayPanel for="gil"  at="right top"> 
+İl Seçiniz !
+</p:overlayPanel>
+<p:overlayPanel for="gilce"  at="right top"> 
+İlçe Seçiniz !
+</p:overlayPanel>
+ <p:blockUI trigger="gbinaadi gil gilce gmahalle gbucak gcaddesokak gfirma gbelediye gbinatipi gada gpafta gparsel" block="@parent">
+<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+</p:blockUI>
+<p:panel visible="#{!empty binaBean.genelBinalar}" style="width:99%;height:auto" id="pbinalar">
+
+<p:blockUI trigger="tablebinalar" block="tablebinalar">
+<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+</p:blockUI>
+<p:dataTable value="#{binaBean.binaGenelModel}" var="bn" id="tablebinalar" style="width:99%;height:auto;border:none" 
+filterValue="#{binaBean.filteredSearch}"  selection="#{binaBean.binaDTO}" emptyMessage="#{label.emptyList}"
+rows="20" paginatorPosition="bottom"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,25,30,50,100" >
+<p:ajax event="rowSelectRadio" listener="#{binaBean.binaListRowSelectRadioListener}" update="@form"/>
+<p:column selectionMode="single" style="width:2%;text-align:center"/>
+<p:column headerText="#{label.binaId}/#{label.tescilNo}">
+#{bn.binaId} / #{bn.tescilNo}
+</p:column>
+
+<p:column headerText="#{label.binaAdi}" filterBy="#{bn.binaAdi}" sortBy="#{bn.binaAdi}">
+#{bn.binaAdi}
+</p:column>
+    <p:column headerText="#{label.il}" filterBy="#{bn.ilAdi}" sortBy="#{bn.ilAdi}">
+       	    #{bn.ilAdi}  
+         
+        </p:column>  
+  
+        <p:column headerText="#{label.ilce}" filterBy="#{bn.ilce}" sortBy="#{bn.ilce}"> 
+        
+            #{bn.ilceAdi}  
+        </p:column>  
+  
+        <p:column headerText="#{label.mahalle}" filterBy="#{bn.mahalle}" sortBy="#{bn.mahalle}"> 
+            #{bn.mahalle}    
+        </p:column>  
+  
+        <p:column headerText="#{label.caddesokak}" filterBy="#{bn.caddeSokak}" sortBy="#{bn.caddeSokak}"> 
+            #{bn.caddeSokak}   
+        </p:column>  
+<p:column headerText="#{label.adres}" filterBy="#{bn.acikAdres}">
+#{bn.acikAdres}
+</p:column>
+</p:dataTable>
+</p:panel>
+     </p:tab>
+    </p:tabView>
+		
+		
+			<p:dialog closable="false" widgetVar="yukleniyor" visible="false" modal="true">
+			<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+			</p:dialog>		
+	
+	</p:panel>
+		<p:dialog id="yukleniyorx" widgetVar="yukleniyor" visible="false" closable="false" modal="true">
+	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/yukleniyor.gif"/>
+	</p:dialog>
+		</ui:composition>

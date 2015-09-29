@@ -1,0 +1,797 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:head>
+		
+		<title>#{label.binabilgileri}</title>
+		<h:outputStylesheet library="css" name="maincontext.css" />
+
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/style.css" rel="stylesheet" type="text/css"/>
+	<style type="text/css">
+	.ui-dialog {padding: .2em; overflow: visible; border: 0 none; -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.75); -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.75); box-shadow: 0 1px 4px rgba(0,0,0,0.75); }
+.ui-dialog .ui-dialog-titlebar { position: relative; background: transparent !important; padding: 0 0 8px 0; margin: 20px 20px 5px 20px; border: solid #e5e5e5; border-width: 0 0 1px 0; -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; }
+.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .1em 0; color: #353536; font-size: 20px !important; } 
+.ui-dialog .ui-dialog-titlebar-close { position: absolute; right: -16px !important; top: -16px !important; margin: 0; width: 30px; height: 30px; background: url("#{resource['primefaces-delta:images/modalClose.png']}") 0 0 no-repeat; border: 0 !important; z-index: 10000; padding: 0px !important;}
+.ui-dialog .ui-dialog-titlebar-close span { display: none !important; }
+.ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
+.ui-dialog .ui-dialog-content { position: relative; border: 0; padding: 15px 20px 20px 20px; background: none; overflow: auto; zoom: 1; }
+.ui-dialog .ui-dialog-buttonpane { text-align: left; border: solid #e5e5e5; border-width: 1px 0 0 0; background: transparent; margin: 20px 20px 10px 20px; padding: 10px 0 0 0; }
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
+.ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
+.ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.ui-draggable .ui-dialog-titlebar { cursor: move; }
+span.fc-event-title{
+width:100%;}
+.fc-event .fc-event-inner,.fc-event-inner{
+	z-index:-1;
+	margin-top:0px;
+width:100%;
+height: 100px;
+
+}
+ .edit{
+    background: #FFFF99;
+      font-family: comic sans MS;
+      font-weight: bold;
+      font-size: 1.2em;
+       
+      }
+     
+
+.fc-event-title,.fc-event-time,.fc-event-inner{
+	color:#fff;
+	font-size:12px;
+	width:100%;
+	font-family: comic sans MS;
+}
+
+.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin: -1px 0 0 0 !important; }
+.ui-datepicker th { padding: .7em 0; text-align: center; font-weight: bold; border: 0; font-size: 10px; color: #acacac; border-bottom: 1px solid #cdcdcd !important; }
+.ui-datepicker td { border: 0; padding: 0 !important; border: 1px solid #cdcdcd; }
+.ui-datepicker td a { display: block; padding: 0 !important; border: 0 none !important;/*border: 1px solid #cdcdcd !important;*/ 
+line-height: 20px; text-align: center !important; font-size: 10px; text-decoration: none; font-weight: bold !important; }
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active{
+	background:#6986c9;
+	font-weight: bold;
+	
+}
+
+</style>
+	</h:head>
+	
+	<h:form id="formbina">
+	
+		<p:growl autoUpdate="true" showDetail="false" id="growl" />
+
+<p:dialog widgetVar="gi" visible="false" modal="true" closable="false" style="border:none;">
+<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+</p:dialog>
+<ui:include src="binaarabinabilgi.xhtml"/>
+						
+			
+			
+
+	    
+		   
+					
+		<p:panel id="pnlBina" header="#{binaBean.binaDTO.binaAdi} -#{binaBean.binaDTO.binaId}" toggleable="true"
+			closable="false" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panel2" rendered="#{binaBean.binaDTO.binaId gt 0}">
+
+
+			<p:ajax event="close" listener="#{panelBean.handleClose}"
+				update="growl" />
+			<p:ajax event="toggle" listener="#{panelBean.handleToggle}"
+				update="growl" />
+
+			<h:panelGrid styleClass="panelGrid" id="pnl02"
+				rowClasses="rowClass1,rowClass2" columns="4" cellpadding="7">
+
+				<p:outputLabel value="#{label.il}" styleClass="label" for="il" />
+
+				<p:inputText id="il" height="100" value="#{binaBean.binaDTO.ilAdi}"
+					readonly="true"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+				</p:inputText>
+
+
+				<p:outputLabel value="#{label.ilce}" styleClass="label"
+					for="txtilce" />
+				<p:inputText id="txtilce" height="100"
+					value="#{binaBean.binaDTO.ilceAdi}" readonly="true"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+
+				</p:inputText>
+
+
+				<p:outputLabel value="#{label.mahalle}" styleClass="label"
+					for="txtmahalle" />
+				<p:inputTextarea id="txtmahalle" value="#{binaBean.binaDTO.mahalle}"
+					readonly="true"
+					style="color: #6986c9; height:50px; width:240px;	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;   left:2%;     border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" rows="5" cols="80"/>
+
+				<p:outputLabel value="#{label.caddesokak}" styleClass="label"
+					for="txtcaddesokak" />
+				<p:inputTextarea id="txtcaddesokak"
+					value="#{binaBean.binaDTO.caddeSokak}" readonly="true"
+					style="color: #6986c9; height:50px; width:240px	;border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;   left:2%;     border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" rows="5" cols="80"/>
+
+
+
+
+				<p:outputLabel value="#{label.binaNo}" styleClass="label"
+					for="txtbinano" />
+				<p:inputText id="txtbinano" value="#{binaBean.binaDTO.binaNo}"
+					readonly="true"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" />
+
+				<p:outputLabel value="#{label.binaAdi}" styleClass="label" />
+				<p:inputTextarea id="txtbinaadi" value="#{binaBean.binaDTO.binaAdi}"
+					readonly="true"
+					style="color: #6986c9; height:40px; width:240px;	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;   left:2%;     border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;       box-shadow: none" rows="2" cols="80"/>
+
+
+
+				<p:outputLabel value="#{label.belediye}" styleClass="label"
+					for="txtbelediye" />
+				<p:inputText id="txtbelediye" value="#{binaBean.binaDTO.belediyeAdi}"
+					readonly="true"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+
+				</p:inputText>
+
+				<p:outputLabel value="#{label.yapikonusu}" styleClass="label"
+					for="txtyapikonusu" />
+				<p:inputText id="txtyapikonusu" value="#{binaBean.binaDTO.yapiKonusuStr}"
+					readonly="true"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+				</p:inputText>
+
+
+				<p:outputLabel value="#{label.ada}" styleClass="label" for="txtada" />
+				<p:inputText id="txtada" value="#{binaBean.binaDTO.ada}"
+					readonly="true"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+
+				<p:outputLabel value="#{label.parsel}" styleClass="label"
+					for="txtparsel" />
+				<p:inputText id="txtparsel" value="#{binaBean.binaDTO.parsel}"
+					readonly="true"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+
+
+				<p:outputLabel value="#{label.pafta}" styleClass="label"
+					for="txtpafta" />
+				<p:inputText id="txtpafta" value="#{binaBean.binaDTO.pafta}"
+					readonly="true"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+				<h:outputText />
+				<h:outputText />
+				<p:outputLabel value="#{label.vergiDairesi}" styleClass="label"
+					for="txtvergidairesi" />
+				<p:inputText id="txtvergidairesi"
+					value="#{binaBean.binaDTO.vergiDairesi}" readonly="true"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+
+				<p:outputLabel value="#{label.vergiNo}" styleClass="label"
+					for="txtvergino" />
+				<p:inputText id="txtvergino" value="#{binaBean.binaDTO.vergiNo}"
+					readonly="true"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+
+		
+			
+			
+					</h:panelGrid>
+					<h:panelGrid columns="1" style="width:100%">
+					<p:outputLabel value="#{label.adres}" styleClass="label"
+					for="txtadres" />
+				<p:inputTextarea id="txtadres" value="#{binaBean.binaDTO.acikAdres}"
+					readonly="true"
+					style="color: #6986c9; height:100px; width:100%	border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;   left:2%;     border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" rows="10" cols="80"/>
+	</h:panelGrid>
+
+		</p:panel>
+
+		<br />
+
+		<p:panel id="pnlCihaz" toggleable="false" header="Asansörler"
+			closable="false" toggleSpeed="500" closeSpeed="500"
+			widgetVar="panelcihaz" rendered="#{not empty cihazBean.cihazlar}">
+
+			<p:dataTable id="tblx0102x" var="cihazlar"
+				value="#{cihazBean.cihazList}" emptyMessage="#{label.emptyList}"
+				selection="#{cihazBean.secilen}">
+
+				<p:column style="width:2%" selectionMode="single" />
+				<p:column headerText="#{label.asansorkimlikno}"
+					style="text-align:left">
+       	    #{cihazlar.kimlikNo}  
+         
+        </p:column>
+        <p:column headerText="#{label.asansorunyeri}">
+            #{cihazlar.asansorunYeri}
+        </p:column>
+
+				<p:column headerText="#{label.tip}" style="text-align:left"> 
+        
+            #{cihazlar.tipAciklama}  
+        </p:column>
+         <p:column headerText="#{label.uavtKod}" style="text-align:left"> 
+        
+            #{cihazlar.uavtKod}  
+        </p:column>
+         <p:column headerText="#{label.uavtEtiket}" style="text-align:left"> 
+        
+            #{cihazlar.uavtEtiket}  
+        </p:column>
+         <p:column headerText="#{label.uavtSiraNo}" style="text-align:left"> 
+        
+            #{cihazlar.uavtSiraNo}  
+        </p:column>
+        <p:column headerText="#{label.etiket}" style="text-align:left"> 
+          <p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketsari.png"  rendered="#{cihazlar.sonKontrolEtiketi eq 'S'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{cihazlar.sonKontrolEtiketi}" rendered="false"></h:outputText>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"  rendered="#{cihazlar.sonKontrolEtiketi eq 'Y'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{cihazlar.sonKontrolEtiketi}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"  rendered="#{cihazlar.sonKontrolEtiketi eq 'M'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{cihazlar.sonKontrolEtiketi}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"  rendered="#{cihazlar.sonKontrolEtiketi eq 'K'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{cihazlar.sonKontrolEtiketi}"  rendered="false"/>
+	</p:graphicImage>
+	  
+        </p:column>
+        <p:column headerText="#{label.sonKontrolTarihi}">
+        <h:outputText value="#{cihazlar.sonKontrolTarihi}">
+        <f:convertDateTime locale="tr" pattern="dd.MM.yyyy"></f:convertDateTime>
+        </h:outputText>
+        </p:column>
+
+		<p:column headerText="#{label.durum}">
+		 #{cihazlar.durum eq 'A'?'Aktif':'Pasif'}  
+		</p:column>
+			</p:dataTable>
+
+		</p:panel>
+		
+		<p:tabMenu activeIndex="0" widgetVar="tabmenu" id="tabmenu"
+			rendered="#{binaBean.binaDTO.binaId gt 0}"
+			style="width:100%;margin:auto">
+			
+			<p:menuitem value="#{label.asansorkontrolleri}" process="pnlBina pnlCihaz @this" update="tablekontroller kmsg"
+				icon="ui-icon-star" actionListener="#{cihazBean.getAsansorKontroller}" oncomplete="PF('kontroller').show()"/>
+				
+			<p:menuitem value="#{label.basvuruverandevu}" process="pnlBina pnlCihaz @this" update="tablebasvururandevu bmsg"
+				icon="ui-icon-person" actionListener="#{binaBean.basvuruVeRandevular}" 
+				oncomplete="PF('basvuruverandevular').show()"/>
+				
+				
+			<p:menuitem title="Asansör Görüntüle"
+				value="#{label.asansorteknikbilgiler}" icon="ui-icon-wrench"
+				actionListener="#{cihazBean.getAsansorTeknikOzellikleri}"
+				process="pnlBina pnlCihaz @this" update="cihazteknik cmsg asansorbilgi" oncomplete="PF('asansorbilgi').show()" />
+				
+			<p:menuitem value="#{label.bakimcifirmalar}" icon="ui-icon-search"
+				style="text-transform: capitalize;"
+				actionListener="#{cihazBean.firmaBul}"
+				process="pnlBina pnlCihaz @this" update="tablefirmalar fmsg"
+				 oncomplete="PF('bakimciFirma').show()"/>
+			
+			<p:menuitem value="#{label.binaSorumlusu}" icon="ui-icon-person"
+				style="text-transform: capitalize;"
+				actionListener="#{binaBean.sorumluKisiler}"
+				process="pnlBina pnlCihaz @this" update="kisitable kisimsg binakisiler"
+				 title="Bina Sorumlu Kişiler" oncomplete="PF('binakisiler').show()"/>
+			<p:menuitem value="#{label.raporlar}" icon="ui-icon-document"
+			id="eskirapor" process="pnlBina pnlCihaz @this" update="eskiraportable rmsg"
+				style="text-transform: capitalize;"
+				actionListener="#{binaBean.eskiRaporlarListener}" oncomplete="PF('eskiraporlar').show()"
+				 title="Cihaz Eski Raporları (Öncelikle Cihaz Seçiniz)" 
+				 />			
+	
+		</p:tabMenu>
+		<br/>
+		
+		<ui:include src="map.xhtml"></ui:include>
+		
+
+<p:dialog header="#{label.firmalar}"  widgetVar="bakimciFirma" id="bakimciFirma" width="80%" height="500px" style="overflow:scroll-y;" resizable="true">
+		<p:messages id="fmsg" showDetail="false"></p:messages>
+		<h:panelGrid columns="1" style="width:100%">
+		
+		<p:dataTable id="tablefirmalar" var="firmalar" 
+		editable="true" rowStyleClass="#{index==0?'edit':null}"
+		value="#{cihazBean.bakimciFirmalar}" emptyMessage="#{label.emptyList}" style="width:100%" rowIndexVar="index">
+		<p:column headerText="#{label.firma} #{label.adi}" sortBy="#{firmalar.unvan}" style="width:350px">
+		
+		
+		
+               <h:outputText value="*" rendered="#{index==0}"/>#{firmalar.unvan}
+        
+		</p:column>
+		<p:column headerText="#{label.firmaYetkilisi}">
+		     #{firmalar.adSoyad}
+        
+		</p:column>
+		<p:column headerText="#{label.firmaYetkiliTelefon}">
+		       #{firmalar.gsmTelefon}
+        
+		</p:column>
+		<p:column headerText="#{label.sozlesmetarihi}" sortBy="#{firmalar.asansorBakimTarihi}">
+		       <h:outputText value="#{firmalar.asansorBakimTarihi}">
+		<f:convertDateTime pattern="dd.MM.yyyy" locale="tr"/>
+		</h:outputText>
+        
+		</p:column>
+		
+		<p:column headerText="#{label.bakimciSozlesmeBitisTarih}" sortBy="#{firmalar.sozlesmeTarihi}">
+		       <h:outputText value="#{firmalar.sozlesmeTarihi}">
+		<f:convertDateTime pattern="dd.MM.yyyy" locale="tr"/>
+		</h:outputText>
+        
+		</p:column>
+		</p:dataTable>
+		
+		<span style="font-style: italic;font-size: 9px">* Bina için son bakimci firmadır</span>
+		</h:panelGrid>
+		
+		</p:dialog>
+		
+		<p:dialog visible="false"  width="80%" height="500px" style="overflow:scroll-y;" resizable="true"
+			widgetVar="asansorbilgi" id="asansorbilgi" header="#{cihazBean.header}">
+<p:messages id="cmsg" showDetail="false"></p:messages>
+
+			<p:dataGrid var="cihaz" value="#{cihazBean.cihazTeknik}"
+				paginator="false" columns="2" id="cihazteknik" emptyMessage="#{label.emptyList}">
+				
+				<table>
+					<tr style="width: 100%">
+						<td style="width: 150px"><p:outputLabel
+								value="#{cihaz.baslik}" styleClass="label" /></td>
+						<td />
+						<td style="width: 210px"><p:inputText
+								rendered="#{cihaz.tipi eq 'metin'}" value="#{cihaz.cevap}"
+								readonly="true"
+								style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;" />
+							<p:inputText rendered="#{cihaz.tipi eq 'coklu' and cihaz.baslik ne 'ÖZEL ASANSÖR ŞARTLAR'}"
+								value="#{cihaz.cevap}" readonly="true"
+								style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;" />
+							<p:selectManyMenu rendered="#{cihaz.tipi eq 'coklu' and cihaz.baslik eq 'ÖZEL ASANSÖR ŞARTLAR'}"
+								value="#{cihaz.ozelAsansorSartlar}" onchange="alert('Oooppsss!');return false;" showCheckbox="true" 
+								style="color: #6986c9;width: 400px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;height:200px" >
+								<f:selectItems value="#{cihaz.item}"/>
+								</p:selectManyMenu>
+							<p:inputMask rendered="#{cihaz.tipi eq 'sayi'}"
+								value="#{cihaz.cevap}" readonly="true"
+								style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;" />
+
+						</td>
+					</tr>
+				</table>
+
+			</p:dataGrid>
+
+
+		</p:dialog>
+
+	<p:dialog id="basvuruverandevular" widgetVar="basvuruverandevular" visible="false" width="80%" height="500px" style="overflow:scroll-y;" resizable="true" header="Başvuru ve Randevu Bilgileri"  >
+	<p:messages id="bmsg" showDetail="false"></p:messages>
+	<p:dataTable id="tablebasvururandevu" value="#{binaBean.basvuruVeRandevular}" var="br" 
+	rows="5" paginator="true"  emptyMessage="#{label.emptyList}" filteredValue="#{binaBean.filteredVal}"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+        rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom">
+        <p:column headerText="#{label.basvuruTarihi}" sortBy="#{br.basvuru.basvuruTarihi}">
+        <h:outputText value="#{br.basvuru.basvuruTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText>
+        </p:column>
+        <p:column headerText="#{label.basvuruYapan}" sortBy="#{br.basvuru.adiSoyadi}" filterBy="#{br.basvuru.adiSoyadi}" filterMatchMode="startsWith">
+        #{br.basvuru.adiSoyadi}
+        </p:column>
+        <p:column headerText="#{label.telno}">
+        #{br.basvuru.telefonNo}
+        </p:column>
+        <p:column headerText="#{label.randevuTarihi}" sortBy="#{br.randevuTarih}">
+       <h:outputText value="#{br.randevuTarih}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText>
+        </p:column>
+         <p:column headerText="#{label.saat}">
+       <h:outputText value="#{br.randevuSaati}">
+        <f:convertDateTime pattern="HH:mm"/>
+        </h:outputText>
+        </p:column>
+         <p:column>
+        
+        <table border="">
+        <tr>
+        <td><p:outputLabel value="#{label.asansorkimlikno}"/></td>
+        <td><p:outputLabel value="#{label.bakimciFirma}"/></td>
+        <td><p:outputLabel value="#{label.kontroltarihi}"/></td>
+        <td><p:outputLabel value="#{label.kontrolTutari}"/></td>
+         <td><p:outputLabel value="#{label.durum}"/></td>
+        </tr>
+       
+        
+        <ui:repeat var="fch" value="#{br.firmaCihazList}">
+         <tr>
+        <td>
+         #{fch.kimlikNo}
+         </td>
+         <td> 
+         #{fch.bakimciFirmaAdi}
+         </td>
+         <td>
+         <h:outputText value="#{fch.kontrolTarihi}">
+         <f:convertDateTime pattern="dd.MM.yyyy"/>
+         </h:outputText>
+         </td>
+         <td>
+          <h:outputText value="#{fch.kontrolTutari}">
+          <f:convertNumber pattern="###,##0.00"></f:convertNumber>
+          </h:outputText>
+          </td>
+           <td>
+          <h:outputText value="#{fch.kontrolIptal?'Kontrol İptal':''}">
+         
+          </h:outputText>
+          </td>
+          </tr>
+         
+         </ui:repeat>
+        
+        </table>
+         
+        
+        </p:column>
+        <p:column headerText="#{label.muhendisler}">
+        <ui:repeat var="m" value="#{br.muhendisler}">
+       
+        <h:outputText value="#{m.adi} #{m.soyadi}" style="color:#FF3300" rendered="#{m.onayYetkisi eq 'E'}"/>
+        <h:outputText value="#{m.adi} #{m.soyadi}" rendered="#{m.onayYetkisi eq 'H'}"/>
+        <br/>
+       
+       
+        
+        </ui:repeat>
+        </p:column>
+        </p:dataTable>
+	</p:dialog>
+
+
+	<p:dialog id="kontroller" widgetVar="kontroller" visible="false"  width="80%" height="500px" style="overflow:scroll-y;" resizable="true" modal="true"
+	header="Kontroller">
+	<p:messages showDetail="false" id="kmsg"></p:messages>
+	
+	<p:dataTable id="tablekontroller" value="#{cihazBean.kontroller}" var="kontrol" 
+	rows="10" paginator="true"  emptyMessage="#{label.emptyList}" filteredValue="#{cihazBean.filteredKontrol}"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+        rowsPerPageTemplate="10,15,20,25" paginatorPosition="bottom">
+         <p:column headerText="#{label.kontrolturu}"  sortBy="#{kontrol.kontrolTuru}" filterBy="#{kontrol.kontrolTuru}" filterMatchMode="startsWith">
+        <h:outputText value="NORMAL" rendered="#{kontrol.kontrolTuru eq 'N'}"/>
+         <h:outputText value="EKSİKLİK" rendered="#{kontrol.kontrolTuru eq 'E'}"/>
+         
+        
+        
+        </p:column>
+        
+        <p:column headerText="#{label.kontroltarihi}" sortBy="#{kontrol.kontrolBitisTarihi}">
+        <h:outputText value="#{kontrol.kontrolBitisTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText>
+        </p:column>
+        
+         <p:column headerText="#{label.saat}">
+       <h:outputText value="#{kontrol.kontrolBitisSaati}">
+        <f:convertDateTime pattern="HH:mm"/>
+        </h:outputText>
+        </p:column>
+         <p:column headerText="#{label.onaylayan}"  sortBy="#{kontrol.onaylayanAdiSoyadi}" filterBy="#{kontrol.onaylayanAdiSoyadi}" filterMatchMode="startsWith">
+        #{kontrol.onaylayanAdiSoyadi}
+        </p:column>
+        <p:column headerText="#{label.onaytarih}" sortBy="#{kontrol.onayTarihi}">
+        <h:outputText value="#{kontrol.onayTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText>
+        </p:column>
+         <p:column headerText="#{label.muhendis}">
+        <ui:repeat var="km" value="#{kontrol.kontrolMuhendisleri}">
+       
+        <h:outputText value="#{km.adiSoyadi}"/>
+     
+        <br/>
+        
+        </ui:repeat>
+        </p:column>
+        <p:column sortBy="#{kontrol.etiket}" filterBy="#{kontrol.etiket}" filterMatchMode="startsWith" headerText="#{label.etiket}">
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketsari.png"  rendered="#{kontrol.etiket eq 'S'}">
+	<h:outputText value="#{kontrol.etiket}" rendered="false"></h:outputText>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"  rendered="#{kontrol.etiket eq 'Y'}">
+	<h:outputText value="#{kontrol.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"  rendered="#{kontrol.etiket eq 'M'}">
+	<h:outputText value="#{kontrol.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"  rendered="#{kontrol.etiket eq 'K'}">
+	<h:outputText value="#{kontrol.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	</p:column>
+	<p:column headerText="#{label.durum}">
+	<h:outputText value="#{kontrol.raporIptal?'Kontrol İptal':''}"/>
+	</p:column>
+     <p:column width="2%">
+	<p:commandButton icon="ui-icon-search" title="Test Sonuçları" update=":formbina:testsonuc :formbina:testsonuc:testsonucaltsorular :formbina:growl" oncomplete="PF('testsonuclari').show()" 
+	actionListener="#{soruTableBean.cihazTestByKontrol(kontrol)}"></p:commandButton>
+	</p:column>  
+        </p:dataTable>
+	</p:dialog>
+	<p:dialog id="testsonuclari" widgetVar="testsonuclari" visible="false" modal="true"  width="80%" height="500px" style="overflow:scroll-y;" resizable="true">
+	
+	<p:dataList value="#{soruTableBean.soruListSmall}" var="soruListe1" type="definition" id="testsonuc" emptyMessage="#{label.emptyList}">
+       
+        <h:panelGrid columns="3" id="grcheck" style="width:100%">
+						<p:graphicImage
+						value="${pageContext.request.contextPath}/resources/image/add.png" rendered="#{soruListe1.checked}" id="check"/>
+									
+							<h:outputText value="#{soruListe1.sorun} #{soruListe1.soru}" />
+							<h:outputText value="#{soruListe1.durum}" style="float:right"/>
+							
+			
+						</h:panelGrid>
+        <f:facet name="description">
+            <p:dataList value="#{soruListe1.altSorular}" var="soruliste" id="testsonucaltsorular"  emptyMessage="#{label.emptyList}">
+           
+             <h:panelGrid columns="1" style="width:100%">
+             <h:panelGrid columns="3" style="width:100%">
+            #{soruliste.sorun} #{soruliste.yildiz}#{soruliste.soru}
+            </h:panelGrid>
+			            	<p:selectManyCheckbox id="ncb"
+									value="#{soruliste.selectedListId}" layout="grid" columns="1"
+									style="width:100%;margin-top:0;"
+									rendered="#{!empty soruliste.list}"
+									disabled="#{!soruliste.enableOnTanimli}">
+									<f:selectItems value="#{soruliste.list}" var="ls"
+										itemValue="#{ls.id}" itemLabel="#{ls.aciklama}">
+
+									</f:selectItems>
+								</p:selectManyCheckbox>
+			
+            </h:panelGrid>
+           
+
+            </p:dataList>
+            <p:outputPanel rendered="#{!empty soruListe1.optionalAltSorular}">
+            <h1>Kapsam Dışı Ön Tanımlı Açıklamalar</h1>
+            
+               <p:dataList value="#{soruListe1.optionalAltSorular}" var="soruliste" id="testsonucoptaltsorular"  emptyMessage="#{label.emptyList}">
+           
+             <h:panelGrid columns="1" style="width:100%">
+             <h:panelGrid columns="3" style="width:100%">
+            #{soruliste.sorun} #{soruliste.yildiz}#{soruliste.soru}
+            </h:panelGrid>
+			            	<p:selectManyCheckbox id="ncbopt"
+									value="#{soruliste.selectedListId}" layout="grid" columns="1"
+									style="width:100%;margin-top:0;"
+									rendered="#{!empty soruliste.list}"
+									disabled="#{!soruliste.enableOnTanimli}">
+									<f:selectItems value="#{soruliste.list}" var="ls"
+										itemValue="#{ls.id}" itemLabel="#{ls.aciklama}">
+
+									</f:selectItems>
+								</p:selectManyCheckbox>
+			
+            </h:panelGrid>
+           
+
+            </p:dataList>
+            </p:outputPanel>
+            
+        </f:facet>
+    </p:dataList>
+    <p:outputPanel rendered="#{!empty soruListe1.optionalSoruListSmall}">
+    <h1>Kapsam Dışı Seçmeli Sorular</h1>
+	<p:dataList value="#{soruTableBean.optionalSoruListSmall}" var="soruListe1" type="definition" id="testsonuckapsamdisi"  emptyMessage="#{label.emptyList}">
+       
+        <h:panelGrid columns="3" id="grcheckkapsamdisi" style="width:100%">
+						<p:graphicImage
+						value="${pageContext.request.contextPath}/resources/image/add.png" rendered="#{soruListe1.checked}" id="check"/>
+									
+							<h:outputText value="#{soruListe1.sorun} #{soruListe1.soru}" />
+							<h:outputText value="#{soruListe1.durum}" style="float:right"/>
+							
+			
+						</h:panelGrid>
+        <f:facet name="description">
+            <p:dataList value="#{soruListe1.altSorular}" var="soruliste" id="testsonuckapsamdisialtsorular"  emptyMessage="#{label.emptyList}">
+           
+             <h:panelGrid columns="1" style="width:100%">
+             <h:panelGrid columns="3" style="width:100%">
+            #{soruliste.sorun} #{soruliste.yildiz}#{soruliste.soru}
+            </h:panelGrid>
+			            	<p:selectManyCheckbox id="ncbkapsamdisi"
+									value="#{soruliste.selectedListId}" layout="grid" columns="1"
+									style="width:100%;margin-top:0;"
+									rendered="#{!empty soruliste.list}"
+									disabled="#{!soruliste.enableOnTanimli}">
+									<f:selectItems value="#{soruliste.list}" var="ls"
+										itemValue="#{ls.id}" itemLabel="#{ls.aciklama}">
+
+									</f:selectItems>
+								</p:selectManyCheckbox>
+			
+            </h:panelGrid>
+           
+
+            </p:dataList>
+        </f:facet>
+    </p:dataList>
+	</p:outputPanel>
+							
+	</p:dialog>
+	
+	<p:dialog id="binakisiler" widgetVar="binakisiler" visible="false" modal="true" width="80%" height="500px" style="overflow:scroll-y;" resizable="true" header="Bina Sorumluları Listesi">
+	<p:messages id="kisimsg" showDetail="false">
+	
+	</p:messages>
+	<p:dataTable id="kisitable"  var="kisiler"  widgetVar="kisitable"
+            value="#{binaBean.kisiData}" emptyMessage="#{label.emptyList}"  style="width:100%" paginator="true"
+            paginatorPosition="bottom" rows="6">
+          
+             <p:column headerText="#{label.kayittarihi}">
+           <h:outputText value="#{kisiler.kayitTarihi}">
+           <f:convertDateTime pattern="dd.MM.yyyy" locale="tr"/>
+           </h:outputText>
+            </p:column>
+            <p:column headerText="#{label.adi} #{label.soyadi}">
+            #{kisiler.adi} #{kisiler.soyadi}
+            </p:column>
+            <p:column headerText="#{label.sorumlulukturu}">
+            <ui:repeat value="#{binaBean.sTurList}" var="stur">
+            <h:outputText value="#{stur.aciklama}" rendered="#{stur.tip==kisiler.sorumlulukTuru}"/>
+            </ui:repeat>
+            </p:column>
+            <p:column headerText="#{label.telefonNoGSM}">
+            #{kisiler.telefonNoGsmStr}
+            </p:column>
+             <p:column headerText="#{label.telefonNo}">
+            #{kisiler.telefonNoStr}
+            </p:column>
+             <p:column headerText="#{label.eposta}">
+            #{kisiler.ePosta}
+            </p:column>
+            </p:dataTable>
+	</p:dialog>
+	
+	<p:dialog id="eskiraporlar" widgetVar="eskiraporlar" visible="false"  width="80%" height="500px" style="overflow:scroll-y;" resizable="true" header="Raporlar">
+	<p:messages id="rmsg" showDetail="false"></p:messages>
+	<p:dataTable id="eskiraportable"  var="e" 
+            value="#{binaBean.eskiRaporList}" emptyMessage="#{label.emptyList}" style="width:100%">
+           
+            
+            <p:column headerText="#{label.raportarih}">
+            <h:outputText value="#{e.raporTarih}">
+            <f:convertDateTime locale="tr" pattern="dd.MM.yyyy"></f:convertDateTime>
+            </h:outputText>
+            </p:column>
+            <p:column headerText="#{label.raporTuru}">
+            	<h:outputText value="#{e.revizyonRapor?'Revizyon Rapor':'Normal Rapor'}"/>
+            </p:column>
+             <p:column headerText="#{label.kontrolturu}">
+            	<h:outputText value="#{e.kontrolTuru}"/>
+            </p:column>
+           	<p:column headerText="#{label.etiket}">
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketsari.png"  rendered="#{e.etiket eq 'S'}">
+	<h:outputText value="#{e.etiket}" rendered="false"></h:outputText>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"  rendered="#{e.etiket eq 'Y'}">
+	<h:outputText value="#{e.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"  rendered="#{e.etiket eq 'M'}">
+	<h:outputText value="#{e.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"  rendered="#{e.etiket eq 'K'}">
+	<h:outputText value="#{e.etiket}"  rendered="false"/>
+	</p:graphicImage>
+	
+    </p:column>
+    <p:column headerText="#{label.durum}">
+             <h:outputText value="#{e.raporIptal?'Rapor İptal Edildi':''}"></h:outputText>
+             </p:column>
+             <p:column>
+             
+         <p:commandLink id="raporlink" actionListener="#{binaBean.eskiRaporGetir(e)}" update="@form" 
+         onstart="PF('yukleniyor').show()"
+         oncomplete="PF('eskiraporlar').show();PF('yukleniyor').hide()">
+           <p:graphicImage value="${pageContext.request.contextPath}/resources/image/pdf.png"/>
+           </p:commandLink>
+            </p:column>
+            </p:dataTable>
+	</p:dialog>
+	<p:dialog id="yukleniyor" widgetVar="yukleniyor" visible="false" closable="false" modal="true">
+	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/yukleniyor.gif"/>
+	</p:dialog>
+	
+	</h:form>
+	
+<h:panelGrid columns="2" style="width:100%">
+<h:panelGrid columns="1">
+<p:commandButton icon="ui-icon-search" onclick="getLocation()" value="Konumum"></p:commandButton>
+
+<p id="dummy"></p>
+
+</h:panelGrid>
+<h:panelGrid columns="2" style="float:right">
+<p:inputText style="width:350px;text-transform:uppercase" id="adres"/>
+<p:commandButton icon="ui-icon-search"  style="left:-35px;top:3px" onclick="showAddress()"/>
+</h:panelGrid>
+</h:panelGrid>
+
+<script type="text/javascript">
+
+var x = document.getElementById("dummy");
+
+function getLocation() {
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(setMapCenter);
+        
+    } else { 
+    	
+        x.innerHTML = "Kullandığınız browser desteklemiyor";
+    }
+}
+
+function showPosition(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude + 
+    "<br/>Longitude: " + position.coords.longitude;	
+   
+}
+function setMapCenter(position) {
+	map.getMap().setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+}
+
+function showAddress(){
+var geocoder = new google.maps.Geocoder();
+var address = document.getElementById("adres").value;
+
+geocoder.geocode( { 'address': address}, function(results, status) {
+
+  if (status == google.maps.GeocoderStatus.OK) {
+    var latitude = results[0].geometry.location.lat();
+    var longitude = results[0].geometry.location.lng();
+    map.getMap().setCenter(new google.maps.LatLng(latitude, longitude));
+    var currentMarker = new google.maps.Marker({
+        position:new google.maps.LatLng(latitude,longitude)
+    });
+
+    PF('map').addOverlay(currentMarker);
+  } 
+}); 
+}
+</script>
+
+</ui:composition>

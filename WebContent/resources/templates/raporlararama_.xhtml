@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<p:panel id="apanel">
+<table style="vertical-align:text-top;">
+
+
+<tr>
+<td style="vertical-align: text-top;">
+ <p:panel style="background-color:currentcolor;" id="spanel">
+ <f:facet name="header">
+<p:outputLabel for="subetable" styleClass="label" value="Şubeler" style="float:left"></p:outputLabel>
+</f:facet>
+<p:selectManyMenu id="subetable" widgetVar="subetable" style="width:200px;height:160px;overflow-x:scroll" filter="true"
+value="#{information.selectedSube}" valueChangeListener="#{information.subeChangeEvent}" showCheckbox="true">
+<f:selectItems value="#{information.subeList}" var="subeler" itemLabel="#{subeler.sube}" itemValue="#{subeler.kod}"></f:selectItems>
+<p:ajax process="@this" update=":formraporara:tarpanel :formraporara:tpanel :formraporara:panelistatistik :formraporara:panelbutton"/>
+</p:selectManyMenu>
+	 
+ <p:selectBooleanCheckbox itemLabel="Hepsini Seç" value="#{information.subeHepsiniSec}">
+ <p:ajax process="@this" update="@form" listener="#{information.boolSubeListener}"></p:ajax>
+ </p:selectBooleanCheckbox>
+</p:panel>
+ </td>
+<td style="vertical-align: text-top;margin-left:10px">
+<p:panel id="tpanel" visible="#{!empty information.selectedSube}">
+<f:facet name="header">
+<p:outputLabel for="temsilciliktable" styleClass="label" value="Temsilcilikler" id="temsilciliklabel" style="float:left"></p:outputLabel>
+</f:facet>
+ <p:selectManyMenu id="temsilciliktable" widgetVar="temsilciliktable" style="width:350px;height:160px;overflow-x:scroll" filter="true"
+
+value="#{information.selectedTemsilcilik}" valueChangeListener="#{information.temsilcilikChangeEvent}" showCheckbox="true">
+<f:selectItems value="#{information.temsilcilikler}" var="temsilcilik" itemLabel="#{temsilcilik.adi}" itemValue="#{temsilcilik.kod}"></f:selectItems>
+
+<p:ajax process="@this" update=":formraporara:tarpanel :formraporara:panelistatistik :formraporara:panelbutton"/>
+
+</p:selectManyMenu>
+	 
+ <p:selectBooleanCheckbox itemLabel="Hepsini Seç" value="#{information.temsilcilikHepsiniSec}">
+  <p:ajax  process="@this" update="@form" listener="#{information.boolTemsilcilikListener}"></p:ajax>
+ </p:selectBooleanCheckbox>
+ </p:panel>
+</td>
+<td style="vertical-align: text-top;margin-left:10px">
+<p:panel id="tarpanel" visible="#{!empty information.selectedSube}">
+<f:facet name="header">
+<p:outputLabel for="tarihtable" styleClass="label" value="Tarihler" style="float:left"></p:outputLabel>
+</f:facet>
+<h:panelGrid columns="3" id="tarihtable">
+<p:calendar id="tarih1" pattern="dd.MM.yyyy" locale="tr" navigator="true"  
+                style="width:50px"
+             value="#{information.tarih1}">
+            
+             <p:ajax event="dateSelect" listener="#{information.dateSelectListener}" update=":formraporara:panelistatistik :formraporara:growl"></p:ajax>
+            <p:ajax event="blur" listener="#{information.dateBlurListener}" update=":formraporara:panelistatistik :formraporara:growl"></p:ajax>
+             </p:calendar>
+       <p:separator></p:separator>
+<p:calendar id="tarih2" pattern="dd.MM.yyyy" locale="tr" navigator="true"  
+                style="width:50px"
+             value="#{information.tarih2}">
+              
+             <p:ajax event="dateSelect" listener="#{information.dateSelectListener}" process="@form" update=":formraporara:panelistatistik :formraporara:growl"></p:ajax>
+             <p:ajax event="blur" listener="#{information.dateBlurListener}" process="@form" update=":formraporara:panelistatistik :formraporara:growl"></p:ajax>
+           </p:calendar>  
+</h:panelGrid> 
+ </p:panel>	
+</td>
+</tr>
+
+</table>    
+
+	 
+</p:panel>   
+</ui:composition>

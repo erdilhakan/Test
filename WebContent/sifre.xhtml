@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	
+	>
+<h:head>
+<f:facet name="first">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</f:facet>
+
+	<title>TMMOB Makina Mühendisleri Odası Asansör Bakım Uygulaması</title>
+<link rel="shortcut icon"  href="${facesContext.externalContext.requestContextPath}/resources/image/favicon.jpg"/>
+<h:outputScript library="scripts" name="myscrpt.js"></h:outputScript>
+<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/resources/scripts/googleAnalytics.js"></script>
+
+ <link href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+ 
+<link type="text/css" rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/resources/css/delta.css" />
+<link href="${facesContext.externalContext.requestContextPath}/resources/css/styles.css" rel="stylesheet" type="text/css"/>
+
+
+
+</h:head>
+<h:body>
+<div class="header">
+<h:panelGrid columns="1"  style="margin:auto;">
+<center>
+ <h1 style="font-size:1.4em">
+ <font style="color: #{sessionBean.colors[0]}">T</font>
+ <font style="color: #{sessionBean.colors[1]}">M</font>
+ <font style="color: #{sessionBean.colors[2]}">M</font>
+ <font style="color: #{sessionBean.colors[3]}">O</font>
+ <font style="color: #{sessionBean.colors[4]}">B</font>
+ </h1>
+ </center>
+ <center>
+ <h1 style="font-size:1em">
+ <font style="color: #{sessionBean.colors[5]}">M</font>
+ <font style="color: #{sessionBean.colors[6]}">a</font>
+ <font style="color: #{sessionBean.colors[7]}">k</font>
+ <font style="color: #{sessionBean.colors[8]}">i</font>
+ <font style="color: #{sessionBean.colors[9]}">n</font>
+ <font style="color: #{sessionBean.colors[10]}">a</font>&nbsp;&nbsp;
+ <font style="color: #{sessionBean.colors[11]}">M</font>
+ <font style="color: #{sessionBean.colors[12]}">ü</font>
+ <font style="color: #{sessionBean.colors[13]}">h</font>
+ <font style="color: #{sessionBean.colors[14]}">e</font>
+ <font style="color: #{sessionBean.colors[15]}">n</font>
+ <font style="color: #{sessionBean.colors[16]}">d</font>
+ <font style="color: #{sessionBean.colors[17]}">i</font>
+ <font style="color: #{sessionBean.colors[18]}">s</font>
+ <font style="color: #{sessionBean.colors[19]}">l</font>
+ <font style="color: #{sessionBean.colors[20]}">e</font>
+ <font style="color: #{sessionBean.colors[21]}">r</font>
+ <font style="color: #{sessionBean.colors[22]}">i</font>&nbsp;&nbsp;
+ <font style="color: #{sessionBean.colors[23]}">O</font>
+ <font style="color: #{sessionBean.colors[24]}">d</font>
+ <font style="color: #{sessionBean.colors[25]}">a</font>
+ <font style="color: #{sessionBean.colors[26]}">s</font>
+ <font style="color: #{sessionBean.colors[27]}">ı</font>
+ </h1>
+ </center>
+ </h:panelGrid>
+</div>
+<p:panel styleClass="sifrepanel" id="sifrepanel">
+ 
+  	 <h:form id="formsifre">
+   	   	<p:growl id="info" showDetail="false"  autoUpdate="true"/>
+ <center>
+<img src="${facesContext.externalContext.requestContextPath}/resources/image/favicon.jpg" class="loginimage"/>
+</center>
+<h:panelGrid cellpadding="1" cellspacing="1" columns="1" width="50%"  style="margin:auto">
+					<p:watermark value="#{label.kullaniciAdi}" for="txtkullaniciadi" ></p:watermark>
+					<p:inputText  id="txtkullaniciadi" value="#{kullaniciBean.slctKullanici.kullaniciAdi}" required="true" requiredMessage="#{label.kullaniciAdiBos}"
+					immediate="true">
+					</p:inputText>
+					<p:message for="txtkullaniciadi"/>
+				
+					<p:captcha id="captcha" label="Captcha"  language="tr" theme="white"  requiredMessage="Resimde gördüğünüz metni giriniz" 
+					validatorMessage="Metni Hatalı Girdiniz" immediate="false">
+					</p:captcha>
+					<p:message for="captcha"/>
+					<p:commandButton id="btnsifre" styleClass="loginbutton" icon="ui-icon-mail-closed" value="Yeni Parola" title="Şifreniz değiştirilerek sistemde tanımlı e-posta adresinize gönderilecektir"
+					 actionListener="#{kullaniciBean.parolaDegistir}" ajax="false" process="@form"></p:commandButton>
+					
+</h:panelGrid>
+ 
+   	   	 </h:form>
+
+</p:panel>
+<p:blockUI trigger=":formsifre:btnsifre" block="formsifre">
+<img src="${facesContext.externalContext.requestContextPath}/resources/image/ajax-loader.gif"/>
+</p:blockUI>
+</h:body>
+</html>

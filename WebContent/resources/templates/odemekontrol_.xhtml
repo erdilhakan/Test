@@ -1,0 +1,143 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+
+	<title></title>
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+.ui-datatable table td{
+color:#4C538D;
+border-color: #4C538D;
+}
+.ui-datatable table{
+color:#4C538D;
+border-color: #4C538D;
+}
+</style>
+</h:head>
+<h:form id="formraporara">
+<p:growl id="growl"  showDetail="false" autoUpdate="true"/>
+<ui:include src="/resources/templates/raporlararama_.xhtml"/>
+<p:panel id="panelbutton">
+<p:commandButton id="btngetir" value="#{label.getir}" icon="ui-icon-search" process="@this :formraporara:apanel" 
+actionListener="#{information.odemeKontrol}" 
+update="@form" style="float:right" rendered="#{!empty information.selectedSube}">
+</p:commandButton>
+     <p:blockUI trigger="btngetir" block="btngetir">
+      <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+     </p:blockUI> 
+     </p:panel>
+
+<br/>
+<br/>
+
+<p:panel  toggleable="true"  id="panelistatistik" header="ÖDEME KONTROL" visible="#{information.odemeKontrolData != null}">
+<p:dataTable id="odemekontroltable" widgetVar=""  emptyMessage="#{label.emptyList}" paginator="true" paginatorPosition="bottom" rows="40"
+rowStyleClass="rowClass1;rowClass2"
+value="#{information.odemeKontrolData}" var="list" filteredValue="#{information.filteredOdemeKontrol}" selection="single" 
+style="overflow:scroll;font-size:0.8em;width:100%" rowIndexVar="rowindex" resizableColumns="true" liveResize="true" liveScroll="true">
+
+<p:column filterBy="#{list.basvuruId}" sortBy="#{list.basvuruId}">
+<f:facet name="header"><h:outputText value="#{label.basvuruId}"/></f:facet>
+<h:outputText value="#{list.basvuruId}"/>
+</p:column>
+
+<p:column filterBy="#{list.binaId}" sortBy="#{list.binaId}">
+<f:facet name="header"><h:outputText value="#{label.binaId}"/></f:facet>
+<h:outputText value="#{list.binaId}"/>
+</p:column>
+
+<p:column filterBy="#{list.binaAdi}" sortBy="#{list.binaAdi}">
+<f:facet name="header"><h:outputText value="#{label.binaAdi}"/></f:facet>
+<h:outputText value="#{list.binaAdi}"/>
+</p:column>
+
+<p:column filterBy="#{list.caddeSokak}" sortBy="#{list.caddeSokak}">
+<f:facet name="header"><h:outputText value="#{label.caddesokak}"/></f:facet>
+<h:outputText value="#{list.caddeSokak}"/>
+</p:column>
+
+<p:column filterBy="#{list.mahalle}" sortBy="#{list.mahalle}">
+<f:facet name="header"><h:outputText value="#{label.mahalle}"/></f:facet>
+<h:outputText value="#{list.mahalle}"/>
+</p:column>
+
+<p:column>
+<f:facet name="header"><h:outputText value="#{label.binaNo}"/></f:facet>
+<h:outputText value="#{list.binaNo}"/>
+</p:column>
+
+<p:column filterBy="#{list.acikAdres}" sortBy="#{list.acikAdres}">
+<f:facet name="header"><h:outputText value="#{label.adres}"/></f:facet>
+<h:outputText value="#{list.acikAdres}"/>
+</p:column>
+
+<p:column filterBy="#{list.belediyeAdi}" sortBy="#{list.belediyeAdi}">
+<f:facet name="header"><h:outputText value="#{label.belediye}"/></f:facet>
+<h:outputText value="#{list.belediyeAdi}"/>
+</p:column>
+
+<p:column sortBy="#{list.kontrolTarihi}">
+<f:facet name="header"><h:outputText value="#{label.kontroltarihi}"/></f:facet>
+<h:outputText value="#{list.kontrolTarihi}">
+<f:convertDateTime pattern="dd.MM.yyyy"/>
+</h:outputText>
+</p:column> 
+
+<p:column style="text-align:right">
+<f:facet name="header"><h:outputText value="#{label.elektrikliAsansor}"/></f:facet>
+<h:outputText value="#{list.elektrikliAsansor}"/>
+</p:column>
+
+<p:column style="text-align:right">
+<f:facet name="header"><h:outputText value="#{label.hidrolikAsansor}"/></f:facet>
+<h:outputText value="#{list.hidrolikAsansor}"/>
+</p:column>
+    
+  <p:column style="text-align:right" sortBy="#{list.kontrolTutari}">
+           <f:facet name="header"><h:outputText value="#{label.kontrolTutari}"/> </f:facet>
+			<h:outputText value="#{list.kontrolTutari}" style="text-align:right">
+			</h:outputText>
+		</p:column>
+		
+		  <p:column style="text-align:right" sortBy="#{list.odenenTutar}">
+           <f:facet name="header"><h:outputText value="#{label.odenenTutar}"/> </f:facet>
+			<h:outputText value="#{list.odenenTutar}" style="text-align:right">
+			</h:outputText>
+		</p:column>
+		
+		 <p:column style="text-align:right" sortBy="#{list.odenmeyenTutar}">
+           <f:facet name="header"><h:outputText value="#{label.odenmeyenTutar}"/> </f:facet>
+			<h:outputText value="#{list.odenmeyenTutar}" style="text-align:right">
+			</h:outputText>
+		</p:column>
+
+</p:dataTable>
+<h:panelGrid columns="2">
+<h:commandLink>
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/xls.jpg" width="25" height="25"/>  
+          
+
+        <p:dataExporter type="xls" target="odemekontroltable" fileName="binaodemekontrolliste" pageOnly="false" encoding="ISO-8859-9" />
+    </h:commandLink>
+    <h:commandLink>
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/pdf.png" width="25" height="25"/>  
+          
+
+        <p:dataExporter type="pdf" target="odemekontroltable" fileName="binaodemekontrolliste" pageOnly="false" encoding="ISO-8859-9" />
+    </h:commandLink>
+    </h:panelGrid>
+ </p:panel>
+ <br/>
+ 
+  </h:form>      
+        
+           
+               </ui:composition>

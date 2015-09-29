@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:panelGrid style="width:90%" columns="4" cellpadding="3" cellspacing="3">
+	<p:outputLabel value="#{label.odeme}  #{label.id}" for="odemeId" rendered="#{facesContext.viewRoot.viewId eq '/odemeGiris.xhtml'}"/>
+	<p:inputText id="odemeId" value="#{odemeBean.odeme.id}"  readonly="true" onfocus="alert('Bu alanda değişiklik yapılmaz')" 
+		 onclick="alert('Bu alanda değişiklik yapılmaz')" rendered="#{facesContext.viewRoot.viewId eq '/odemeGiris.xhtml'}"/>
+	<p:outputLabel value="#{label.kontrolTutari}" for="kontrolTutari"/>
+	<p:inputText id="kontrolTutari"  value="#{odemeBean.odeme.toplamTutar}"   style="text-align:right" styleClass="currency"
+		 placeholder="#{label.kontrolTutari}" readonly="true" onfocus="alert('Bu alanda değişiklik yapılmaz')" 
+		 onclick="alert('Bu alanda değişiklik yapılmaz')">
+           <f:convertNumber pattern="###,###,##0.00"/>
+           
+           </p:inputText>
+		
+	<p:outputLabel value="#{label.odemeTarihi}" for="odemeTarihi"/>
+	 <p:calendar locale="tr" id="odemeTarihi" value="#{odemeBean.odeme.odemeTarihi}" placeholder="#{label.odemeTarihi}" disabled="#{!odemeBean.odemeReq}"
+	 required="#{odemeBean.odemeReq}"  readonly="#{!odemeBean.odemeReq}" requiredMessage="#{label.odemeTarihi} #{label.giriniz}">
+	<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+	</p:calendar>
+	<p:outputLabel value="#{label.odemeTutari}" for="odemeTutari"/>
+	<p:inputText id="odemeTutari"  value="#{odemeBean.odeme.odemeTutari}"   style="text-align:right" styleClass="currency"
+		required="#{odemeBean.odemeReq}" readonly="#{!odemeBean.odemeReq}" requiredMessage="#{label.odemeTutari} #{label.giriniz}" placeholder="#{label.odemeTutari}"
+            converterMessage="#{label.odemeTutari} hatalı">
+           <f:validateDoubleRange maximum="999999.01" minimum="0"/>
+           <f:convertNumber pattern="###,###,##0.00"/>
+           <f:validator validatorId="validators.odemeValidator"></f:validator>
+           
+           </p:inputText>
+           <p:outputLabel for="odemeSekli" value="#{label.odemeSekli}"/>
+           <p:selectOneMenu value="#{odemeBean.odeme.odemeSekli}"  disabled="#{!odemeBean.odemeReq}"
+            readonly="#{!odemeBean.odemeReq}"
+           id="odemeSekli" required="#{odemeBean.odemeReq}" requiredMessage="#{label.odemeSekli} #{label.seciniz}"
+           panelStyle="width:150px;" style="width:150px" filter="true">
+           <f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+           <f:selectItems value="#{sessionBean.odemeSekilleri}" var="o" itemLabel="#{o.odemeSekli}" itemValue="#{o.id}"/>
+           </p:selectOneMenu>
+    		
+    		 <p:outputLabel for="belgeNo" value="#{label.belgeNo}"/>
+    		 <p:inputText style="width:250px" id="belgeNo" value="#{odemeBean.odeme.odemeBelgeNo}"  readonly="#{!odemeBean.odemeReq}"></p:inputText>
+		
+           		 
+           		
+           		 <p:outputLabel value="#{label.odemekontroldealinsin}" style="opacity:0.5;"
+           		 rendered="#{facesContext.viewRoot.viewId eq '/odemeGiris.xhml' and  odemeBean.odeme.odemeKontroldeAlinsin}"/>
+           		 
+           		 <p:selectBooleanButton id="odemealinma" value="#{odemeBean.odeme.odemeKontroldeAlinsin}" onLabel="Evet" offLabel="Hayır"  readonly="#{!odemeBean.odemeReq}" 
+           		  rendered="#{facesContext.viewRoot.viewId eq '/odemeGiris.xhml' and  odemeBean.odeme.odemeKontroldeAlinsin}" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px"
+           		  disabled="true">
+            
+        </p:selectBooleanButton>
+           		
+           		 
+           		 
+	
+	</h:panelGrid>
+	
+           		 <p:inputTextarea id="aciklama"   style="left:100px; width:89%;height:60px;"
+           		 cols="333" rows="3"  readonly="#{!odemeBean.odemeReq}"
+           		 value="#{odemeBean.odeme.aciklama}" placeholder="#{label.aciklama}">
+           	
+           		 </p:inputTextarea>
+	</ui:composition>

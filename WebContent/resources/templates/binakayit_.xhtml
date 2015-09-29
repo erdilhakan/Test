@@ -1,0 +1,85 @@
+<ui:composition template="binagenel_.xhtml"  
+xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+   
+    
+   
+<!-- 
+<ui:define name="binaara">
+
+<ui:include src="binaarabutton_.xhtml"></ui:include>
+
+</ui:define>
+ -->
+ <ui:define name="title">
+ <title>#{label.binaKayit}</title>
+ </ui:define>
+ <ui:define name="uibinaara">
+ 
+ <h:panelGrid columns="3" style="width:100%">
+ 
+ 	<p:commandButton icon="ui-icon-home" title="Bina Değiştir" 
+		id="btnbinadegistir" update="@form"  rendered="#{binaBean.sessionBina.binaId gt 0}" 
+		 style="float:left;" actionListener="#{binaBean.binaDegistir}" process="@this" oncomplete="form.submit()"></p:commandButton>
+		 <p:blockUI trigger="btnbinadegistir" block="btnbinadegistir">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+ <p:selectBooleanButton id="yenibina" value="#{binaBean.yeniBina}"  
+ onLabel="Yeni Bina" offLabel="Yeni Bina Girmek için tıklayınız !" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:auto;float:right">
+ 
+ <p:ajax  listener="#{binaBean.binaSelect}" process="@this" update="@form">
+ 
+ </p:ajax>
+ </p:selectBooleanButton>
+ 
+ </h:panelGrid>
+ 
+ <ui:include src="binaara.xhtml"></ui:include>
+ </ui:define>
+<ui:define name="binakaydet">
+<!-- 
+<ui:include src="binakaydetbutton_.xhtml"></ui:include>
+-->
+<p:commandButton id="btnbinakaydet" value="#{label.kaydet}" icon="ui-icon-disk" update=":form1:pnlBina" process=":form1:pnlBina :form1:growl" action="#{binaBean.binaKaydet}" oncomplete="$('html, body').animate({ scrollTop: 20 }, 'slow')"/>
+<p:blockUI block="btnbinakaydet" trigger="btnbinakaydet">
+ <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+</p:blockUI>
+</ui:define>
+<ui:define name="bakimcifirmalar">
+<p:outputPanel>
+  		<p:commandButton value="#{label.firmalarcptlz}" icon="ui-icon-gear" style="float:right;text-transform: capitalize;" process="@this" update=":form1:formlb:tblx0102xxx :form1:formlb:panelfirmakayit"
+     	 title="#{binaBean.sessionBina.binaAdi}" actionListener="#{cihazBean.bakimciFirmaListener}" rendered="#{binaBean.sessionBina.binaId gt 0}" 
+     	
+     	 oncomplete="PF('dfirma').show()"></p:commandButton>
+<p:dialog widgetVar="dfirma" id="dfirma" width="900">
+<ui:include src="/resources/templates/binacihazliste.xhtml"></ui:include>
+</p:dialog>
+</p:outputPanel>
+
+</ui:define>
+<ui:define name="binakisiler">
+
+    	
+    	
+<ui:include src="binakisilernavbutton.xhtml"></ui:include>
+</ui:define>
+
+<!-- 
+<ui:define name="binaaradialog">
+
+<ui:include src="binaara_.xhtml"></ui:include>
+
+</ui:define>
+ -->
+
+<ui:define name="binacihazlar">
+<br/>
+<br/>
+<ui:include src="binacihazlar_.xhtml"></ui:include>			
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,308 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+  
+
+<h:head>
+
+
+	<title>#{label.asansorKayit}</title>
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+
+
+
+</h:head>
+<h:form id="form3">
+  <p:commandLink title="Farklı Bina" id="linkfarklibina" style="float:left;margin-left:1%;margin-top:1%;cursor:pointer" actionListener="#{cihazBean.binaDegistir}"
+  rendered="#{binaBean.sessionBina.binaId gt 0}"
+  process="@this" ajax="false">
+     
+  <p:graphicImage value="${pageContext.request.contextPath}/resources/image/home.png" width="30" height="27" title="#{label.binaara}" style="cursor:pointer;float:right
+  -webkit-box-shadow: 2px 3px 3px 1px rgba(50, 50, 50, 1);
+-moz-box-shadow:    2px 3px 3px 1px rgba(50, 50, 50, 1);
+box-shadow:         2px 3px 3px 1px rgba(50, 50, 50, 1);margin-right:1em">
+      </p:graphicImage>
+   </p:commandLink>
+<p:panel id="pnlCihaz"  toggleable="false"  header="       #{binaBean.sessionBina.binaAdi} ASANSÖRLER"
+					closable="false" toggleSpeed="500" closeSpeed="500" 
+					widgetVar="panelcihaz"   rendered="#{binaBean.sessionBina.binaId gt 0}">
+					<f:facet name="header">
+	 <p:commandButton value="#{label.yeniAsansor}" icon="ui-icon-circle-plus" type="button"  id="btnyeniasansor" style="float:right"
+  disabled="#{cihazBean.cihazUpdate}">
+  
+  </p:commandButton>
+  </f:facet>
+ 
+<p:overlayPanel for="btnyeniasansor" my="right top"  showCloseIcon="true" style="width:350px;height:130px" widgetVar="yeniasansor" id="yeniasansor">
+
+<div style="width:100%;vertical-align: text-top;border:none;">
+<div style="float:left;width:35%">
+<p:outputLabel value="#{label.asansorTipi}" for="txtAsansorTip"/>
+</div>
+<div style="float:left;width:65%">
+<p:selectOneMenu id="txtAsansorTip"  value="#{cihazBean.cihaz.tip}" 
+
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; 
+border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;float:left">
+<f:selectItem itemLabel="#{label.asansorTipi} #{label.seciniz}" itemValue=""></f:selectItem>
+<f:selectItem itemLabel="ELEKTRİKLİ"  itemValue="66" />
+<f:selectItem itemLabel="HİDROLİK"  itemValue="68" />
+<p:ajax event="change" listener="#{cihazBean.cihazTipiChange}" update=":form1 :form2 tblx0102x"></p:ajax>
+</p:selectOneMenu>
+</div>
+<br/>
+<br/>
+<div style="float:left;width:35%">
+<p:outputLabel value="#{label.asansorAdet}"/>
+</div>
+<div style="float:left;width:65%">
+<p:selectOneMenu value="#{cihazBean.tanimlanacakAsansorAdet}" style="width:60px;float:left;">
+<f:selectItems value="#{cihazBean.tanimlanacakAsansorAdetList}" var="adet" itemLabel="#{adet}" itemValue="#{adet}"/>
+<p:ajax  oncomplete="PF('yeniasansor').show()" ></p:ajax>
+</p:selectOneMenu>
+</div>
+<br/>
+<br/>
+
+
+
+</div>
+
+<p:commandButton icon="ui-icon-gear" value="#{label.asansorteknikbilgiler}" style="float:right" process="yeniasansor" 
+actionListener="#{cihazBean.yeniAsansor}" update=":form1 :form2 tblx0102x"></p:commandButton>
+
+</p:overlayPanel>			
+	<p:dataTable id="tblx0102x" var="cihazlar" value="#{cihazBean.cihazList}" emptyMessage="Binada asansör kaydı bulunmamaktadır !"  
+  	selection="#{cihazBean.secilen}" style="width:98%" paginator="true" paginatorPosition="bottom" rows="5"
+  	paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20">
+  	
+  		 	<p:ajax event="rowSelectRadio" listener="#{cihazBean.asansorGuncelle}" update=":form1 :form2 tblx0102x :form3:btnyeniasansor" process="tblx0102x"></p:ajax>
+  		 	
+            <p:column style="width:2%" selectionMode="single">
+            <f:facet name="header">
+  		 	 
+            <p:commandButton icon="ui-icon-close" rendered="#{cihazBean.secilen.cihazId gt 0}">
+            <p:ajax listener="#{cihazBean.yeniAsansorListener}" update="tblx0102x :form1 :form2 :form3" process="@this"></p:ajax>
+            </p:commandButton>
+            
+  		 	</f:facet>
+            </p:column>
+           
+        <p:column headerText="#{label.asansorkimlikno}" style="text-align:left">
+       	    #{cihazlar.kimlikNo}  
+         
+        </p:column>  
+  		<p:column headerText="#{label.asansorunyeri}" style="text-align:left">
+       	    #{cihazlar.asansorunYeri}  
+         
+        </p:column> 
+        <p:column headerText="#{label.tip}" style="text-align:left"> 
+        
+            #{cihazlar.tipAciklama}  
+        </p:column>
+         <p:column headerText="#{label.uavtKod}" style="text-align:left"> 
+        
+            #{cihazlar.uavtKod}  
+        </p:column>
+         <p:column headerText="#{label.uavtEtiket}" style="text-align:left"> 
+        
+            #{cihazlar.uavtEtiket}  
+        </p:column>
+         <p:column headerText="#{label.uavtSiraNo}" style="text-align:left"> 
+        
+            #{cihazlar.uavtSiraNo}  
+        </p:column>
+        <p:column headerText="#{label.etiket}" style="text-align:left"> 
+          <p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketsari.png"  rendered="#{cihazlar.sonKontrolEtiketi eq 'S'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{cihazlar.sonKontrolEtiketi}" rendered="false"></h:outputText>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketyesil.png"  rendered="#{cihazlar.sonKontrolEtiketi eq 'Y'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{cihazlar.sonKontrolEtiketi}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketmavi.png"  rendered="#{cihazlar.sonKontrolEtiketi eq 'M'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{cihazlar.sonKontrolEtiketi}"  rendered="false"/>
+	</p:graphicImage>
+	<p:graphicImage value="${pageContext.request.contexPath}/resources/image/etiketkirmizi.png"  rendered="#{cihazlar.sonKontrolEtiketi eq 'K'}" title="Son Kontrol Etiketi">
+	<h:outputText value="#{cihazlar.sonKontrolEtiketi}"  rendered="false"/>
+	</p:graphicImage>
+	  
+        </p:column>
+        <p:column headerText="#{label.sonKontrolTarihi}">
+        <h:outputText value="#{cihazlar.sonKontrolTarihi}">
+        <f:convertDateTime locale="tr" pattern="dd.MM.yyyy"></f:convertDateTime>
+        </h:outputText>
+        </p:column>
+         <p:column headerText="#{label.durum}" style="text-align:left"> 
+        
+            #{cihazlar.durum eq 'A'?'Aktif':'Pasif'}  
+        </p:column>
+       
+       <f:facet name="footer">
+       <div style="width:100%">
+  <p:commandButton  value="UAVT'de binaya kayıtlı asansörler" icon="ui-icon-search" process="@this" update="@this :form1:uavtCihazTable" style="float:left" 
+  actionListener="#{cihazBean.binaBagliAsansorSorgulama}" id="btnuavtgetir" rendered="#{!empty cihazBean.binaIdString}"/>
+ 
+
+ 	
+ 	
+ 
+           		    <p:blockUI trigger="btnuavtgetir" block="btnuavtgetir">
+           			 <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+          			  </p:blockUI>
+</div>
+       </f:facet>
+       
+        
+    	</p:dataTable> 
+    	
+    
+    	
+		</p:panel>
+		</h:form>
+<ui:include src="cihazuavt_.xhtml"></ui:include>
+<br/>
+<h:form id="form2">
+<br/>
+
+
+
+
+<p:dataGrid var="cihaz" value="#{cihazBean.cihazTeknik}" paginator="false"  columns="2" rendered="#{cihazBean.visible}" id="datagridcihazteknik">
+<f:facet name="header">
+
+<h:outputLabel value="#{cihazBean.header}" styleClass="label"/>
+</f:facet> 
+
+<table>
+
+
+<tr style="width: 100%">
+<td style="width: 150px">
+
+<p:outputLabel value="#{cihaz.baslik}" styleClass="label" rendered="#{!cihaz.zorunluAlan and cihaz.baslik ne 'KAPASİTE(KİŞİ)'}"/>
+
+<p:outputLabel id="kapasitelabel1" 
+value="#{cihaz.baslik}" styleClass="label" rendered="#{!cihaz.zorunluAlan and cihaz.baslik eq 'KAPASİTE(KİŞİ)' and !cihazBean.kapasiteKisi}"/>
+<p:outputLabel 
+id="kapasitelabel2"
+value="#{cihaz.baslik} *" styleClass="label" rendered="#{!cihaz.zorunluAlan and cihaz.baslik eq 'KAPASİTE(KİŞİ)' and cihazBean.kapasiteKisi}" style="color:#FF0033"/>
+
+
+<p:outputLabel value="#{cihaz.baslik} *" styleClass="label" rendered="#{cihaz.zorunluAlan}" style="color:#FF0033"/>
+
+
+
+</td>
+<td/>
+<td style="width: 210px">
+
+
+
+<p:inputText  rendered="#{cihaz.tipi eq 'metin' and !cihaz.zorunluAlan and cihaz.baslik ne 'HIZ(M/S)' and cihaz.baslik ne 'HIZI(M/S)' and cihaz.baslik ne 'ÖZEL ASANSÖR ŞARTLAR'}" value="#{cihaz.cevap}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;"/>
+<p:inputText type="number"  rendered="#{cihaz.tipi eq 'sayi' and !cihaz.zorunluAlan and cihaz.baslik ne 'RUHSAT/TESCİL TARİHİ' and cihaz.baslik ne 'HIZ(M/S)' and cihaz.baslik ne 'HIZI(M/S)' and cihaz.baslik ne 'ÖZEL ASANSÖR ŞARTLAR'}" value="#{cihaz.cevap}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;
+-moz-box-shadow: none;box-shadow: none;">
+<p:ajax listener="#{cihazBean.numberListener}" process="@this" update="@this"></p:ajax>
+</p:inputText>
+<p:selectOneMenu   rendered="#{cihaz.tipi eq 'coklu' and !cihaz.zorunluAlan and cihaz.baslik ne 'HIZ(M/S)' and cihaz.baslik ne 'HIZI(M/S)' and cihaz.baslik ne 'KAPASİTE(KİŞİ)' and cihaz.baslik ne 'ÖZEL ASANSÖR ŞARTLAR'}" value="#{cihaz.cevap}" id="data"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<f:selectItem itemLabel="Seçiniz" itemValue=""/>
+<f:selectItems value="#{cihaz.item}"/>
+
+</p:selectOneMenu> 
+
+<p:inputText  rendered="#{cihaz.tipi eq 'metin' and !cihaz.zorunluAlan and (cihaz.baslik eq 'HIZ(M/S)' or cihaz.baslik eq 'HIZI(M/S)')}" value="#{cihaz.cevap}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;"/>
+<p:inputText type="number"  rendered="#{cihaz.tipi eq 'sayi' and !cihaz.zorunluAlan and (cihaz.baslik eq 'HIZ(M/S)' or cihaz.baslik eq 'HIZI(M/S)')}" value="#{cihaz.cevap}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<p:ajax listener="#{cihazBean.numberListener}" process="@this" update="@this"></p:ajax>
+</p:inputText>
+<h:panelGrid columns="2">
+<p:selectOneMenu    rendered="#{cihaz.tipi eq 'coklu' and !cihaz.zorunluAlan and (cihaz.baslik eq 'HIZ(M/S)' or cihaz.baslik eq 'HIZI(M/S)')}"  value="#{cihaz.cevap}" id="hiz"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<f:selectItem itemLabel="Seçiniz" itemValue=""/>
+<f:selectItems value="#{cihaz.item}"/>
+<p:ajax listener="#{cihazBean.hizListener}" process="@this" update="@this diger"></p:ajax>
+</p:selectOneMenu>
+<h:panelGrid columns="1" id="diger" rendered="#{cihaz.baslik eq 'HIZ(M/S)' or cihaz.baslik eq 'HIZI(M/S)'}">
+<p:inputText type="number" rendered="#{cihazBean.hizDiger}" value="#{cihaz.cevap}"  style="width:3em">
+<p:ajax listener="#{cihazBean.numberListener}" process="@this" update="@this"></p:ajax>
+</p:inputText> 
+</h:panelGrid>
+</h:panelGrid>
+<p:selectOneMenu    rendered="#{cihaz.tipi eq 'coklu' and !cihaz.zorunluAlan and (cihaz.baslik eq 'KAPASİTE(KİŞİ)')}"  value="#{cihaz.cevap}" id="kapasitekisi"
+required="#{cihazBean.kapasiteKisi}" requiredMessage="#{cihaz.baslik} #{label.giriniz}"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<f:selectItem itemLabel="Seçiniz" itemValue=""/>
+<f:selectItems value="#{cihaz.item}"/>
+<p:ajax  process="@this" update="@this"></p:ajax>
+</p:selectOneMenu>
+
+<p:inputText  rendered="#{cihaz.tipi eq 'metin' and cihaz.zorunluAlan}" value="#{cihaz.cevap}"  required="true" requiredMessage="#{cihaz.baslik} #{label.giriniz}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;"/>
+<p:inputText type="number"  rendered="#{cihaz.tipi eq 'sayi' and cihaz.zorunluAlan}" value="#{cihaz.cevap}"  required="true" requiredMessage="#{cihaz.baslik} #{label.giriniz}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<p:ajax listener="#{cihazBean.numberListener}" process="@this" update="@this"></p:ajax>
+</p:inputText>
+<p:selectOneMenu   rendered="#{cihaz.tipi eq 'coklu' and cihaz.zorunluAlan and (cihaz.baslik ne 'ASANSÖRÜN CİNSİ')}" value="#{cihaz.cevap}" id="dataz"  required="true" requiredMessage="#{cihaz.baslik} #{label.giriniz}"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+
+<f:selectItem itemLabel="Seçiniz" itemValue=""/>
+<f:selectItems value="#{cihaz.item}"/>
+</p:selectOneMenu> 
+<p:selectOneMenu   rendered="#{cihaz.tipi eq 'coklu' and cihaz.zorunluAlan and (cihaz.baslik eq 'ASANSÖRÜN CİNSİ')}" value="#{cihaz.cevap}" id="asansorcinsi"  required="true" requiredMessage="#{cihaz.baslik} #{label.giriniz}"
+style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+<f:selectItem itemLabel="Seçiniz" itemValue=""/>
+<f:selectItems value="#{cihaz.item}"/>
+<p:ajax process="@this" update="@form" listener="#{cihazBean.asansorCinsiListener}"></p:ajax>
+</p:selectOneMenu> 
+<p:selectManyMenu   rendered="#{cihaz.tipi eq 'coklu' and cihaz.baslik eq 'ÖZEL ASANSÖR ŞARTLAR'}" value="#{cihaz.ozelAsansorSartlar}" id="ozelasansorsartlar"  
+showCheckbox="true"
+style="color: #6986c9;width: 350px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">
+
+<f:selectItems value="#{cihaz.item}"/>
+
+</p:selectManyMenu>
+<p:inputMask mask="99.99.9999"  rendered="#{cihaz.tipi eq 'sayi' and !cihaz.zorunluAlan and cihaz.baslik eq 'RUHSAT/TESCİL TARİHİ'}" value="#{cihaz.cevap}"
+style="color: #6986c9;width: 194px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;
+-moz-box-shadow: none;box-shadow: none;"  id="ruhsattesciltarihi"/>
+
+</td>
+</tr>
+</table>
+	
+</p:dataGrid>
+
+<h:panelGrid columns="2" width="100%">
+<p:commandButton title="#{label.sil}" style="float:left" 
+icon="ui-icon-trash"  update=":form1 :form2 :form3:tblx0102x"  process="@this"
+value="#{label.sil}" rendered="#{cihazBean.visible}"
+action="#{cihazBean.cihazSil}" id="asansorsil" oncomplete="$('html, body').animate({ scrollTop: 0 }, 'slow')">
+<p:confirm header="Cihaz Sil" message="Cihazı silmek istediğinizden emin misiniz ?" icon="ui-icon-alert"></p:confirm>
+</p:commandButton>
+
+<p:commandButton id="kaydet" value="#{label.kaydet}" icon="ui-icon-disk" styleClass="ui-button-mod" action="#{cihazBean.kaydet}"  
+
+disabled="#{loginBean.kaydedebilir()?false:true}" process="@form" oncomplete="$('html, body').animate({ scrollTop: 0 }, 'slow')"
+update=":form1 :form2 datagridcihazteknik :form3:tblx0102x" style="float:right" rendered="#{cihazBean.visible}">
+<p:confirm header="Cihaz Kaydet" message="Cihaz bilgileri kaydedilsin mi?" icon="ui-icon-check"  />  
+</p:commandButton>
+
+</h:panelGrid>
+
+
+
+
+
+ <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">  
+        <p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+        <p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+    </p:confirmDialog>
+
+</h:form>
+</ui:composition>

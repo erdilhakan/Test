@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+<p:panel id="firmaIletisimPanel" widgetVar="firmaIletisimPanel">
+ <h:panelGrid styleClass="panelGrid" id="pnl01" rowClasses="rowClass1,rowClass2" columns="4" cellpadding="7">
+					
+					
+					
+					<p:outputLabel value="#{label.adi}" styleClass="label" for="txtAdi"/>
+					<p:inputText id="txtAdi"  value="#{firmaBean.firma.firmaIletisim.adi}" 
+					requiredMessage="#{label.adi} #{label.giriniz}" required="#{firmaBean.firmaIletisimReq}"  
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.adi}">
+					</p:inputText>
+					
+					<p:outputLabel value="#{label.soyadi}" styleClass="label" for="txtSoyadi"/>
+					<p:inputText id="txtSoyadi" value="#{firmaBean.firma.firmaIletisim.soyadi}" 
+					requiredMessage="#{label.soyadi} #{label.giriniz}" required="#{firmaBean.firmaIletisimReq}"  
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;   -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+					
+					<p:outputLabel value="#{label.telno}" styleClass="label" for="iletisimtel"/>
+					<p:inputMask mask="(999)9999999"  id="iletisimtel" 
+					required="#{firmaBean.firmaIletisimReq}" requiredMessage="#{label.telno} #{label.giriniz}"
+					value="#{firmaBean.firma.firmaIletisim.telefonNoStr}"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.telno}">
+					 <f:validator validatorId="validators.TelefonValidator"/>
+					 <f:ajax event="blur"/>
+					</p:inputMask>
+					
+					<p:outputLabel value="#{label.telefonNoGSM}" styleClass="label" for="iletisimtelgsm"/>
+					<p:inputMask mask="(999)9999999"  id="iletisimtelgsm" 
+					value="#{firmaBean.firma.firmaIletisim.telefonNoGsmStr}"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.telefonNoGSM}">
+					 <f:validator validatorId="validators.TelefonValidator"/>
+					 <f:ajax event="blur"/>
+					</p:inputMask>
+					
+					<p:outputLabel value="#{label.eposta}" styleClass="label" for="txteposta" />
+					<p:inputText id="txteposta" value="#{firmaBean.firma.firmaIletisim.ePosta}"
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	
+					-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.eposta}">
+					<f:validator validatorId="validators.EMailValidator"/>
+					
+					</p:inputText>
+						
+					<f:facet name="footer">
+					<p:commandButton id="btnIletisimKaydet" value="#{label.kaydet}" icon="ui-icon-disk" style="float:right"
+					process="pnl01" update="pnl01 firmaIletisimPanel iletisimListTable iletisimLstPanel" actionListener="#{firmaBean.iletisimKaydetListener}"
+					></p:commandButton>
+					</f:facet>
+				
+					
+					</h:panelGrid>
+					</p:panel>
+					
+		<p:blockUI trigger="btnIletisimKaydet" block="firmaIletisimPanel">
+		<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+		</p:blockUI>		
+		<p:panel id="iletisimLstPanel" widgetVar="iletisimLstPanel" visible="#{!empty firmaBean.firma.firmaIletisimList}">
+		<p:dataTable id="iletisimListTable" widgetVar="iletisimListTable" value="#{firmaBean.firma.firmaIletisimList}" var="iletisim"
+		emptyMessage="#{label.emptyList}" paginator="true" paginatorPosition="bottom">
+		<p:column headerText="#{label.adi}" filterBy="#{iletisim.adi}" filterMatchMode="startsWith" sortBy="#{iletisim.adi}">
+		#{iletisim.adi}
+		</p:column>
+		
+		<p:column headerText="#{label.soyadi}" filterBy="#{iletisim.soyadi}" filterMatchMode="startsWith" sortBy="#{iletisim.soyadi}">
+		#{iletisim.soyadi}
+		</p:column>
+		<p:column headerText="#{label.telno}">
+		#{iletisim.telefonNoStr}
+		</p:column>
+		<p:column headerText="#{label.telefonNoGSM}">
+		#{iletisim.telefonNoGsmStr}
+		</p:column>
+		<p:column headerText="#{label.eposta}">
+		#{iletisim.ePosta}
+		</p:column>
+		<p:column width="2%">
+		<p:commandButton icon="ui-icon-trash" process="@this" 
+		actionListener="#{firmaBean.iletisimSil(iletisim)}" update=":formb:iletisimLstPanel iletisimListTable"/>
+		</p:column>
+		</p:dataTable>	
+		</p:panel>
+ 
+</ui:composition>

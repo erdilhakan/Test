@@ -1,0 +1,175 @@
+ <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+ <h:head>
+	
+	<title></title>
+	
+
+<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+<script> 
+function validate(evt) {
+	  var theEvent = evt || window.event;
+	  var key = theEvent.keyCode || theEvent.which;
+	  key = String.fromCharCode( key );
+	  var regex = /[0-9]|\./;
+	  if( !regex.test(key) ) {
+	    theEvent.returnValue = false;
+	    if(theEvent.preventDefault) theEvent.preventDefault();
+	  }
+	}
+</script>
+</h:head>
+
+	<h:form id="formbinakisi">
+	<p:growl id="growl" showDetail="false" />
+	
+<p:panel id="pnlBinaKisi" header="#{label.binaSorumlusu}" toggleable="false"
+					closable="false" toggleSpeed="500" closeSpeed="500" 
+					widgetVar="panelkisi" style="text-transform:capitalize">
+	
+	
+	
+		 <h:panelGrid columns="6" style="width:100%" id="grdkisi">
+         
+         <p:outputLabel value="#{label.tckimlikno}" styleClass="label" for="txtTCKimlikNo"/>
+					<p:inputMask mask="99999999999" id="txtTCKimlikNo"  value="#{binaKisiBean.binaKisi.tcKimlikNo}" 
+					required="true" requiredMessage="#{label.tckimlikno} #{label.giriniz}" 
+					style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+					<f:validator validatorId="validators.tcKimlikValidator"></f:validator>
+					<f:ajax render="growl" event="blur"></f:ajax>
+					</p:inputMask>
+				    <p:watermark value="#{label.tckimlikno}" for="txtTCKimlikNo"></p:watermark>
+				    <p:outputLabel value="#{label.sorumlulukturu}" styleClass="label" for="sorumluluktur"/>
+						
+						<p:selectOneMenu id="sorumluluktur"   required="true" height="100"  value="#{binaKisiBean.binaKisi.sorumlulukTuru}"
+						requiredMessage="#{label.sorumlulukturu} #{label.seciniz}" 
+						style="color: #6986c9;	width: 200px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+						<f:selectItem itemLabel="#{label.seciniz}" itemValue=""></f:selectItem>
+						<f:selectItems value="#{binaKisiBean.sTurList}" var="s" itemLabel="#{s.aciklama}" itemValue="#{s.tip}"/>
+						</p:selectOneMenu>
+						
+						<h:outputText/>
+				    
+         <p:outputLabel
+									value="#{label.adi}" styleClass="label" for="txtadi"/>	
+						<p:inputText id="txtadi"  value="#{binaKisiBean.binaKisi.adi}"
+						required="true" requiredMessage="#{label.adi} #{label.giriniz}"
+						style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+								<p:watermark value="#{label.adi}" for="txtadi"></p:watermark>
+		<p:outputLabel
+									value="#{label.soyadi}" styleClass="label" for="txtsoyadi"/>	
+						<p:inputText id="txtsoyadi"  value="#{binaKisiBean.binaKisi.soyadi}"
+						required="true" requiredMessage="#{label.soyadi} #{label.giriniz}"
+						style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"></p:inputText>
+								<p:watermark value="#{label.soyadi}" for="txtsoyadi"></p:watermark>
+								
+         
+
+		<p:outputLabel value="#{label.eposta}" styleClass="label" />
+							<p:inputText id="txteposta" value="#{binaKisiBean.binaKisi.ePosta}"
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							<f:validator validatorId="validators.EMailValidator"/>
+							<f:ajax render="growl" event="keyup"/>
+							</p:inputText>
+								<p:watermark value="#{label.eposta}" for="txteposta"></p:watermark>
+								<h:outputText/>
+								<h:outputText/>
+								<h:outputText/>
+				
+				<p:outputLabel value="#{label.telefonNo}" styleClass="label"/>
+				<h:panelGrid columns="2">
+							<p:inputMask mask="(999) 999 9999"  id="txtevtel" value="#{binaKisiBean.binaKisi.telefonNoStr}"
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none" placeholder="#{label.telefonNo}">
+							 <f:validator validatorId="validators.TelefonValidator"></f:validator>
+							<f:ajax render="growl" event="blur"></f:ajax>
+							</p:inputMask>
+						<p:inputText style="color: #6986c9;	width: 5em;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+					webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none"  value="#{binaKisiBean.binaKisi.telefonNoDahiliStr}" placeholder="#{label.dahili}"
+							onkeypress="validate(event)"
+							 maxlength="4">
+							
+							</p:inputText>
+							</h:panelGrid>
+							<h:outputText></h:outputText>
+							
+						<p:outputLabel value="#{label.telefonNoGSM}" styleClass="label" for="txtgsmtel"/>
+							<p:inputMask mask="(999) 999 9999"  id="txtgsmtel" value="#{binaKisiBean.binaKisi.telefonNoGsmStr}"
+							required="true" requiredMessage="#{label.telefonNoGSM} #{label.giriniz}"
+							style="color: #6986c9;	width: 195px;		border-radius: 5px;	-webkit-border-radius: 5px;	-moz-border-radius: 5px;        border: 1px solid #999fd9;
+							webkit-box-shadow: none;        -moz-box-shadow: none;        box-shadow: none">
+							 <f:validator validatorId="validators.TelefonValidator"></f:validator>
+							<f:ajax render="growl" event="blur"></f:ajax>
+							</p:inputMask>
+								<p:watermark value="#{label.telefonNoGSM}" for="txtgsmtel"></p:watermark>
+         
+         
+         </h:panelGrid>
+         
+
+            
+              <f:facet name="footer">
+              <h:panelGrid columns="2" style="width:100%">
+              
+            <p:commandButton value="Temizle" style="float:left"  icon="ui-icon-circle-close" >
+               <p:ajax listener="#{binaKisiBean.resetPanel}" process="pnlBinaKisi @this"  update="@form"></p:ajax>
+            </p:commandButton>
+                 <p:commandButton value="#{label.kaydet}" id="kisikaydet" icon="ui-icon-disk"  style="float:right">
+              <p:ajax listener="#{binaKisiBean.binaKisiEkle}" process="@this grdkisi" update="@form"/>
+              </p:commandButton>
+              </h:panelGrid>
+              </f:facet>
+                   
+                  
+              
+            </p:panel>  
+              <p:blockUI trigger="kisikaydet" block="grdkisi" id="bui2">
+            <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+            </p:blockUI>  
+            
+            <br/>
+            <h:panelGroup id="kisipnlgroup" style="width:100%">
+            <p:dataTable id="kisitable"  var="kisiler" selectionMode="single" selection="#{binaKisiBean.slctKisi}"
+            value="#{binaKisiBean.kisiData}" emptyMessage="#{label.emptyList}" rendered="#{!empty binaKisiBean.kisiList}" style="width:100%"
+            paginator="true" paginatorPosition="bottom" filteredValue="#{binaKisiBean.filterKisi}">
+            <f:facet name="header">Bina Sorumlu Kişiler ( #{binaKisiBean.bina.binaAdi} )</f:facet>
+            <p:ajax event="rowSelect" listener="#{binaKisiBean.kisiSelect}" update="@form(panelkisi)"/>
+            
+            <p:column headerText="#{label.kayittarihi}" sortBy="#{kisiler.kayitTarihi}" filterBy="#{kisiler.kayitTarihi}">
+            <h:outputText value="#{kisiler.kayitTarihi}">
+            <f:convertDateTime pattern="dd.MM.yyyy" locale="tr"/>}
+            </h:outputText>
+            </p:column>
+            <p:column headerText="#{label.adi} #{label.soyadi}" sortBy="#{kisiler.adi}#{kisiler.soyadi}" filterBy="#{kisiler.adi}#{kisiler.soyadi}">
+            #{kisiler.adi} #{kisiler.soyadi}
+            </p:column>
+            <p:column headerText="#{label.sorumlulukturu}">
+            <ui:repeat value="#{binaKisiBean.sTurList}" var="stur">
+            <h:outputText value="#{stur.aciklama}" rendered="#{stur.tip==kisiler.sorumlulukTuru}"/>
+            </ui:repeat>
+            </p:column>
+              <p:column headerText="#{label.telno}">
+            #{kisiler.telefonNoStr} #{kisiler.telefonNoDahili gt 0?'/'.concat(kisiler.telefonNoDahili):''}
+            </p:column>
+            <p:column headerText="#{label.telefonNoGSM}">
+            #{kisiler.telefonNoGsmStr}
+            </p:column>
+            <p:column headerText="#{label.eposta}">
+            #{kisiler.ePosta}
+            </p:column>
+            </p:dataTable>
+            </h:panelGroup>
+            
+            </h:form>
+            
+            </ui:composition>

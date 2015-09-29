@@ -1,0 +1,40 @@
+<ui:composition template="resources/templates/template.xhtml"  
+xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+     
+     <ui:define name="content">
+<ui:insert>
+<h:body>
+<h:form id="formduyuru">
+<p:growl showDetail="false"></p:growl>
+<h:panelGrid columns="1" style="width:98%">
+<p:outputLabel value="#{label.konu}" for="konu"></p:outputLabel>
+<p:inputTextarea style="width:96%;height:50px" cols="3" value="#{loginBean.duyuru.konu}" id="konu"  maxlength="500"
+required="true" requiredMessage="#{label.konugiriniz}"></p:inputTextarea>
+<br/>
+
+<p:outputLabel value="#{label.detay}" for="detay"></p:outputLabel>
+<p:editor value="#{loginBean.duyuru.detay}" required="true" requiredMessage="#{label.detaygiriniz}" style="width:97%;" id="detay" maxlength="4500"/>
+
+<br/>
+<p:commandButton value="#{label.kaydet}" icon="ui-icon-disk" 	 id="kaydet" style="float:right;margin-right:2%"
+update="@form" actionListener="#{loginBean.duyuruKaydet}"></p:commandButton>
+ <p:blockUI trigger="kaydet" block="kaydet">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+</h:panelGrid>
+
+              
+        
+
+
+
+</h:form>
+</h:body>
+</ui:insert>
+</ui:define>
+</ui:composition>
+

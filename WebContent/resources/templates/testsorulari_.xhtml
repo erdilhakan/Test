@@ -1,0 +1,455 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+	
+		<title>#{label.kontrolTest}</title>
+
+		<h:outputStylesheet library="css" name="maincontext.css"></h:outputStylesheet>
+	
+	<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+	
+	<style type="text/css">
+	.ui-button-icon-only .ui-button-text{
+	height: 1.4em;
+	}
+	.ui-dialog .ui-dialog-titlebar-close {
+ position: absolute; 
+right: -16px !important; 
+top: -16px !important; 
+margin: 0;
+ width: 30px; 
+ height: 30px; 
+ background: url("#{resource['primefaces-delta:images/modalClose.png']}")
+ 0 0 no-repeat;
+ border: 0 !important; 
+ z-index: 10000;
+ padding: 0px !important;}
+	</style>
+		</h:head>
+	<h:form id="formtest" style="height:auto;">
+	
+	<p:growl id="growl" autoUpdate="true" />
+	
+	<p:panel style="width:100%">
+	<h:panelGrid columns="2">
+	<p:outputLabel styleClass="label" for="cihaztipi" value="#{label.asansorTipi}"/>
+	<p:selectOneMenu id="cihaztipi" value="#{soruTableBean.cihaz.tip}" required="true" requiredMessage="#{label.asansorTipi} #{label.seciniz}"
+	style="color: #6986c9;width: 200px;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; border: 1px solid #999fd9;webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;">>
+	<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+	<f:selectItem itemLabel="ELEKTRİKLİ"  itemValue="66" />
+	<f:selectItem itemLabel="HİDROLİK"  itemValue="68" />
+	<p:ajax listener="#{soruTableBean.asansorTurListener}" process="@this" update=":formtest"/>
+	</p:selectOneMenu>
+	<h:outputText/>
+	<h:panelGrid columns="2">
+	<p:selectBooleanCheckbox value="#{soruTableBean.bakanlikSoru}" id="bakanliksoru">
+	<p:ajax process="@this" update=":formtest" listener="#{soruTableBean.bakanlikSoruListener}"></p:ajax>
+	</p:selectBooleanCheckbox>
+	<p:outputLabel styleClass="label"  value="Bakanlık Soru" style="font-size:0.85em;font-weight:normal"/>
+	</h:panelGrid>
+	<h:outputText/>
+	
+	 <p:splitButton value="#{label.getir}" action="#{soruTableBean.testSorulariListener}" 
+	 icon="ui-icon-search" id="btngetir"  process="@this :formtest:cihaztipi :formtest:bakanliksoru" update=":formtest">
+        <p:menuitem value="Ana Soru #{label.ekle}"   icon="ui-icon-plusthick" style="width:100%;height:100%" 
+        process="@this cihaztipi :formtest:bakanliksoru"	update=":formtest:pnlaltsoruekle" 
+		  actionListener="#{soruTableBean.setAnaSoruListener}"/>
+        
+        
+    </p:splitButton>
+	<p:blockUI block="btngetir" trigger="btngetir">
+	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"></p:graphicImage>
+	</p:blockUI>
+</h:panelGrid>
+	</p:panel>
+	
+	<p:panel style="width:98%;height:100%;overflow-y:scroll" rendered="#{not empty soruTableBean.soruListSmall}" widgetVar="pnlcrsl" id="pnlcrsl"   >
+	
+	
+	<p:carousel value="#{soruTableBean.soruModel}"  var="sorular1" 
+	id="carousel" circular="true" 
+	 numVisible="1" easing="easeOutBounce" itemStyle="width:900px;height:100%;">
+	 
+       
+         
+         							<p:dataTable value="#{sorular1}" var="sorular" editable="true" id="tbl1" >
+									<p:ajax event="rowEdit" listener="#{soruTableBean.onRowEditAnaSoru}" update=":formtest:growl @this" process="@this" />
+      								 <p:ajax event="rowEditCancel" listener="#{soruTableBean.onRowCancel}"/>
+									
+									<p:column headerText="Soru Id" width="2%">
+										<p:outputLabel value="#{sorular.soruId}" />
+									</p:column>
+									<p:column headerText="#{label.kapsam}" width="10%">
+									
+									<p:cellEditor>
+									<f:facet name="output">
+									 <p:selectManyCheckbox id="kapsamout" value="#{sorular.kapsam}" layout="grid" columns="1" disabled="true">
+            							<f:selectItems value="#{soruTableBean.kapsamTurleri}" var="kapsam" itemLabel="#{kapsam.kapsamAdi}" itemValue="#{kapsam.id}" />
+        								</p:selectManyCheckbox>
+        							</f:facet>
+        							<f:facet name="input">
+									 <p:selectManyCheckbox id="kapsaminp" value="#{sorular.kapsam}" layout="grid" columns="1" required="true" requiredMessage="#{label.kapsam} #{label.seciniz}">
+            							<f:selectItems value="#{soruTableBean.kapsamTurleri}" var="kapsam" itemLabel="#{kapsam.kapsamAdi}" itemValue="#{kapsam.id}" />
+        								</p:selectManyCheckbox>
+        							</f:facet>
+									</p:cellEditor>
+									</p:column>
+									
+									<p:column headerText="Soru" width="78%">
+										
+										 <p:cellEditor>
+              						 <f:facet name="output"><p:outputLabel value="#{sorular.soru}" /></f:facet>
+               							<f:facet name="input"><p:inputText id="ssoru" value="#{sorular.soru}" style="width:100%"/></f:facet>
+           							</p:cellEditor>
+									
+									</p:column>
+									<p:column headerText="Sıra No" width="5%">
+										
+										 <p:cellEditor>
+              						 <f:facet name="output"><p:outputLabel value="#{sorular.siraNo}" /></f:facet>
+               							<f:facet name="input"><p:inputText id="ssirano" value="#{sorular.siraNo}" /></f:facet>
+           							</p:cellEditor>
+									
+									</p:column>
+									<p:column headerText="Durum" width="5%">
+										
+										 <p:cellEditor>
+              						 <f:facet name="output"><p:outputLabel value="#{sorular.aktif eq 'A'?'Aktif':'Pasif'}" /></f:facet>
+               							<f:facet name="input">
+               							<p:selectOneMenu id="saktif" value="#{sorular.aktif}" style="width:100%" >
+               							<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+               							<f:selectItem itemLabel="Aktif" itemValue="A"/>
+               							<f:selectItem itemLabel="Pasif" itemValue="P"/>
+               							</p:selectOneMenu>
+               							</f:facet>
+           							</p:cellEditor>
+									
+									</p:column>
+									<p:column>
+									<p:rowEditor/>
+									<br/>
+									 <p:commandButton id="btnaltsoruekle1" actionListener="#{soruTableBean.setAltSorularListener(sorular)}"
+									 title="Alt Soru Ekle" icon="ui-icon-plusthick" process="@this" update=":formtest:pnlaltsoruekle" 
+									 oncomplete="PF('altsoruekle').show()"></p:commandButton>
+									</p:column>
+									</p:dataTable>
+									<br/>
+									<br/>
+									<p:dataTable value="#{sorular1.altSorularModel}" var="asorular" emptyMessage="#{label.emptyList}"
+									editable="true" id="altsoru" >
+									<p:ajax event="rowEdit" listener="#{soruTableBean.onRowEdit}" update=":formtest:growl @this" process="@this" />
+      								 <p:ajax event="rowEditCancel" listener="#{soruTableBean.onRowCancel}"/>
+									
+									<p:column headerText="Soru Id" width="2%" >
+										<p:outputLabel value="#{asorular.soruId}" />
+									</p:column>
+									<p:column headerText="#{label.kapsam}" width="10%">
+									<p:cellEditor>
+									<f:facet name="output">
+									 <p:selectManyCheckbox id="akapsamout" value="#{asorular.kapsam}" layout="grid" columns="1" disabled="true">
+            							<f:selectItems value="#{soruTableBean.kapsamTurleri}" var="kapsam" itemLabel="#{kapsam.kapsamAdi}" itemValue="#{kapsam.id}" />
+        								</p:selectManyCheckbox>
+        							</f:facet>
+        							<f:facet name="input">
+									 <p:selectManyCheckbox id="akapsaminp" value="#{asorular.kapsam}" layout="grid" columns="1" required="true" requiredMessage="#{label.kapsam} #{label.seciniz}">
+            							<f:selectItems value="#{soruTableBean.kapsamTurleri}" var="kapsam" itemLabel="#{kapsam.kapsamAdi}" itemValue="#{kapsam.id}" />
+        								</p:selectManyCheckbox>
+        							</f:facet>
+									</p:cellEditor>
+									</p:column>
+									<p:column headerText="Soru" width="78%">
+										
+										 <p:cellEditor>
+              						 <f:facet name="output"><p:outputLabel value="#{asorular.soru}" /></f:facet>
+               							<f:facet name="input"><p:inputText id="asoru" value="#{asorular.soru}" style="width:100%"/></f:facet>
+           							</p:cellEditor>
+									
+									</p:column>
+									<p:column headerText="Sıra No" width="5%">
+										
+										 <p:cellEditor>
+              						 <f:facet name="output"><p:outputLabel value="#{asorular.siraNo}" /></f:facet>
+               							<f:facet name="input"><p:inputText id="asirano" value="#{asorular.siraNo}" /></f:facet>
+           							</p:cellEditor>
+									
+									</p:column>
+									<p:column headerText="Durum" width="5%">
+										
+										 <p:cellEditor>
+              						 <f:facet name="output"><p:outputLabel value="#{asorular.aktif eq 'A'?'Aktif':'Pasif'}" /></f:facet>
+               							<f:facet name="input">
+               							<p:selectOneMenu id="aaktif" value="#{asorular.aktif}" style="width:100%" >
+               							<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+               							<f:selectItem itemLabel="Aktif" itemValue="A"/>
+               							<f:selectItem itemLabel="Pasif" itemValue="P"/>
+               							</p:selectOneMenu>
+               							</f:facet>
+           							</p:cellEditor>
+									
+									</p:column>
+									<p:column headerText="Parent">
+									<p:outputLabel value="#{asorular.parent}" />
+									</p:column>
+									<p:column>
+									
+									<p:commandButton id="btnaltsorular1" actionListener="#{soruTableBean.getAltSorular1Listener(asorular)}"
+									update=":formtest:pnlaltsorular" icon="ui-icon-search" process="@this" title="Alt Soruları Gör"
+									oncomplete="$('html, body').animate({ scrollTop: $(document).height() }, 1000); $('.ui-growl').offset({left:600,top:$(document).height()-400});"
+									></p:commandButton>
+									
+									<p:blockUI block="altsoru" trigger="btnaltsorular1">
+									<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"></p:graphicImage>
+									</p:blockUI>
+									<br/>
+									<br/>
+									 <p:rowEditor/>
+									 
+									 <br/>
+									 <p:commandButton id="btnaltsoruekle1" actionListener="#{soruTableBean.setAltSorular1Listener(asorular)}"
+									 title="Alt Soru Ekle" icon="ui-icon-plusthick" process="@this" update=":formtest:pnlaltsoruekle" 
+									 oncomplete="PF('altsoruekle').show()"></p:commandButton>
+									 <br/>
+									 <br/>
+									  <p:commandButton id="btnontanimlisorular1" actionListener="#{soruTableBean.setOnTanimliSorular(asorular)}"
+									 title="Ön Tanımlı Soru Ekle" icon="ui-icon-circle-plus" process="@this" 
+									 update=":formtest:pnlontanimlisoruekle :formtest:ontanimlitable" 
+									 oncomplete="PF('ontanimlisoruekle').show()"></p:commandButton>
+									</p:column>
+									</p:dataTable>
+									
+									
+        							<br/>
+									<br/>
+									
+    </p:carousel> 
+    </p:panel>
+		
+		<p:dialog id="altsoruekle" widgetVar="altsoruekle" visible="false" 
+		closable="true" modal="true">
+		<p:ajax event="close" listener="#{soruTableBean.altSoruEkleClose}" process="@this" update="altsoruekle"></p:ajax>
+		
+		<p:messages showDetail="false" autoUpdate="true" id="msg"></p:messages>
+		<p:panel id="pnlaltsoruekle" widgetVar="pnlaltsoruekle" header="#{soruTableBean.dialogHeader}">
+		<h:panelGrid columns="2" cellpadding="5" cellspacing="5" id="grdsoruekle">
+		<p:outputLabel for="parent" value="Parent" styleClass="label"/>
+		<p:inputText id="parent" value="#{soruTableBean.soruEkleDTO.parent}" readonly="true" disabled="true"/>
+		<p:outputLabel for="cihazTipi" value="Cihaz Tipi" styleClass="label"/>
+		<p:inputText id="cihazTipi" value="#{soruTableBean.soruEkleDTO.cihazTipi eq '66'?'Elektrikli':'Hidrolik'}" readonly="true" disabled="true"/>
+		<p:outputLabel for="kpsam" value="Kapsam" styleClass="label"/>
+		
+		
+		<p:selectManyCheckbox id="kpsam" value="#{soruTableBean.soruEkleDTO.kapsam}" layout="grid" columns="2" style="width:110%" 
+		
+		required="true" requiredMessage="#{label.kapsam} #{label.seciniz}">
+          <f:selectItems value="#{soruTableBean.kapsamTurleri}" var="kapsam" itemLabel="#{kapsam.kapsamAdi}" itemValue="#{kapsam.id}" />
+          <p:ajax process="@this" update="@this"></p:ajax>
+        </p:selectManyCheckbox>
+        <h:outputText/>
+        <h:panelGrid columns="2">
+        <p:outputLabel style="label" value="Tüm Kapsamlar" for="tk"></p:outputLabel>
+        <p:selectBooleanCheckbox id="tk">
+        <p:ajax process="@this" update="@this kpsam" listener="#{soruTableBean.kapsamSelectListener}"></p:ajax>
+        </p:selectBooleanCheckbox>
+        
+        </h:panelGrid>
+		
+	<p:outputLabel for="sno" value="Sıra No" styleClass="label"/>
+		<p:inputText id="sno"  value="#{soruTableBean.soruEkleDTO.siraNo}" disabled="true" readonly="true"/>
+	<p:outputLabel for="sru" value="Soru" styleClass="label"/>
+		<p:inputTextarea id="sru" required="true" requiredMessage="Soru #{label.giriniz}" value="#{soruTableBean.soruEkleDTO.soru}"></p:inputTextarea>
+	<p:outputLabel for="yldiz" value="Yıldız" styleClass="label"/>
+		<p:inputText id="yldiz"  value="#{soruTableBean.soruEkleDTO.yildiz}"/>
+	<p:outputLabel for="drum" value="Durum" styleClass="label"/>
+		<p:selectOneMenu id="drum" value="#{soruTableBean.soruEkleDTO.aktif}" >
+	<f:selectItem  itemValue="A" itemLabel="Aktif" />
+	<f:selectItem  itemValue="P" itemLabel="Pasif" />
+	</p:selectOneMenu>
+	<h:outputText/>
+	<p:commandButton id="btnaltsoruinsert" value="#{label.kaydet}" icon="ui-icon-disk" actionListener="#{soruTableBean.soruKaydet}" 
+	process=":formtest:pnlaltsoruekle"
+	update=":formtest"  oncomplete="PF('altsoruekle').show()"/>
+	
+		</h:panelGrid>
+		</p:panel>
+		<p:blockUI block="@form" trigger="btnaltsoruinsert">
+	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"></p:graphicImage>
+	</p:blockUI>
+		</p:dialog>
+		
+		<p:dialog id="daltsorular" widgetVar="daltsorular" visible="false" modal="true" width="900" style="height:100px;overflow:scroll" closable="true">
+		<p:panel  widgetVar="pnlaltsorular" id="pnlaltsorular" visible="#{!empty soruTableBean.altSorularList}" 
+									header="#{soruTableBean.altSoruHeader}" style="overflow-y:scroll">
+									<p:dataTable value="#{soruTableBean.altSorularModel}"
+									id="altsoru1" editable="true" style="overflow-y:scroll"
+									 var="asorular1" emptyMessage="#{label.emptyList}">
+									<p:ajax event="rowEdit" listener="#{soruTableBean.onRowEdit}" update=":formtest:growl @this" process="@this" />
+      								 <p:ajax event="rowEditCancel" listener="#{soruTableBean.onRowCancel}"/>
+									
+									<p:column headerText="Soru Id" width="5%">
+										<p:outputLabel value="#{asorular1.soruId}" />
+									</p:column>
+									<p:column headerText="#{label.kapsam}" width="10%">
+									<p:cellEditor>
+									<f:facet name="output">
+									 <p:selectManyCheckbox id="kapsamout2" value="#{asorular1.kapsam}" layout="grid" columns="1" disabled="true">
+            							<f:selectItems value="#{soruTableBean.kapsamTurleri}" var="kapsam" itemLabel="#{kapsam.kapsamAdi}" itemValue="#{kapsam.id}" />
+        								</p:selectManyCheckbox>
+        							</f:facet>
+        							<f:facet name="input">
+									 <p:selectManyCheckbox id="kapsaminp2" value="#{asorular1.kapsam}" layout="grid" columns="1" required="true" requiredMessage="#{label.kapsam} #{label.seciniz}">
+            							<f:selectItems value="#{soruTableBean.kapsamTurleri}" var="kapsam" itemLabel="#{kapsam.kapsamAdi}" itemValue="#{kapsam.id}" />
+        								</p:selectManyCheckbox>
+        							</f:facet>
+									</p:cellEditor>
+									</p:column>
+									
+									<p:column headerText="Yıldız" width="5%">
+									 <p:cellEditor>
+              						 <f:facet name="output"><p:outputLabel value="#{asorular1.yildiz}" /></f:facet>
+               							<f:facet name="input"><p:inputText id="ayildiz1" value="#{asorular1.yildiz}" /></f:facet>
+           							</p:cellEditor>
+										
+									</p:column>
+									<p:column headerText="Soru" width="80%">
+										
+										 <p:cellEditor>
+              						 <f:facet name="output"><p:outputLabel value="#{asorular1.soru}" /></f:facet>
+               							<f:facet name="input"><p:inputText id="asoru1" value="#{asorular1.soru}" style="width:100%"/></f:facet>
+           							</p:cellEditor>
+									
+									</p:column>
+									<p:column headerText="Sıra No" width="5%">
+										
+										 <p:cellEditor>
+              						 <f:facet name="output"><p:outputLabel value="#{asorular1.siraNo}" /></f:facet>
+               							<f:facet name="input"><p:inputText id="asirano1" value="#{asorular1.siraNo}" /></f:facet>
+           							</p:cellEditor>
+									
+									</p:column>
+									<p:column headerText="Durum" width="5%">
+										
+										 <p:cellEditor>
+              						 <f:facet name="output"><p:outputLabel value="#{asorular1.aktif eq 'A'?'Aktif':'Pasif'}" /></f:facet>
+               							<f:facet name="input">
+               							<p:selectOneMenu id="aaktif1" value="#{asorular1.aktif}" style="width:100%" >
+               							<f:selectItem itemLabel="#{label.seciniz}" itemValue=""/>
+               							<f:selectItem itemLabel="Aktif" itemValue="A"/>
+               							<f:selectItem itemLabel="Pasif" itemValue="P"/>
+               							</p:selectOneMenu>
+               							</f:facet>
+           							</p:cellEditor>
+           							</p:column>
+									<p:column headerText="Parent">
+									<p:outputLabel value="#{asorular1.parent}" />
+									</p:column>
+									<p:column>
+									<p:rowEditor/>
+									<br/>
+									
+									 <br/>
+									  <p:commandButton id="btnontanimlisorular1" actionListener="#{soruTableBean.setOnTanimliSorular(asorular1)}"
+									 title="Ön Tanımlı Soru Ekle" icon="ui-icon-circle-plus" process="@this"  
+									 update=":formtest:pnlontanimlisoruekle :formtest:ontanimlitable"
+									 oncomplete="PF('ontanimlisoruekle').show()"></p:commandButton>
+									</p:column>
+									</p:dataTable>
+									</p:panel>
+		</p:dialog>
+		
+		<p:dialog id="ontanimlisoruekle" widgetVar="ontanimlisoruekle" visible="false" closable="true" modal="true" width="900" style="height:400px;overflow:scroll">
+		<p:ajax event="close" listener="#{soruTableBean.hide}" update=":formtest:pnlontanimlisoruekle" />
+		<p:messages showDetail="false" autoUpdate="true" id="msgontanim"></p:messages>
+		<table style="width:100%;vertical-align:text-top; ">
+		<tr style="width:100%;vertical-align: text-top">
+		<td style="width:50%;vertical-align: text-top">
+		<p:panel id="pnlontanimlisoruekle" widgetVar="pnlontanimlisoruekle" header="#{soruTableBean.dialogHeader}">
+		<p:dataTable value="#{soruTableBean.onTanimliList}"
+									id="ontanimlitable" editable="true" paginator="true" rows="5" paginatorPosition="top"
+									 var="listontanim" emptyMessage="#{label.emptyList}">
+									<p:ajax event="rowEdit" listener="#{soruTableBean.onRowEditOnTanimli}" update=":formtest:msgontanim @this" process="@this" />
+      								 <p:ajax event="rowEditCancel" listener="#{soruTableBean.onRowCancel}"/>
+									<p:column headerText="Soru Id" sortBy="id">
+										<p:outputLabel value="#{listontanim.id}" />
+									</p:column>
+									
+									
+									<p:column headerText="Açıklama" sortBy="aciklama">
+									 <p:cellEditor>
+              						 <f:facet name="output"><p:outputLabel value="#{listontanim.aciklama}" /></f:facet>
+               							<f:facet name="input"><p:inputTextarea cols="2" style="width:100%; height:60px; overflow:scroll-y" 
+               						  id="oaciklama" value="#{listontanim.aciklama}"  required="true" requiredMessage="Açıklama Giriniz!"/></f:facet>
+           							</p:cellEditor>
+										
+									</p:column>
+									<p:column headerText="Durum" sortBy="durum">
+									 <p:cellEditor>
+              						 <f:facet name="output"><p:outputLabel value="#{listontanim.durum eq 'A'?'Aktif':'Pasif'}" /></f:facet>
+               							<f:facet name="input"><p:selectOneMenu style="width:100%" required="true" requiredMessage="Durum Seçiniz!"
+               						  id="odurum" value="#{listontanim.durum}">
+               						  <f:selectItem itemLabel="Seçiniz" itemValue=""></f:selectItem>
+               						  <f:selectItem itemLabel="Aktif" itemValue="A"></f:selectItem>
+               						  <f:selectItem itemLabel="Pasif" itemValue="P"></f:selectItem>
+               						  </p:selectOneMenu></f:facet>
+           							</p:cellEditor>
+										
+									</p:column>
+									<p:column>
+									<p:rowEditor/>
+									<br/>
+									<br/>
+ 
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+        <p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+            
+									</p:column>
+			
+			</p:dataTable>
+			
+		</p:panel>
+		</td>
+		<td style="width:50%;vertical-align: text-top">
+		
+		<p:panel id="ontanekle" widgetVar="ontanekle"  style="background-color:#FFFFCC" header="Ön Tanımlı Soru Ekle">
+			<table style="width:100%">
+			<tr>
+			<td style="width:10%">
+			<p:outputLabel styleClass="label" for="aciklamad" value="Açıklama" > </p:outputLabel>
+			</td>
+			<td style="width:90%">
+			<p:inputTextarea  id="aciklamad" style="width:100%" value="#{soruTableBean.onTanimliDTO.aciklama}" required="true" requiredMessage="Açıklama giriniz !"/>
+			</td>
+			</tr>
+			<tr>
+			<td>
+			</td>
+			<td>
+			<p:commandButton value="#{label.ekle}" icon="ui-icon-circle-plus" style="float:right" 
+			id="btnontanimlikaydet"
+			actionListener="#{soruTableBean.onTanimliKaydet}"
+			process="ontanekle" update="pnlontanimlisoruekle ontanekle msgontanim ontanimlitable"
+			></p:commandButton>
+			</td>
+			</tr>
+			</table>
+			</p:panel>
+		</td>
+		</tr>
+		</table>
+		
+		
+		
+			<p:blockUI block="ontanekle" trigger="btnontanimlikaydet">
+	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"></p:graphicImage>
+	</p:blockUI>
+		</p:dialog>
+    	
+	</h:form>
+
+
+</ui:composition>

@@ -1,0 +1,164 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:form id="form2">
+		<p:dialog id="d01x1" header="Bina Arama" widgetVar="dlg" modal="false" width="600" height="400" resizable="false">
+		
+		<p:growl id="warnb" showDetail="false"></p:growl>
+		 						
+		<p:autoComplete value="#{binaBean.binalar}" var="bina"  size="65" converter="binalar" id="binacomplete"
+completeMethod="#{binaBean.complete}" forceSelection="true"  cache="true" cacheTimeout="3000"
+scrollHeight="600" panelStyle="width:600px;"
+placeholder="Bina Adının ilk üç harfini girerek arama yapabilirsiniz"
+ minQueryLength="3" queryDelay="300" itemValue="#{bina}" itemLabel="#{bina.binaAdi}">
+<p:ajax event="itemSelect" listener="#{binaBean.listener}" process="@this" update=":form1 d01x1"/>
+<p:column headerText="#{label.adi}">
+#{bina.binaAdi}
+</p:column>
+<p:column headerText="#{label.binaId}">
+#{bina.binaId}
+</p:column>
+<p:column headerText="#{label.tescilNo}">
+#{bina.tescilNo}
+</p:column>
+<p:column headerText="#{label.binaNo}">
+#{bina.binaNo}
+</p:column>
+
+
+<p:column headerText="#{label.mahalle}">
+#{bina.mahalle}
+</p:column>
+<p:column headerText="#{label.caddesokak}">
+#{bina.caddeSokak}
+</p:column>
+<p:column headerText="#{label.il}/#{label.ilce}">
+#{bina.ilAdi}/#{bina.ilceAdi}
+</p:column>
+<p:column headerText="#{label.adres}">
+#{bina.acikAdres}
+</p:column>
+</p:autoComplete>
+		<p:graphicImage value="${pageContext.request.contextPath}/resources/image/search.png"/>
+		<p:watermark value="#{label.binacomplete}" for="binacomplete"/>
+		
+		 
+		<br/>
+		<br/>
+		<br/>
+	  
+	 <p:panel style="width:100%">
+	
+	  <h:panelGrid columns="1" width="100%" id="pnlgrid">
+	 <p:panel header="TC Kimlik No ile Arama">
+<h:panelGrid columns="2" style="width:100%;" id="grdtc">
+<p:watermark value="#{label.tckimlikno}" for="txtkimlik"/>
+<h:outputText/>
+<p:message for="txtkimlik" showDetail="true" id="msgkimlik"/>
+<h:outputText/>
+	 <p:inputMask id="txtkimlik" mask="99999999999" style="margin-top:0px;width:100px" value="#{binaBean.tcKimlikNo}"
+							required="true" requiredMessage="#{label.tckimlikno} #{label.giriniz}">
+							<f:validator validatorId="validators.tcKimlikValidator"></f:validator>
+							<f:ajax render="warnb" event="blur"></f:ajax>
+							</p:inputMask>
+							<p:commandButton icon="ui-icon-search" value="#{label.sorgula}" style="width:100px" id="btntc"
+							update="pnlbinalist msgkimlik warnb" process="grdtc"  action="#{binaBean.binaBulByTcKimlik}"></p:commandButton>
+							
+							
+							
+							
+	 </h:panelGrid>
+	 <p:blockUI trigger="btntc" block="pnlgrid">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	</p:blockUI>
+  	</p:panel>
+	<p:panel header="Ada Parsel ve Pafta Numaraları ile Arama">
+ <h:panelGrid columns="4" id="grd01" style="width:100%">
+ <p:watermark value="#{label.ada}" for="txtada1"/>
+ <p:watermark value="#{label.pafta}" for="txtpafta1"></p:watermark>
+ <p:watermark value="#{label.parsel}" for="txtparsel1"></p:watermark>
+ <h:outputText/>
+ <p:message for="txtada1" showDetail="true" id="mada"/>
+ <p:message for="txtparsel1" showDetail="true" id="mparsel"/>
+ <p:message for="txtpafta1" showDetail="true" id="mpafta" />
+ <h:outputText/>
+  	<p:inputText id="txtada1"  value="#{binaBean.ada}" style="width:100px" 
+							required="true" requiredMessage="#{label.ada} #{label.giriniz}"/>
+							
+							
+		
+							
+							<p:inputText id="txtparsel1"  value="#{binaBean.parsel}" style="width:100px" 
+							required="true" requiredMessage="#{label.parsel} #{label.giriniz}"/>
+														
+												
+							
+							<p:inputText id="txtpafta1"  value="#{binaBean.pafta}" style="width:100px" 
+							required="true" requiredMessage="#{label.pafta} #{label.giriniz}"/>
+							
+							
+							
+			
+								<p:commandButton id="btnSorgu" value="#{label.sorgula}"  process="grd01"  style="float:right;width:100px" icon="ui-icon-search" update="pnlbinalist mada mparsel mpafta warnb" action="#{binaBean.binaByAdaParselPafta}">
+								</p:commandButton>
+								</h:panelGrid>
+	 
+	
+	
+  	
+  	</p:panel>
+  	<p:blockUI trigger="btnSorgu" block="pnlgrid">
+  	<p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/>
+  	
+  	</p:blockUI>
+								
+	</h:panelGrid>
+  		
+		
+ <h:panelGroup id="pnlbinalist">
+   <p:dataTable id="tblx0102" var="varbinalist" value="#{binaBean.binaListSmall}" emptyMessage="" rendered="#{not empty binaBean.binaList}"  
+  	selection="#{binaBean.secilen}" selectionMode="single">
+  	
+  		<p:ajax event="rowSelect" listener="#{binaBean.onRowSelect}" update=":form1 :form2:d01x1"/>
+		<p:ajax event="rowUnselect" listener="#{binaBean.onRowUnselect}"/>
+
+        
+        <p:column headerText="#{label.il}">
+       	    #{varbinalist.ilAdi}  
+         
+        </p:column>  
+  
+        <p:column headerText="#{label.ilce}"> 
+        
+            #{varbinalist.ilceAdi}  
+        </p:column>  
+  
+        <p:column headerText="#{label.mahalle}">  
+            #{varbinalist.mahalle}    
+        </p:column>  
+  
+        <p:column headerText="#{label.caddesokak}">  
+            #{varbinalist.caddeSokak}   
+        </p:column>  
+        
+        <p:column headerText="#{label.binaNo}">  
+            #{varbinalist.binaNo}  
+        </p:column>  
+        <p:column headerText="#{label.binaAdi}">  
+            #{varbinalist.binaAdi}  
+        </p:column>
+     
+      
+            
+       
+          
+  
+    </p:dataTable>  
+    
+    </h:panelGroup>  
+     </p:panel>
+	</p:dialog>  
+		</h:form>
+		</ui:composition>

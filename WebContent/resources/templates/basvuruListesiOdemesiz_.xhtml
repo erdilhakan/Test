@@ -1,0 +1,178 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title>#{label.yapilanBasvurular}</title>
+	
+	<h:outputStylesheet library="css" name="maincontext.css"/>
+	<h:outputStylesheet library="css" name="style.css"/>
+
+<LINK href="${facesContext.externalContext.requestContextPath}/resources/css/stylesheet.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+	.ui-dialog {padding: .2em; overflow: visible; border: 0 none; -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.75); -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.75); box-shadow: 0 1px 4px rgba(0,0,0,0.75); }
+.ui-dialog .ui-dialog-titlebar { position: relative; background: transparent !important; padding: 0 0 8px 0; margin: 20px 20px 5px 20px; border: solid #e5e5e5; border-width: 0 0 1px 0; -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; }
+.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .1em 0; color: #353536; font-size: 20px !important; } 
+.ui-dialog .ui-dialog-titlebar-close { position: absolute; right: -16px !important; top: -16px !important; margin: 0; width: 30px; height: 30px; background: url("#{resource['primefaces-delta:images/modalClose.png']}") 0 0 no-repeat; border: 0 !important; z-index: 10000; padding: 0px !important;}
+.ui-dialog .ui-dialog-titlebar-close span { display: none !important; }
+.ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
+.ui-dialog .ui-dialog-content { position: relative; border: 0; padding: 15px 20px 20px 20px; background: none; overflow: auto; zoom: 1; }
+.ui-dialog .ui-dialog-buttonpane { text-align: left; border: solid #e5e5e5; border-width: 1px 0 0 0; background: transparent; margin: 20px 20px 10px 20px; padding: 10px 0 0 0; }
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
+.ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
+.ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.ui-draggable .ui-dialog-titlebar { cursor: move; }
+span.fc-event-title{
+width:100%;}
+.fc-event .fc-event-inner,.fc-event-inner{
+	z-index:-1;
+	margin-top:0px;
+width:100%;
+height: 100px;
+
+}
+ .edit{
+    background: #FFFF99;
+      font-family: comic sans MS;
+      font-weight: bold;
+      font-size: 1.2em;
+       
+      }
+     
+
+.fc-event-title,.fc-event-time,.fc-event-inner{
+	color:#fff;
+	font-size:12px;
+	width:100%;
+	font-family: comic sans MS;
+}
+
+.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin: -1px 0 0 0 !important; }
+.ui-datepicker th { padding: .7em 0; text-align: center; font-weight: bold; border: 0; font-size: 10px; color: #acacac; border-bottom: 1px solid #cdcdcd !important; }
+.ui-datepicker td { border: 0; padding: 0 !important; border: 1px solid #cdcdcd; }
+.ui-datepicker td a { display: block; padding: 0 !important; border: 0 none !important;/*border: 1px solid #cdcdcd !important;*/ 
+line-height: 20px; text-align: center !important; font-size: 10px; text-decoration: none; font-weight: bold !important; }
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active{
+	background:#6986c9;
+	font-weight: bold;
+	
+}
+
+</style>
+</h:head>
+	<h:form id="formtarih">
+	<p:growl id="growltarih"></p:growl>
+		
+		<h:panelGrid style="cursor:pointer;margin:auto">
+		
+		<p:graphicImage value="${pageContext.request.contextPath}/resources/image/calendar.png" width="30" height="30" onclick="PF('lb').show()" 
+		title="Listelemek istediğiniz başvuru tarihlerini seçiniz !" alt="Listelemek istediğiniz başvuru tarihlerini seçiniz !"/>
+		
+        
+		</h:panelGrid>
+   		
+ 
+    <p:dialog widgetVar="lb" id="lb" header="İki Tarih Arasını Maximum 1 Ay Seçiniz !" width="auto" height="auto">
+        <p:panel>
+        <h:panelGrid columns="2" cellpadding="3" cellspacing="3">
+       <p:outputLabel value="İLK TARİH"></p:outputLabel>
+        
+     <p:outputLabel value="SON TARİH"></p:outputLabel>
+        <p:calendar locale="tr" navigator="true" pattern="dd.MM.yyyy" mode="inline"  id="tarih1" value="#{basvuruTarihBean.ilkTarih}" 
+         required="true" requiredMessage="Tarih Giriniz">
+        <p:ajax process="@this" update="@this growltarih" listener="#{basvuruTarihBean.tarihListener}" event="dateSelect"></p:ajax>
+        </p:calendar>
+        <p:calendar locale="tr" navigator="true" pattern="dd.MM.yyyy" mode="inline" value="#{basvuruTarihBean.sonTarih}" id="tarih2" required="true" requiredMessage="Tarih Giriniz">
+         <p:ajax process="@this" update="@this growltarih" listener="#{basvuruTarihBean.tarihListener}" event="dateSelect"></p:ajax>
+        </p:calendar>
+        
+        </h:panelGrid>
+        <f:facet name="footer">
+        <p:commandButton id="btnliste" value="LİSTELE" icon="ui-icon-document" process=":formtarih" update=":formbasvuruliste" oncomplete="PF('lb').show()"
+        actionListener="#{basvuruTarihBean.basvuruListele}"
+        ></p:commandButton>
+        </f:facet>
+        </p:panel>
+    
+    <p:blockUI trigger="btnliste" block="btnliste" blocked="btnliste">
+    <p:graphicImage value="${pageContext.request.contextPath}/resources/image/ajax-loader.gif"/></p:blockUI>
+</p:dialog>
+	</h:form>
+	<h:form id="formbasvuruliste">
+		<p:growl id="growl" showDetail="false" sticky="false" widgetVar="grwl"/>
+		
+		<h:panelGroup rendered="#{!empty basvuruBean.basvuruListesi}">
+		<h:outputText value="#{basvuruTarihBean.ilkTarih}"  style="font-size:1.7em;width:100px">
+		<f:convertDateTime pattern="dd.MM.yyy"></f:convertDateTime>
+		</h:outputText>
+		<h:outputText value="-" style="font-size:1.7em;width:5px"></h:outputText>
+		<h:outputText value="#{basvuruTarihBean.sonTarih}"  style="font-size:1.7em;width:100px">
+		<f:convertDateTime pattern="dd.MM.yyy"></f:convertDateTime>
+		</h:outputText>
+		<h:outputText value=" tarihleri arası başvurular listelenmiştir !" style="font-size:1.7em;width:300px"></h:outputText>
+
+</h:panelGroup>
+		<p:dataTable value="#{basvuruBean.basvuruListe}" var="basvurulistesi" id="basvurutable" rendered="#{!empty basvuruBean.basvuruListesi}"
+		 filteredValue="#{basvuruBean.filteredVal}" style="width:100%"
+		paginator="true"  emptyMessage="#{label.emptyList}"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+        rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
+        
+        <p:column headerText="#{label.id}" sortBy="#{basvurulistesi.basvuruId}" style="width:5%">
+         <p:commandLink action="#{basvuruBean.linkBasvuru(basvurulistesi)}">
+               <h:outputText value="#{basvurulistesi.basvuruId}" style="color: #6986c9;text-decoration:underline" title="Başvuru Gör"/>
+        </p:commandLink>
+ 
+       
+        </p:column>
+        <p:column headerText="#{label.basvuruTarihi}" sortBy="#{basvurulistesi.basvuruTarihi}">
+        <h:outputText value="#{basvurulistesi.basvuruTarihi}">
+        <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText>
+        </p:column>
+        <p:column headerText="#{label.basvuruYapan}" sortBy="#{basvurulistesi.adiSoyadi}" filterBy="#{basvurulistesi.adiSoyadi}" filterMatchMode="contains" style="width:18%">
+       <p:commandLink action="#{basvuruBean.linkBasvuru(basvurulistesi)}">
+        <h:outputText value="#{basvurulistesi.adiSoyadi}" style="color: #6986c9;text-decoration:underline" title="Başvuru Gör" />
+        </p:commandLink>
+       
+        </p:column>
+        <p:column headerText="#{label.il}" sortBy=" #{basvurulistesi.il}" filterBy=" #{basvurulistesi.il}" filterMatchMode="startsWith" style="width:8%">
+        #{basvurulistesi.il}
+        </p:column>
+        <p:column headerText="#{label.ilce}" sortBy="#{basvurulistesi.ilce}" style="width:10%">
+        #{basvurulistesi.ilce}
+        </p:column>
+        <p:column headerText="#{label.mahalle}" sortBy=" #{basvurulistesi.mahalle}" filterBy=" #{basvurulistesi.mahalle}" filterMatchMode="startsWith" style="width:20%">
+        #{basvurulistesi.mahalle}
+        </p:column>
+        <p:column headerText="#{label.caddesokak}" sortBy="#{basvurulistesi.caddeSokak}" style="width:20%">
+        #{basvurulistesi.caddeSokak}
+        </p:column>
+        <p:column headerText="#{label.binaNo}" sortBy="#{basvurulistesi.binaId}" style="width:19%">
+        <p:commandLink action="#{basvuruBean.linkBina(basvurulistesi)}">
+        <h:outputText value="#{basvurulistesi.binaId}" style="color: #6986c9;text-decoration:underline" title="Bina Gör"/>
+        </p:commandLink>
+        </p:column>
+         <p:column headerText="#{label.binaAdi}" filterBy="#{basvurulistesi.binaAdi}" sortBy="#{basvurulistesi.binaAdi}">
+        #{basvurulistesi.binaAdi}
+        </p:column>
+        <p:column width="2%">
+        <p:commandButton icon="ui-icon-trash" title="#{label.basvuruSil}" process="basvurutable" update="@form"  
+        disabled="#{loginBean.silebilir()?false:true}" actionListener="#{basvuruBean.basvuruSilListener(basvurulistesi)}"></p:commandButton>
+        </p:column>
+       
+        </p:dataTable>
+		
+		
+    
+    
+    </h:form>
+   
+    
+    
+    
+    </ui:composition>
+    
